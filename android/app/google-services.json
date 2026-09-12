@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "453231448530",
+    "project_id": "im-done-17215",
+    "storage_bucket": "im-done-17215.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453231448530:android:bc3d448b23f5ae7d1e380b",
+        "android_client_info": {
+          "package_name": "me.imdone.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhu0fL8q7SRLw-Z1mYgLxsrkxBvQ-Cb-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

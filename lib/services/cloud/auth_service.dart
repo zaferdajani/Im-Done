@@ -22,6 +22,11 @@ class AuthService {
   bool _googleReady = false;
 
   Future<User?> signInWithGoogle() async {
+    if (isWeb) {
+      // Firebase's own popup: no OAuth client id to configure on the web.
+      final result = await _auth.signInWithPopup(GoogleAuthProvider());
+      return result.user;
+    }
     if (!_googleReady) {
       await GoogleSignIn.instance.initialize(
         serverClientId: Cloud.googleServerClientId.isEmpty ? null : Cloud.googleServerClientId,
