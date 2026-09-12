@@ -33,11 +33,18 @@ repository and must never be.
   scanning the QR; a scanned/opened code lands on "add this person to which
   task?". Invite links still work too.
 
-## What the free plan cannot do
+## Push notifications between phones — the free sender
 
-- **Push notifications between phones.** Sending a push needs a server. People
-  see a new task, a claim or a confirmation when they open the app (the task
-  list is live), and everyone's own reminders ring locally regardless.
+Sending a push needs a server holding a secret key. Firebase only gives one on
+the paid plan, so the sender lives on **Cloudflare Workers** (free tier) in
+`push-worker/`. A phone calls it with its Firebase sign-in token and
+`{taskId, kind, toUid?}`; the worker verifies the token, reads the task, checks
+the caller is a member, decides who may be told (`src/logic.mjs`, unit-tested)
+and sends through Firebase Cloud Messaging. Kinds: added, joined, claimed,
+confirmed, rejected. Deploy: `.github/workflows/deploy-push.yml` (secrets
+`CLOUDFLARE_API_TOKEN`, `FIREBASE_SERVICE_ACCOUNT`). Web push (browser
+notifications) additionally needs a VAPID key from Firebase console → Cloud
+Messaging → Web Push certificates; not set up yet.
 - **Server-side cleanup on account deletion.** The app does it client-side:
   leaves every task, archives owned ones, removes the code and profile, then
   deletes the Auth user (re-signing in first if Firebase asks).

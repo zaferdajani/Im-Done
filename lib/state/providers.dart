@@ -167,6 +167,7 @@ class TaskActions {
     final name = ref.read(myNameProvider);
     if (t.isShared) {
       await _b.cloudTasks.claimDone(t, day, uid, name);
+      if (uid != t.ownerUid) _b.push.notify('claimed', t.id);
       return;
     }
     final now = DateTime.now();
@@ -184,14 +185,31 @@ class TaskActions {
     await ref.read(localTasksProvider.notifier).upsert(t.copyWith(completions: map));
   }
 
-  Future<void> confirm(Task t, DateTime day) => _b.cloudTasks.confirm(t, day, ref.read(myUidProvider));
-  Future<void> reject(Task t, DateTime day) => _b.cloudTasks.reject(t, day, callerUid: ref.read(myUidProvider));
+  Future<void> confirm(Task t, DateTime day) async {
+    await _b.cloudTasks.confirm(t, day, ref.read(myUidProvider));
+    _b.push.notify('confirmed', t.id);
+  }
 
-  Future<String> join(String code) => _b.cloudTasks.joinByCode(code, ref.read(myUidProvider), ref.read(myNameProvider));
+  Future<void> reject(Task t, DateTime day) async {
+    final claimant = completionOn(t, day)?.byUid;
+    await _b.cloudTasks.reject(t, day, callerUid: ref.read(myUidProvider));
+    _b.push.notify('rejected', t.id, toUid: claimant);
+  }
+
+  Future<String> join(String code) async {
+    final taskId = await _b.cloudTasks.joinByCode(code, ref.read(myUidProvider), ref.read(myNameProvider));
+    _b.push.notify('joined', taskId);
+    return taskId;
+  }
 
   Future<void> deleteAccount() => _b.auth.deleteAccount(_b.cloudTasks.eraseEverythingOf);
 
-  Future<void> addMemberByCode(Task t, String code) => _b.cloudTasks.addMemberByCode(t, code.trim().toUpperCase());
+  Future<void> addMemberByCode(Task t, String code) async {
+    final clean = code.trim().toUpperCase();
+    final person = await _b.cloudTasks.lookupPersonalCode(clean);
+    await _b.cloudTasks.addMemberByCode(t, clean);
+    if (person != null) _b.push.notify('added', t.id, toUid: person.uid);
+  }
 
   Future<User?> signInQuick(String name) => _b.auth.signInQuick(name);
   Future<User?> linkGoogle() => _b.auth.linkGoogle();

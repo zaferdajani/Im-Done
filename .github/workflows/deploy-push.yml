@@ -1,0 +1,30 @@
+name: Deploy push sender (Cloudflare Worker)
+
+# On demand, and on every change under push-worker/. Needs repository secrets
+# CLOUDFLARE_API_TOKEN (template "Edit Cloudflare Workers") and
+# FIREBASE_SERVICE_ACCOUNT (the Firebase service-account JSON).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['push-worker/**']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: push-worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | npx wrangler secret put FIREBASE_SERVICE_ACCOUNT
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
