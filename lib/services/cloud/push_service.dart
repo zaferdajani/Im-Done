@@ -31,7 +31,7 @@ class PushService {
       'displayName': displayName,
       'languageCode': languageCode,
       'platform': isWeb ? 'web' : (isIOS ? 'ios' : 'android'),
-      ?'tokens': token == null ? null : FieldValue.arrayUnion([token]),
+      'tokens': ?(token == null ? null : FieldValue.arrayUnion([token])),
       'updatedAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }
@@ -48,7 +48,7 @@ class PushService {
           .post(
             Uri.parse('${Cloud.pushEndpoint}/notify'),
             headers: {'Authorization': 'Bearer $idToken', 'Content-Type': 'application/json'},
-            body: jsonEncode({'kind': kind, 'taskId': taskId, if (toUid != null) 'toUid': toUid}),
+            body: jsonEncode({'kind': kind, 'taskId': taskId, 'toUid': ?toUid}),
           )
           .timeout(const Duration(seconds: 10));
       if (res.statusCode != 200) debugPrint('push sender: ${res.statusCode} ${res.body}');
