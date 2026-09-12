@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>I'm Done</title>
+  <script>
+    // GitHub Pages serves this file for any path it does not know, such as an
+    // invite link /Im-Done/j/ABCD2345. Hand the code to the app as a query
+    // parameter so the single-page app can open the invite screen.
+    (function () {
+      var m = location.pathname.match(/\/j\/([A-Za-z0-9]{6,12})\/?$/);
+      var base = location.pathname.indexOf('/Im-Done/') === 0 ? '/Im-Done/' : '/';
+      location.replace(base + (m ? '?join=' + encodeURIComponent(m[1].toUpperCase()) : ''));
+    })();
+  </script>
+</head>
+<body></body>
+</html>

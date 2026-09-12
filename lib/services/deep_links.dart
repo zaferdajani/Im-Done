@@ -5,6 +5,8 @@ class DeepLinks {
   final _links = AppLinks();
 
   static String? inviteCode(Uri uri) {
+    final q = uri.queryParameters['join'];
+    if (q != null) return _clean(q);
     final segs = uri.pathSegments.where((s) => s.isNotEmpty).toList();
     if (uri.scheme == 'imdone' && uri.host == 'join' && segs.isNotEmpty) return _clean(segs.first);
     if (segs.length >= 2 && segs[segs.length - 2] == 'j') return _clean(segs.last);

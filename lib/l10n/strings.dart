@@ -120,6 +120,15 @@ class L10n {
     required this.newSharedTask,
     required this.version,
     required this.webRemindersNote,
+    required this.inviteTitle,
+    required this.inviteBody,
+    required this.inviteCodeLabel,
+    required this.inviteContinue,
+    required this.inviteOpenApp,
+    required this.inviteGetAndroid,
+    required this.inviteGetIos,
+    required this.inviteNoAppHint,
+    required this.notNow,
   });
 
   final String appName;
@@ -238,6 +247,15 @@ class L10n {
   final String newSharedTask;
   final String version;
   final String webRemindersNote;
+  final String inviteTitle;
+  final String inviteBody;
+  final String inviteCodeLabel;
+  final String inviteContinue;
+  final String inviteOpenApp;
+  final String inviteGetAndroid;
+  final String inviteGetIos;
+  final String inviteNoAppHint;
+  final String notNow;
 
   static L10n of(BuildContext context) =>
       Localizations.localeOf(context).languageCode == 'ar' ? ar : en;
@@ -361,6 +379,15 @@ class L10n {
     newSharedTask: 'New shared task',
     version: 'Version',
     webRemindersNote: 'A browser cannot ring a reminder while the tab is closed. Install the phone app for reminders; the web app is for managing and confirming tasks.',
+    inviteTitle: 'You have been invited to a task',
+    inviteBody: 'Someone wants to share a task with you on I\'m Done. Join it and you will be reminded until it is done, and they will confirm when you finish.',
+    inviteCodeLabel: 'Invite code',
+    inviteContinue: 'Join the task',
+    inviteOpenApp: 'Open in the app',
+    inviteGetAndroid: 'Get it for Android',
+    inviteGetIos: 'Get it for iPhone',
+    inviteNoAppHint: 'No app yet? You can join here in the browser and install the app later; your account carries over.',
+    notNow: 'Not now',
   );
 
   static const ar = L10n(
@@ -480,6 +507,15 @@ class L10n {
     newSharedTask: 'مهمة مشتركة جديدة',
     version: 'الإصدار',
     webRemindersNote: 'لا يستطيع المتصفح تشغيل التذكير عندما تكون الصفحة مغلقة. ثبّت تطبيق الهاتف للتذكيرات؛ نسخة الويب لإدارة المهام وتأكيدها.',
+    inviteTitle: 'تمت دعوتك إلى مهمة',
+    inviteBody: 'يريد أحدهم مشاركة مهمة معك على خلّصت. انضم إليها وسيتم تذكيرك حتى تُنجزها، وسيؤكد هو الإنجاز عندما تنتهي.',
+    inviteCodeLabel: 'رمز الدعوة',
+    inviteContinue: 'الانضمام إلى المهمة',
+    inviteOpenApp: 'فتح في التطبيق',
+    inviteGetAndroid: 'احصل عليه لأندرويد',
+    inviteGetIos: 'احصل عليه لآيفون',
+    inviteNoAppHint: 'لا تملك التطبيق بعد؟ يمكنك الانضمام هنا من المتصفح وتثبيت التطبيق لاحقًا؛ حسابك ينتقل معك.',
+    notNow: 'ليس الآن',
   );
 }
 

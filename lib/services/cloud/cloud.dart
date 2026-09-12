@@ -19,12 +19,18 @@ class Cloud {
   /// store listing when the app is not installed.
   static const String inviteBaseUrl = String.fromEnvironment(
     'INVITE_BASE_URL',
-    defaultValue: 'https://imdone.me/j',
+    defaultValue: 'https://zaferdajani.github.io/Im-Done/j',
   );
 
   static const String privacyPolicyUrl = 'https://imdone.me/privacy';
   static const String termsUrl = 'https://imdone.me/terms';
   static const String deleteAccountWebUrl = 'https://imdone.me/delete-account';
+
+  /// Store links for the invite landing page. Placeholders until the app is
+  /// listed; until then Android testers get the CI build from GitHub.
+  static const String playStoreUrl = 'https://github.com/zaferdajani/Im-Done/actions/workflows/app.yml';
+  static const String appStoreUrl = 'https://github.com/zaferdajani/Im-Done';
+  static const String webAppUrl = 'https://zaferdajani.github.io/Im-Done/';
 
   static Future<void> init() async {
     if (!DefaultFirebaseOptions.isConfigured) {

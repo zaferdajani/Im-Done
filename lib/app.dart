@@ -10,7 +10,7 @@ import 'l10n/strings.dart';
 import 'services/reminder_scheduler.dart';
 import 'state/providers.dart';
 import 'ui/home_screen.dart';
-import 'ui/sign_in_sheet.dart';
+import 'ui/invite_landing_screen.dart';
 import 'ui/task_detail_screen.dart';
 
 /// Notification taps arrive here from the plugin callback registered in main().
@@ -79,29 +79,10 @@ class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserv
     _nav.currentState?.push(MaterialPageRoute(builder: (_) => TaskDetailScreen(taskId: p.taskId)));
   }
 
-  Future<void> _onInvite(String code) async {
-    final ctx = _nav.currentContext;
-    if (ctx == null) return;
-    final l = ref.read(l10nProvider);
-    final b = ref.read(bootstrapProvider);
-    if (!b.cloudAvailable) {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(l.cloudUnavailable)));
-      return;
-    }
-    if (ref.read(authUserProvider).value == null) {
-      final user = await showSignInSheet(ctx);
-      if (user == null) return;
-    }
-    try {
-      final taskId = await ref.read(taskActionsProvider).join(code);
-      if (!mounted) return;
-      final c = _nav.currentContext;
-      if (c != null && c.mounted) ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(l.joined)));
-      if (taskId.isNotEmpty) _nav.currentState?.push(MaterialPageRoute(builder: (_) => TaskDetailScreen(taskId: taskId)));
-    } catch (_) {
-      final c = _nav.currentContext;
-      if (c != null && c.mounted) ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(l.joinFailed)));
-    }
+  /// An invite link arrived (deep link on the phone, or ?join= on the web):
+  /// show the landing screen, which signs the person in and joins.
+  void _onInvite(String code) {
+    _nav.currentState?.push(MaterialPageRoute(builder: (_) => InviteLandingScreen(code: code)));
   }
 
   @override
