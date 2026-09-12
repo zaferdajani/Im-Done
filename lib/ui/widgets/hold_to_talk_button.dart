@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/platform.dart';
 import '../../core/theme.dart';
 import '../../l10n/strings.dart';
 import '../../state/providers.dart';
@@ -54,7 +55,12 @@ class _HoldToTalkButtonState extends ConsumerState<HoldToTalkButton> with Single
     }
     final ok = await b.speech.init();
     if (!ok && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.micDenied)));
+      // On the web a failed initialise means the browser has no speech API
+      // (Firefox); permission is only asked later, when listening starts.
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(isWeb ? l.speechUnavailableWeb : l.micDenied),
+        duration: const Duration(seconds: 6),
+      ));
     }
     return ok;
   }

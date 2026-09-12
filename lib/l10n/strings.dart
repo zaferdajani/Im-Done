@@ -129,6 +129,7 @@ class L10n {
     required this.inviteGetIos,
     required this.inviteNoAppHint,
     required this.notNow,
+    required this.speechUnavailableWeb,
   });
 
   final String appName;
@@ -256,6 +257,7 @@ class L10n {
   final String inviteGetIos;
   final String inviteNoAppHint;
   final String notNow;
+  final String speechUnavailableWeb;
 
   static L10n of(BuildContext context) =>
       Localizations.localeOf(context).languageCode == 'ar' ? ar : en;
@@ -388,6 +390,7 @@ class L10n {
     inviteGetIos: 'Get it for iPhone',
     inviteNoAppHint: 'No app yet? You can join here in the browser and install the app later; your account carries over.',
     notNow: 'Not now',
+    speechUnavailableWeb: 'This browser has no speech recognition (Firefox does not support it). Use Chrome, Edge or Safari for voice, or type the task.',
   );
 
   static const ar = L10n(
@@ -516,6 +519,7 @@ class L10n {
     inviteGetIos: 'احصل عليه لآيفون',
     inviteNoAppHint: 'لا تملك التطبيق بعد؟ يمكنك الانضمام هنا من المتصفح وتثبيت التطبيق لاحقًا؛ حسابك ينتقل معك.',
     notNow: 'ليس الآن',
+    speechUnavailableWeb: 'هذا المتصفح لا يدعم التعرف على الكلام (فايرفوكس لا يدعمه). استخدم Chrome أو Edge أو Safari للصوت، أو اكتب المهمة.',
   );
 }
 
