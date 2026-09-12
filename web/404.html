@@ -8,9 +8,11 @@
     // invite link /Im-Done/j/ABCD2345. Hand the code to the app as a query
     // parameter so the single-page app can open the invite screen.
     (function () {
-      var m = location.pathname.match(/\/j\/([A-Za-z0-9]{6,12})\/?$/);
+      var j = location.pathname.match(/\/j\/([A-Za-z0-9]{6,12})\/?$/);
+      var p = location.pathname.match(/\/p\/([A-Za-z0-9]{6,12})\/?$/);
       var base = location.pathname.indexOf('/Im-Done/') === 0 ? '/Im-Done/' : '/';
-      location.replace(base + (m ? '?join=' + encodeURIComponent(m[1].toUpperCase()) : ''));
+      var q = j ? '?join=' + encodeURIComponent(j[1].toUpperCase()) : (p ? '?add=' + encodeURIComponent(p[1].toUpperCase()) : '');
+      location.replace(base + q);
     })();
   </script>
 </head>

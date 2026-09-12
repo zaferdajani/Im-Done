@@ -22,7 +22,7 @@ hold the mic → "call the pharmacy every day at 9" → task: Call the pharmacy 
 | Frequency (once / daily / weekdays / weekly on chosen days / every N days), time, period (start/end), note | `lib/models/task.dart`, `lib/ui/task_editor_sheet.dart` | done |
 | Nag-until-done local reminders with a "Done" action, exact-alarm fallback, iOS 64-notification budget | `lib/services/reminder_scheduler.dart`, `lib/models/task_logic.dart` + 9 unit tests | done |
 | Personal tasks stored on-device (no account) | `lib/services/local_store.dart` | done |
-| Shared tasks: Google / Apple sign-in, invite link shared to WhatsApp/Instagram/anything, join, claim done, creator confirm / reject, leave, push to members | `lib/services/cloud/*`, `functions/src/index.ts`, `firestore.rules` | code done, **needs a Firebase project** (see Setup) |
+| Shared tasks on the FREE Firebase plan: quick account (name only) or Google / Apple, personal code + QR to add people, invite links, claim done, creator confirm / reject, leave, account deletion — all enforced by security rules, no server | `lib/services/cloud/*`, `firestore.rules`, `tests/rules/` | done; project `im-done-17215` configured, rules tested on the emulator |
 | Settings: language, reminder permission, precise timing (Android), account, delete account, privacy/terms | `lib/ui/settings_screen.dart` | done |
 | Store compliance built in (purpose strings, privacy manifest, Sign in with Apple, account deletion, no login wall, SCHEDULE_EXACT_ALARM only) | `ios/Runner/*`, `android/app/src/main/AndroidManifest.xml` | done — remaining paperwork in `docs/STORE_COMPLIANCE.md` |
 | Web app (same code, built with `flutter build web`; hosted on Firebase Hosting from `firebase.json`) | `web/` | done — reminders are the phone app's job, the web app manages and confirms |
@@ -38,10 +38,10 @@ Research: `docs/MARKET_RESEARCH.md` (monetization, pricing, payouts to Jordan),
   notifications rebuilt from the task list on every change (`syncAll`), so "done" and "reminded"
   can never disagree.
 - **A shared task is one Firestore document** read by all its members; each member's phone
-  schedules its own reminders from it. The creator writes the document; members go through
-  small server functions (`claimDone`, `undoClaim`, `joinTask`, `leaveTask`) so nobody can
-  confirm their own work or add strangers. `onTaskWritten` pushes "new task / marked done /
-  confirmed / not done" to the right people in their language.
+  schedules its own reminders from it. The creator writes the document; a member's join,
+  claim, undo and leave are ordinary writes that `firestore.rules` accepts only in their exact
+  legal shape (one completion, naming the caller, never confirmed; appending only yourself with a
+  valid invite code; removing only yourself). No server, no paid plan; see `docs/FIREBASE_SETUP.md`.
 - **The app boots in personal-only mode** until `lib/firebase_options.dart` is replaced by the
   real configuration; choosing *Shared* then says so plainly instead of failing.
 

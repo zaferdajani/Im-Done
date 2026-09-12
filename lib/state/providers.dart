@@ -187,7 +187,14 @@ class TaskActions {
   Future<void> confirm(Task t, DateTime day) => _b.cloudTasks.confirm(t, day, ref.read(myUidProvider));
   Future<void> reject(Task t, DateTime day) => _b.cloudTasks.reject(t, day, callerUid: ref.read(myUidProvider));
 
-  Future<String> join(String code) => _b.cloudTasks.joinByCode(code, ref.read(myNameProvider));
+  Future<String> join(String code) => _b.cloudTasks.joinByCode(code, ref.read(myUidProvider), ref.read(myNameProvider));
+
+  Future<void> deleteAccount() => _b.auth.deleteAccount(_b.cloudTasks.eraseEverythingOf);
+
+  Future<void> addMemberByCode(Task t, String code) => _b.cloudTasks.addMemberByCode(t, code.trim().toUpperCase());
+
+  Future<User?> signInQuick(String name) => _b.auth.signInQuick(name);
+  Future<User?> linkGoogle() => _b.auth.linkGoogle();
 
   /// Marks a task done from a notification tap, whichever store holds it.
   Future<void> markDoneById(String taskId, String key) async {
@@ -199,6 +206,29 @@ class TaskActions {
 }
 
 final taskActionsProvider = Provider<TaskActions>((ref) => TaskActions(ref));
+
+/// Personal code arriving from a link or QR opened outside the app.
+final incomingPersonCodeProvider = StreamProvider<String>((ref) {
+  final b = ref.watch(bootstrapProvider);
+  final ctl = StreamController<String>();
+  b.deepLinks.initialPersonCode().then((c) {
+    if (c != null && !ctl.isClosed) ctl.add(c);
+  });
+  final sub = b.deepLinks.personCodes().listen(ctl.add);
+  ref.onDispose(() {
+    sub.cancel();
+    ctl.close();
+  });
+  return ctl.stream;
+});
+
+/// My personal code (allocated on first use once signed in).
+final myCodeProvider = FutureProvider<String?>((ref) async {
+  final b = ref.watch(bootstrapProvider);
+  final user = ref.watch(authUserProvider).value;
+  if (!b.cloudAvailable || user == null) return null;
+  return b.cloudTasks.ensureMyCode(user.uid, ref.read(myNameProvider));
+});
 
 // ---------------------------------------------------------------- permissions
 final notificationsEnabledProvider = FutureProvider<bool>((ref) => ref.watch(bootstrapProvider).scheduler.permissionGranted());

@@ -1,4 +1,5 @@
 import '../core/platform.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,6 +8,7 @@ import '../l10n/strings.dart';
 import '../services/cloud/cloud.dart';
 import '../state/providers.dart';
 import 'sign_in_sheet.dart';
+import 'widgets/my_code_card.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -84,6 +86,10 @@ class SettingsScreen extends ConsumerWidget {
               ],
             ]),
           ),
+          if (user != null) ...[
+            _Section(l.myCode),
+            const MyCodeCard(),
+          ],
           _Section(l.account),
           Card(
             child: Column(children: [
@@ -99,8 +105,24 @@ class SettingsScreen extends ConsumerWidget {
                 ListTile(
                   leading: CircleAvatar(child: Text((user.displayName ?? user.email ?? '?').characters.first.toUpperCase())),
                   title: Text(user.displayName ?? ''),
-                  subtitle: Text(user.email ?? ''),
+                  subtitle: Text(user.isAnonymous ? l.guestAccount : (user.email ?? '')),
                 ),
+                if (user.isAnonymous) ...[
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.g_mobiledata_rounded, size: 30),
+                    title: Text(l.linkGoogle),
+                    subtitle: Text(l.linkGoogleHint),
+                    onTap: () async {
+                      try {
+                        await ref.read(taskActionsProvider).linkGoogle();
+                        ref.invalidate(authUserProvider);
+                      } catch (e) {
+                        if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.error}: $e')));
+                      }
+                    },
+                  ),
+                ],
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.logout_rounded),
@@ -132,7 +154,15 @@ class SettingsScreen extends ConsumerWidget {
                     );
                     if (ok != true) return;
                     try {
-                      await b.auth.deleteAccount();
+                      try {
+                        await ref.read(taskActionsProvider).deleteAccount();
+                      } on FirebaseAuthException catch (e) {
+                        // Firebase wants a fresh sign-in before deleting an account.
+                        if (e.code != 'requires-recent-login' || !context.mounted) rethrow;
+                        final again = await showSignInSheet(context);
+                        if (again == null) return;
+                        await ref.read(taskActionsProvider).deleteAccount();
+                      }
                       if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.deleteAccountDone)));
                     } catch (e) {
                       if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.error}: $e')));

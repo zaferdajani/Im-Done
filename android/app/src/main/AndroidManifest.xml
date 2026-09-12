@@ -50,6 +50,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="imdone" android:host="join"/>
+                <data android:scheme="imdone" android:host="add"/>
             </intent-filter>
         </activity>
 

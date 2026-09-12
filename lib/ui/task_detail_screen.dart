@@ -10,6 +10,7 @@ import '../models/task_logic.dart';
 import '../services/cloud/cloud.dart';
 import '../state/providers.dart';
 import 'format.dart';
+import 'scan_code_screen.dart';
 import 'task_editor_sheet.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
@@ -181,6 +182,10 @@ class TaskDetailScreen extends ConsumerWidget {
                       title: Text(m.uid == uid ? '${m.name} (${l.you})' : m.name),
                       subtitle: m.uid == task.ownerUid ? Text(l.creator) : null,
                     ),
+                  if (isCreator) ...[
+                    const Divider(height: 1),
+                    _AddByCodeRow(task: task),
+                  ],
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.person_add_alt_1_rounded),
@@ -229,6 +234,76 @@ class TaskDetailScreen extends ConsumerWidget {
     if (uid == null) return '';
     if (uid == t.ownerUid) return t.ownerName.isEmpty ? l.creator : t.ownerName;
     return t.members.where((m) => m.uid == uid).firstOrNull?.name ?? '';
+  }
+}
+
+class _AddByCodeRow extends ConsumerStatefulWidget {
+  const _AddByCodeRow({required this.task});
+  final Task task;
+  @override
+  ConsumerState<_AddByCodeRow> createState() => _AddByCodeRowState();
+}
+
+class _AddByCodeRowState extends ConsumerState<_AddByCodeRow> {
+  final _ctl = TextEditingController();
+  bool _busy = false;
+
+  @override
+  void dispose() {
+    _ctl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _add(String code) async {
+    final l = ref.read(l10nProvider);
+    final clean = code.replaceAll('-', '').trim().toUpperCase();
+    if (clean.length != 8) return;
+    setState(() => _busy = true);
+    try {
+      await ref.read(taskActionsProvider).addMemberByCode(widget.task, clean);
+      if (!mounted) return;
+      _ctl.clear();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.personAdded)));
+    } catch (e) {
+      if (!mounted) return;
+      final msg = e.toString().contains('no such code') ? l.codeNotFound : '${l.error}: $e';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = L10n.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
+      child: Row(children: [
+        Expanded(
+          child: TextField(
+            controller: _ctl,
+            textCapitalization: TextCapitalization.characters,
+            decoration: InputDecoration(hintText: l.addByCodeHint, isDense: true, prefixIcon: const Icon(Icons.tag_rounded)),
+            onSubmitted: _add,
+          ),
+        ),
+        IconButton(
+          tooltip: l.scanCode,
+          onPressed: _busy
+              ? null
+              : () async {
+                  final code = await ScanCodeScreen.open(context);
+                  if (code != null) await _add(code);
+                },
+          icon: const Icon(Icons.qr_code_scanner_rounded),
+        ),
+        IconButton(
+          tooltip: l.addByCode,
+          onPressed: _busy ? null : () => _add(_ctl.text),
+          icon: _busy ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.person_add_rounded),
+        ),
+      ]),
+    );
   }
 }
 

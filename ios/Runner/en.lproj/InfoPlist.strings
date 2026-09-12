@@ -1,3 +1,4 @@
 "CFBundleDisplayName" = "I'm Done";
 "NSMicrophoneUsageDescription" = "I'm Done listens while you hold the button so your spoken words become a task. Audio is handled by the phone’s speech service and is never stored by I'm Done.";
 "NSSpeechRecognitionUsageDescription" = "I'm Done turns what you say into a task. Apple’s speech recognition may process the audio on Apple servers; I'm Done keeps only the resulting text.";
+"NSCameraUsageDescription" = "The camera is used only to scan another person’s QR code so you can add them to a task.";

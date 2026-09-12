@@ -2,7 +2,6 @@ import 'dart:convert';
 import '../../core/platform.dart';
 import 'dart:math';
 
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,6 +19,40 @@ class AuthService {
   User? get current => Cloud.available ? _auth.currentUser : null;
 
   bool _googleReady = false;
+
+  /// The fastest door: an account with no email or password. The person
+  /// types a name and is in. They can attach Google later (`linkGoogle`) to
+  /// keep the same account on another phone.
+  Future<User?> signInQuick(String displayName) async {
+    final result = await _auth.signInAnonymously();
+    final user = result.user;
+    if (user != null && displayName.trim().isNotEmpty) {
+      await user.updateDisplayName(displayName.trim());
+      await user.reload();
+    }
+    return _auth.currentUser;
+  }
+
+  bool get isAnonymous => _auth.currentUser?.isAnonymous ?? false;
+
+  /// Attach Google to a quick account so it survives a new phone.
+  Future<User?> linkGoogle() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+    if (isWeb) {
+      final r = await user.linkWithPopup(GoogleAuthProvider());
+      return r.user;
+    }
+    if (!_googleReady) {
+      await GoogleSignIn.instance.initialize(
+        serverClientId: Cloud.googleServerClientId.isEmpty ? null : Cloud.googleServerClientId,
+      );
+      _googleReady = true;
+    }
+    final account = await GoogleSignIn.instance.authenticate();
+    final r = await user.linkWithCredential(GoogleAuthProvider.credential(idToken: account.authentication.idToken));
+    return r.user;
+  }
 
   Future<User?> signInWithGoogle() async {
     if (isWeb) {
@@ -74,8 +107,13 @@ class AuthService {
   /// its data go, from inside the app. The server function removes the
   /// user's memberships, the shared tasks they own, their tokens, and the
   /// Auth user itself — so a stale client can never leave half a record.
-  Future<void> deleteAccount() async {
-    await FirebaseFunctions.instance.httpsCallable('deleteAccount').call<void>();
+  /// Throws [FirebaseAuthException] with code `requires-recent-login` when
+  /// the sign-in is too old; the caller re-authenticates and retries.
+  Future<void> deleteAccount(Future<void> Function(String uid) eraseData) async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+    await eraseData(user.uid);
+    await user.delete();
     try {
       await GoogleSignIn.instance.signOut();
     } catch (_) {}

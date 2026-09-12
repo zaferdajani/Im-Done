@@ -10,6 +10,7 @@ import 'l10n/strings.dart';
 import 'services/reminder_scheduler.dart';
 import 'state/providers.dart';
 import 'ui/home_screen.dart';
+import 'ui/add_person_screen.dart';
 import 'ui/invite_landing_screen.dart';
 import 'ui/task_detail_screen.dart';
 
@@ -96,6 +97,10 @@ class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserv
     ref.listen(incomingInviteProvider, (_, next) {
       final code = next.value;
       if (code != null) _onInvite(code);
+    });
+    ref.listen(incomingPersonCodeProvider, (_, next) {
+      final code = next.value;
+      if (code != null) _nav.currentState?.push(MaterialPageRoute(builder: (_) => AddPersonScreen(code: code)));
     });
     ref.listen(authUserProvider, (_, next) {
       final user = next.value;

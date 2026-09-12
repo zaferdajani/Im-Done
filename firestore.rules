@@ -2,39 +2,110 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function signedIn() { return request.auth != null; }
-    function isMember(t) { return signedIn() && request.auth.uid in t.data.memberUids; }
-    function isOwner(t) { return signedIn() && request.auth.uid == t.data.ownerUid; }
+    // ---------------------------------------------------------------
+    // No server functions (free plan): every rule of the product is
+    // enforced HERE. Read these as the product's law.
+    // ---------------------------------------------------------------
 
-    // Shared tasks.
-    //  * members READ the document (their phone schedules the reminders from it)
-    //  * only the CREATOR writes it directly (edit, archive, confirm, reject)
-    //  * a member's claim / undo / join / leave goes through Cloud Functions,
-    //    which validate exactly what changes — nobody can confirm their own work
-    //    or pull a stranger into a task from the client.
+    function signedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function isMember(t) { return signedIn() && uid() in t.data.memberUids; }
+    function isOwner(t) { return signedIn() && uid() == t.data.ownerUid; }
+    function changedKeys() { return request.resource.data.diff(resource.data).affectedKeys(); }
+    function oldCompletions() { return resource.data.get('completions', {}); }
+    function newCompletions() { return request.resource.data.get('completions', {}); }
+    function completionKeysChanged() { return newCompletions().diff(oldCompletions()).affectedKeys(); }
+
+    // A member joining through an invite code: the code names this task,
+    // and the ONLY change is this person appended to the member lists.
+    function isJoin(taskId) {
+      return signedIn()
+        && !(uid() in resource.data.memberUids)
+        && changedKeys().hasOnly(['memberUids', 'members', 'updatedAt', 'joinCode'])
+        && request.resource.data.joinCode is string
+        && get(/databases/$(database)/documents/invites/$(request.resource.data.joinCode)).data.taskId == taskId
+        && request.resource.data.memberUids == resource.data.memberUids.concat([uid()])
+        && request.resource.data.members.size() == resource.data.members.size() + 1
+        && request.resource.data.members[resource.data.members.size()].uid == uid()
+        && request.resource.data.memberUids.size() <= 50;
+    }
+
+    // A member leaving: only themselves removed, nothing else touched.
+    function isLeave() {
+      return isMember(resource) && !isOwner(resource)
+        && changedKeys().hasOnly(['memberUids', 'members', 'updatedAt'])
+        && !(uid() in request.resource.data.memberUids)
+        && request.resource.data.memberUids.size() == resource.data.memberUids.size() - 1
+        && resource.data.memberUids.hasAll(request.resource.data.memberUids)
+        && request.resource.data.members.size() == resource.data.members.size() - 1;
+    }
+
+    // A member reporting ONE occurrence done: exactly one completion key
+    // changes, it names the caller, and it is NOT confirmed (only the
+    // creator confirms; the creator's own claim is handled by isOwner).
+    function isClaim() {
+      return isMember(resource) && !isOwner(resource)
+        && changedKeys().hasOnly(['completions', 'updatedAt', 'lastClaimKey'])
+        && request.resource.data.lastClaimKey is string
+        && completionKeysChanged() == [request.resource.data.lastClaimKey].toSet()
+        && request.resource.data.lastClaimKey in newCompletions()
+        && newCompletions()[request.resource.data.lastClaimKey].byUid == uid()
+        && !('confirmedAt' in newCompletions()[request.resource.data.lastClaimKey])
+        && !('confirmedByUid' in newCompletions()[request.resource.data.lastClaimKey])
+        && !(request.resource.data.lastClaimKey in oldCompletions()
+             && 'confirmedAt' in oldCompletions()[request.resource.data.lastClaimKey]);
+    }
+
+    // A member withdrawing their OWN unconfirmed claim.
+    function isUndo() {
+      return isMember(resource) && !isOwner(resource)
+        && changedKeys().hasOnly(['completions', 'updatedAt', 'lastClaimKey'])
+        && request.resource.data.lastClaimKey is string
+        && completionKeysChanged() == [request.resource.data.lastClaimKey].toSet()
+        && !(request.resource.data.lastClaimKey in newCompletions())
+        && request.resource.data.lastClaimKey in oldCompletions()
+        && oldCompletions()[request.resource.data.lastClaimKey].byUid == uid()
+        && !('confirmedAt' in oldCompletions()[request.resource.data.lastClaimKey]);
+    }
+
     match /tasks/{taskId} {
       allow read: if isMember(resource);
       allow create: if signedIn()
-        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerUid == uid()
         && request.resource.data.kind == 'shared'
-        && request.resource.data.memberUids == [request.auth.uid];
-      allow update: if isOwner(resource)
-        && request.resource.data.ownerUid == resource.data.ownerUid
-        && request.resource.data.kind == 'shared';
-      allow delete: if false; // archived, never deleted, so history survives
+        && request.resource.data.memberUids == [uid()]
+        && request.resource.data.members.size() == 1
+        && request.resource.data.members[0].uid == uid();
+      // The creator may change anything except who owns it and what it is.
+      allow update: if (isOwner(resource)
+          && request.resource.data.ownerUid == resource.data.ownerUid
+          && request.resource.data.kind == 'shared')
+        || isJoin(taskId) || isLeave() || isClaim() || isUndo();
+      allow delete: if false; // archived, never deleted
     }
 
-    // Invite codes: written by the creator at task creation, read only by the
-    // server. A code alone must not reveal the task.
+    // Invite codes: the code IS the secret (8 characters from a 32-symbol
+    // alphabet). A signed-in person holding it may read which task it opens.
     match /invites/{code} {
-      allow read: if false;
-      allow create: if signedIn() && request.resource.data.createdBy == request.auth.uid;
-      allow update, delete: if false;
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.createdBy == uid();
+      allow delete: if signedIn() && resource.data.createdBy == uid();
+      allow update: if false;
     }
 
-    // Each user owns their own profile + device tokens.
-    match /users/{uid} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
+    // Personal codes: the code IS what you hand out. A signed-in person may
+    // resolve one to add its owner to a task; only the owner creates/deletes.
+    match /codes/{code} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uid == uid()
+        && request.resource.data.name is string && request.resource.data.name.size() <= 80;
+      allow delete: if signedIn() && resource.data.uid == uid();
+      allow update: if false;
+    }
+
+    // Each user owns their own profile.
+    match /users/{userId} {
+      allow read, write: if signedIn() && uid() == userId;
     }
   }
 }

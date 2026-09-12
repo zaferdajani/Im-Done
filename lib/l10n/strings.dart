@@ -130,6 +130,25 @@ class L10n {
     required this.inviteNoAppHint,
     required this.notNow,
     required this.speechUnavailableWeb,
+    required this.quickStartTitle,
+    required this.quickStartHint,
+    required this.yourName,
+    required this.startNow,
+    required this.keepAccountHint,
+    required this.myCode,
+    required this.myCodeHint,
+    required this.addByCode,
+    required this.addByCodeHint,
+    required this.personAdded,
+    required this.codeNotFound,
+    required this.linkGoogle,
+    required this.linkGoogleHint,
+    required this.guestAccount,
+    required this.scanCode,
+    required this.scanHint,
+    required this.addToWhichTask,
+    required this.noSharedTasksYet,
+    required this.shareMyCodeMessage,
   });
 
   final String appName;
@@ -258,6 +277,25 @@ class L10n {
   final String inviteNoAppHint;
   final String notNow;
   final String speechUnavailableWeb;
+  final String quickStartTitle;
+  final String quickStartHint;
+  final String yourName;
+  final String startNow;
+  final String keepAccountHint;
+  final String myCode;
+  final String myCodeHint;
+  final String addByCode;
+  final String addByCodeHint;
+  final String personAdded;
+  final String codeNotFound;
+  final String linkGoogle;
+  final String linkGoogleHint;
+  final String guestAccount;
+  final String scanCode;
+  final String scanHint;
+  final String addToWhichTask;
+  final String noSharedTasksYet;
+  final String shareMyCodeMessage;
 
   static L10n of(BuildContext context) =>
       Localizations.localeOf(context).languageCode == 'ar' ? ar : en;
@@ -391,6 +429,25 @@ class L10n {
     inviteNoAppHint: 'No app yet? You can join here in the browser and install the app later; your account carries over.',
     notNow: 'Not now',
     speechUnavailableWeb: 'This browser has no speech recognition (Firefox does not support it). Use Chrome, Edge or Safari for voice, or type the task.',
+    quickStartTitle: 'Start in two seconds',
+    quickStartHint: 'No email, no password. Type your name and you are in; you get a personal code people can use to add you to a task.',
+    yourName: 'Your name',
+    startNow: 'Start now',
+    keepAccountHint: 'Or sign in with Google or Apple to keep the same account on another phone.',
+    myCode: 'My code',
+    myCodeHint: 'Give this code to anyone who wants to add you to a task.',
+    addByCode: 'Add by code',
+    addByCodeHint: 'Type the personal code of the person to add.',
+    personAdded: 'Added to the task',
+    codeNotFound: 'No account has that code.',
+    linkGoogle: 'Keep this account with Google',
+    linkGoogleHint: 'Attach Google so your tasks follow you to a new phone.',
+    guestAccount: 'Quick account (this device)',
+    scanCode: 'Scan a code',
+    scanHint: 'Point the camera at the other person\'s QR code.',
+    addToWhichTask: 'Add to which task?',
+    noSharedTasksYet: 'You have no shared tasks yet. Create a task, choose Shared, then add people.',
+    shareMyCodeMessage: 'Add me on I\'m Done with my code {code}:',
   );
 
   static const ar = L10n(
@@ -520,6 +577,25 @@ class L10n {
     inviteNoAppHint: 'لا تملك التطبيق بعد؟ يمكنك الانضمام هنا من المتصفح وتثبيت التطبيق لاحقًا؛ حسابك ينتقل معك.',
     notNow: 'ليس الآن',
     speechUnavailableWeb: 'هذا المتصفح لا يدعم التعرف على الكلام (فايرفوكس لا يدعمه). استخدم Chrome أو Edge أو Safari للصوت، أو اكتب المهمة.',
+    quickStartTitle: 'ابدأ خلال ثانيتين',
+    quickStartHint: 'بلا بريد ولا كلمة مرور. اكتب اسمك وتدخل مباشرة، وتحصل على رمز شخصي يستخدمه الآخرون لإضافتك إلى مهمة.',
+    yourName: 'اسمك',
+    startNow: 'ابدأ الآن',
+    keepAccountHint: 'أو سجّل الدخول عبر Google أو Apple للاحتفاظ بالحساب نفسه على هاتف آخر.',
+    myCode: 'رمزي',
+    myCodeHint: 'أعطِ هذا الرمز لأي شخص يريد إضافتك إلى مهمة.',
+    addByCode: 'إضافة بالرمز',
+    addByCodeHint: 'اكتب الرمز الشخصي للشخص الذي تريد إضافته.',
+    personAdded: 'تمت الإضافة إلى المهمة',
+    codeNotFound: 'لا يوجد حساب بهذا الرمز.',
+    linkGoogle: 'احتفظ بهذا الحساب عبر Google',
+    linkGoogleHint: 'اربط Google لتنتقل مهامك معك إلى هاتف جديد.',
+    guestAccount: 'حساب سريع (هذا الجهاز)',
+    scanCode: 'مسح رمز',
+    scanHint: 'وجّه الكاميرا نحو رمز QR الخاص بالشخص الآخر.',
+    addToWhichTask: 'إلى أي مهمة تريد الإضافة؟',
+    noSharedTasksYet: 'ليس لديك مهام مشتركة بعد. أنشئ مهمة واختر «مشتركة» ثم أضف الأشخاص.',
+    shareMyCodeMessage: 'أضفني على خلّصت برمزي {code}:',
   );
 }
 

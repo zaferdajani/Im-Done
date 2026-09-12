@@ -22,6 +22,9 @@ class Cloud {
     defaultValue: 'https://zaferdajani.github.io/Im-Done/j',
   );
 
+  /// Personal-code links (QR + share): /p/CODE opens "add this person".
+  static const String personBaseUrl = 'https://zaferdajani.github.io/Im-Done/p';
+
   static const String privacyPolicyUrl = 'https://imdone.me/privacy';
   static const String termsUrl = 'https://imdone.me/terms';
   static const String deleteAccountWebUrl = 'https://imdone.me/delete-account';

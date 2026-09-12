@@ -1,15 +1,13 @@
-name: Deploy Firebase (functions, rules, web config)
+name: Deploy Firebase rules
 
-# One-time and on-demand: needs the repository secrets FIREBASE_PROJECT_ID and
-# FIREBASE_SERVICE_ACCOUNT (the JSON key of a service account with the Editor
-# role, from Firebase console → Project settings → Service accounts).
-# Generates lib/firebase_options.dart with flutterfire, deploys the Cloud
-# Functions and Firestore rules, and commits the generated config back.
+# On demand: deploys firestore.rules — the whole backend on the free plan —
+# from the repository secrets FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT
+# (Firebase console → Project settings → Service accounts → Generate key).
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   deploy:
@@ -19,33 +17,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
       - name: Write service-account credentials
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/sa.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/sa.json" >> "$GITHUB_ENV"
       - run: npm install -g firebase-tools
-      - run: dart pub global activate flutterfire_cli
-      - name: Generate lib/firebase_options.dart
-        run: |
-          export PATH="$PATH:$HOME/.pub-cache/bin"
-          flutterfire configure --project="${{ secrets.FIREBASE_PROJECT_ID }}" \
-            --platforms=android,ios,web --android-package-name=me.imdone.app \
-            --ios-bundle-id=me.imdone.app --web-app-id="" --yes
-          # The generated file has the real options; tell the app it is configured.
-          grep -q "isConfigured" lib/firebase_options.dart || \
-            sed -i 's/class DefaultFirebaseOptions {/class DefaultFirebaseOptions {\n  static bool get isConfigured => true;/' lib/firebase_options.dart
-      - name: Deploy functions and rules
-        run: |
-          (cd functions && npm ci && npm run build)
-          firebase deploy --only functions,firestore:rules --project "${{ secrets.FIREBASE_PROJECT_ID }}" --non-interactive
-      - name: Commit generated config
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add lib/firebase_options.dart android/app/google-services.json ios/Runner/GoogleService-Info.plist 2>/dev/null || true
-          git diff --cached --quiet || git commit -m "Firebase: generated app configuration"
-          git push
+      - run: firebase deploy --only firestore:rules --project "${{ secrets.FIREBASE_PROJECT_ID }}" --non-interactive
