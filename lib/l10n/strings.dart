@@ -149,6 +149,14 @@ class L10n {
     required this.addToWhichTask,
     required this.noSharedTasksYet,
     required this.shareMyCodeMessage,
+    required this.useEmail,
+    required this.emailLabel,
+    required this.passwordLabel,
+    required this.emailContinue,
+    required this.forgotPassword,
+    required this.resetSent,
+    required this.emailHint,
+    required this.linkEmail,
   });
 
   final String appName;
@@ -296,6 +304,14 @@ class L10n {
   final String addToWhichTask;
   final String noSharedTasksYet;
   final String shareMyCodeMessage;
+  final String useEmail;
+  final String emailLabel;
+  final String passwordLabel;
+  final String emailContinue;
+  final String forgotPassword;
+  final String resetSent;
+  final String emailHint;
+  final String linkEmail;
 
   static L10n of(BuildContext context) =>
       Localizations.localeOf(context).languageCode == 'ar' ? ar : en;
@@ -448,6 +464,14 @@ class L10n {
     addToWhichTask: 'Add to which task?',
     noSharedTasksYet: 'You have no shared tasks yet. Create a task, choose Shared, then add people.',
     shareMyCodeMessage: 'Add me on I\'m Done with my code {code}:',
+    useEmail: 'Use email instead',
+    emailLabel: 'Email',
+    passwordLabel: 'Password (6+ characters)',
+    emailContinue: 'Continue with email',
+    forgotPassword: 'Forgot password?',
+    resetSent: 'A reset link was sent to your email.',
+    emailHint: 'New address? An account is created for it. Known address? You are signed in.',
+    linkEmail: 'Keep this account with email',
   );
 
   static const ar = L10n(
@@ -596,6 +620,14 @@ class L10n {
     addToWhichTask: 'إلى أي مهمة تريد الإضافة؟',
     noSharedTasksYet: 'ليس لديك مهام مشتركة بعد. أنشئ مهمة واختر «مشتركة» ثم أضف الأشخاص.',
     shareMyCodeMessage: 'أضفني على خلّصت برمزي {code}:',
+    useEmail: 'استخدم البريد الإلكتروني بدلًا من ذلك',
+    emailLabel: 'البريد الإلكتروني',
+    passwordLabel: 'كلمة المرور (6 أحرف أو أكثر)',
+    emailContinue: 'المتابعة بالبريد الإلكتروني',
+    forgotPassword: 'نسيت كلمة المرور؟',
+    resetSent: 'أُرسل رابط إعادة التعيين إلى بريدك.',
+    emailHint: 'عنوان جديد؟ يُنشأ حساب له. عنوان معروف؟ يتم تسجيل دخولك.',
+    linkEmail: 'احتفظ بهذا الحساب بالبريد الإلكتروني',
   );
 }
 

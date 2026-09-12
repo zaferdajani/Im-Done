@@ -212,6 +212,8 @@ class TaskActions {
   }
 
   Future<User?> signInQuick(String name) => _b.auth.signInQuick(name);
+  Future<User?> signInWithEmail(String email, String password, {String? name}) => _b.auth.signInWithEmail(email, password, displayName: name);
+  Future<void> sendPasswordReset(String email) => _b.auth.sendPasswordReset(email);
   Future<User?> linkGoogle() => _b.auth.linkGoogle();
 
   /// Marks a task done from a notification tap, whichever store holds it.

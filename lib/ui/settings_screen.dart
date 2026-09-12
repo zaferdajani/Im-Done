@@ -110,6 +110,17 @@ class SettingsScreen extends ConsumerWidget {
                 if (user.isAnonymous) ...[
                   const Divider(height: 1),
                   ListTile(
+                    leading: const Icon(Icons.mail_outline_rounded),
+                    title: Text(l.linkEmail),
+                    subtitle: Text(l.linkGoogleHint),
+                    onTap: () async {
+                      // The sheet links email to the quick account (see AuthService).
+                      await showSignInSheet(context);
+                      ref.invalidate(authUserProvider);
+                    },
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
                     leading: const Icon(Icons.g_mobiledata_rounded, size: 30),
                     title: Text(l.linkGoogle),
                     subtitle: Text(l.linkGoogleHint),

@@ -25,11 +25,16 @@ class _SignInSheet extends ConsumerStatefulWidget {
 
 class _SignInSheetState extends ConsumerState<_SignInSheet> {
   late final TextEditingController _name = TextEditingController(text: ref.read(settingsProvider).displayName);
+  late final TextEditingController _email = TextEditingController();
+  late final TextEditingController _password = TextEditingController();
   bool _busy = false;
+  bool _emailMode = false;
   String? _error;
 
   @override
   void dispose() {
+    _email.dispose();
+    _password.dispose();
     _name.dispose();
     super.dispose();
   }
@@ -105,6 +110,52 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                 icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
                 label: Text(l.signInGoogle),
               ),
+              const SizedBox(height: 10),
+              if (!_emailMode)
+                TextButton.icon(
+                  onPressed: _busy ? null : () => setState(() => _emailMode = true),
+                  icon: const Icon(Icons.mail_outline_rounded),
+                  label: Text(l.useEmail),
+                )
+              else ...[
+                TextField(
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  decoration: InputDecoration(hintText: l.emailLabel, prefixIcon: const Icon(Icons.mail_outline_rounded)),
+                  onChanged: (_) => setState(() {}),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _password,
+                  obscureText: true,
+                  decoration: InputDecoration(hintText: l.passwordLabel, prefixIcon: const Icon(Icons.lock_outline_rounded)),
+                  onChanged: (_) => setState(() {}),
+                ),
+                const SizedBox(height: 6),
+                Text(l.emailHint, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12)),
+                const SizedBox(height: 8),
+                FilledButton.tonalIcon(
+                  onPressed: _busy || !_email.text.contains('@') || _password.text.length < 6
+                      ? null
+                      : () => _run(() => b.auth.signInWithEmail(_email.text, _password.text, displayName: _name.text)),
+                  icon: const Icon(Icons.mail_rounded),
+                  label: Text(l.emailContinue),
+                ),
+                TextButton(
+                  onPressed: _busy || !_email.text.contains('@')
+                      ? null
+                      : () async {
+                          try {
+                            await b.auth.sendPasswordReset(_email.text);
+                            if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.resetSent)));
+                          } catch (e) {
+                            if (mounted) setState(() => _error = e.toString());
+                          }
+                        },
+                  child: Text(l.forgotPassword),
+                ),
+              ],
             ],
             if (_busy) const Padding(padding: EdgeInsets.only(top: 16), child: LinearProgressIndicator()),
             if (_error != null)

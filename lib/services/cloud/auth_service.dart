@@ -35,6 +35,36 @@ class AuthService {
 
   bool get isAnonymous => _auth.currentUser?.isAnonymous ?? false;
 
+  /// Email + password. Signs in if the address is known, otherwise creates
+  /// the account. A quick (anonymous) account is LINKED instead, so its
+  /// tasks and code are kept.
+  Future<User?> signInWithEmail(String email, String password, {String? displayName}) async {
+    final e = email.trim();
+    final current = _auth.currentUser;
+    if (current != null && current.isAnonymous) {
+      final r = await current.linkWithCredential(EmailAuthProvider.credential(email: e, password: password));
+      return r.user;
+    }
+    try {
+      final r = await _auth.signInWithEmailAndPassword(email: e, password: password);
+      return r.user;
+    } on FirebaseAuthException catch (ex) {
+      if (ex.code != 'user-not-found' && ex.code != 'invalid-credential') rethrow;
+      // Unknown address (invalid-credential is what newer SDKs return for it
+      // too): create the account. A wrong password on a known address fails
+      // here with email-already-in-use, which is the honest answer.
+      final r = await _auth.createUserWithEmailAndPassword(email: e, password: password);
+      final user = r.user;
+      if (user != null && displayName != null && displayName.trim().isNotEmpty) {
+        await user.updateDisplayName(displayName.trim());
+        await user.reload();
+      }
+      return _auth.currentUser;
+    }
+  }
+
+  Future<void> sendPasswordReset(String email) => _auth.sendPasswordResetEmail(email: email.trim());
+
   /// Attach Google to a quick account so it survives a new phone.
   Future<User?> linkGoogle() async {
     final user = _auth.currentUser;
