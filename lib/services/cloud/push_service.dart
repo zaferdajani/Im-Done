@@ -31,7 +31,7 @@ class PushService {
       'displayName': displayName,
       'languageCode': languageCode,
       'platform': isWeb ? 'web' : (isIOS ? 'ios' : 'android'),
-      if (token != null) 'tokens': FieldValue.arrayUnion([token]),
+      ?'tokens': token == null ? null : FieldValue.arrayUnion([token]),
       'updatedAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
   }

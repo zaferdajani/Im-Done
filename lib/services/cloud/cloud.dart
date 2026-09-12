@@ -29,7 +29,7 @@ class Cloud {
   /// everything else still works. Set at build time or after deploy.
   static const String pushEndpoint = String.fromEnvironment(
     'PUSH_ENDPOINT',
-    defaultValue: 'https://imdone-push.zaferdajani.workers.dev',
+    defaultValue: 'https://imdone-push.imdone-push.workers.dev',
   );
 
   static const String privacyPolicyUrl = 'https://imdone.me/privacy';
