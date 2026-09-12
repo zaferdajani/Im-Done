@@ -20,8 +20,12 @@ export default {
       const auth = request.headers.get('Authorization') ?? '';
       const idToken = auth.startsWith('Bearer ') ? auth.slice(7) : null;
       if (!idToken) return json({ error: 'unauthenticated' }, 401, cors);
-      const claims = await verifyFirebaseIdToken(idToken, env.FIREBASE_PROJECT_ID);
-      const senderUid = claims.sub;
+      let senderUid;
+      try {
+        senderUid = (await verifyFirebaseIdToken(idToken, env.FIREBASE_PROJECT_ID)).sub;
+      } catch {
+        return json({ error: 'unauthenticated' }, 401, cors);
+      }
 
       const body = await request.json().catch(() => ({}));
       const kind = String(body.kind ?? '');
