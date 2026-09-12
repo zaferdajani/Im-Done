@@ -148,7 +148,7 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                       : () async {
                           try {
                             await b.auth.sendPasswordReset(_email.text);
-                            if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.resetSent)));
+                            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.resetSent)));
                           } catch (e) {
                             if (mounted) setState(() => _error = e.toString());
                           }
