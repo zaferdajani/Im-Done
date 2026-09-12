@@ -136,7 +136,7 @@ class TaskDetailScreen extends ConsumerWidget {
                     OutlinedButton(onPressed: () => actions.undo(task, today), child: Text(l.undo)),
                   ] else if (awaiting) ...[
                     Row(children: [
-                      const Icon(Icons.hourglass_top_rounded, color: DonebyTheme.accent),
+                      const Icon(Icons.hourglass_top_rounded, color: ImDoneTheme.accent),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -212,7 +212,7 @@ class TaskDetailScreen extends ConsumerWidget {
                     ListTile(
                       dense: true,
                       leading: Icon(e.value.confirmed ? Icons.check_circle_rounded : Icons.hourglass_top_rounded,
-                          color: e.value.confirmed ? scheme.primary : DonebyTheme.accent),
+                          color: e.value.confirmed ? scheme.primary : ImDoneTheme.accent),
                       title: Text(e.key),
                       subtitle: task.isShared ? Text(e.value.byName) : null,
                     ),

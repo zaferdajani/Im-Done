@@ -1,4 +1,4 @@
-# Doneby
+# I'm Done
 
 **Say it. Get nagged. Get it done.** A Flutter app (iOS + Android, English + Arabic) that turns
 a spoken sentence into a task, reminds you at the time you set and keeps reminding you until you
@@ -26,7 +26,7 @@ hold the mic → "call the pharmacy every day at 9" → task: Call the pharmacy 
 | Settings: language, reminder permission, precise timing (Android), account, delete account, privacy/terms | `lib/ui/settings_screen.dart` | done |
 | Store compliance built in (purpose strings, privacy manifest, Sign in with Apple, account deletion, no login wall, SCHEDULE_EXACT_ALARM only) | `ios/Runner/*`, `android/app/src/main/AndroidManifest.xml` | done — remaining paperwork in `docs/STORE_COMPLIANCE.md` |
 | Web app (same code, built with `flutter build web`; hosted on Firebase Hosting from `firebase.json`) | `web/` | done — reminders are the phone app's job, the web app manages and confirms |
-| CI: analyze + tests + debug APK + iOS simulator compile + web bundle | `.github/workflows/doneby-app.yml` | done |
+| CI: analyze + tests + debug APK + iOS simulator compile + web bundle | `.github/workflows/app.yml` | done |
 
 Research: `docs/MARKET_RESEARCH.md` (monetization, pricing, payouts to Jordan),
 `docs/COMPETITORS.md` (free alternatives, the gap, open-source to build on),
@@ -57,8 +57,8 @@ Research: `docs/MARKET_RESEARCH.md` (monetization, pricing, payouts to Jordan),
    client id URL scheme in `Info.plist` (flutterfire prints it).
 4. Invite links: point `INVITE_BASE_URL` (`--dart-define`) at a domain that serves the AASA and
    assetlinks files (checklist in `docs/STORE_COMPLIANCE.md` §B).
-5. Builds: GitHub Actions → "Doneby app (Flutter)" → run → download `doneby-android-debug` or `doneby-web`.
-6. Web hosting: `flutter build web --release && firebase deploy --only hosting` publishes to the Firebase project's `*.web.app` address (free tier). Point `doneby.me` at it so the same domain serves the invite links, the privacy page and the app.
+5. Builds: GitHub Actions → "I'm Done app (Flutter)" → run → download `imdone-android-debug` or `imdone-web`.
+6. Web hosting: `flutter build web --release && firebase deploy --only hosting` publishes to the Firebase project's `*.web.app` address (free tier). Point `imdone.me` at it so the same domain serves the invite links, the privacy page and the app.
 
 ## Layout
 

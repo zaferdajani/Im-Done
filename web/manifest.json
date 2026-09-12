@@ -1,6 +1,6 @@
 {
-    "name": "doneby",
-    "short_name": "doneby",
+    "name": "I'm Done",
+    "short_name": "I'm Done",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -21,13 +21,13 @@ class ReminderTaps {
   void add(ReminderPayload p, {required bool markDone}) => controller.add((p, markDone));
 }
 
-class DonebyApp extends ConsumerStatefulWidget {
-  const DonebyApp({super.key});
+class ImDoneApp extends ConsumerStatefulWidget {
+  const ImDoneApp({super.key});
   @override
-  ConsumerState<DonebyApp> createState() => _DonebyAppState();
+  ConsumerState<ImDoneApp> createState() => _ImDoneAppState();
 }
 
-class _DonebyAppState extends ConsumerState<DonebyApp> with WidgetsBindingObserver {
+class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserver {
   final _nav = GlobalKey<NavigatorState>();
   Timer? _syncDebounce;
   StreamSubscription? _tapSub;
@@ -137,10 +137,10 @@ class _DonebyAppState extends ConsumerState<DonebyApp> with WidgetsBindingObserv
     final code = ref.watch(languageCodeProvider);
     return MaterialApp(
       navigatorKey: _nav,
-      title: 'Doneby',
+      title: "I'm Done",
       debugShowCheckedModeBanner: false,
-      theme: DonebyTheme.light(),
-      darkTheme: DonebyTheme.dark(),
+      theme: ImDoneTheme.light(),
+      darkTheme: ImDoneTheme.dark(),
       locale: Locale(code),
       supportedLocales: const [Locale('en'), Locale('ar')],
       localizationsDelegates: const [

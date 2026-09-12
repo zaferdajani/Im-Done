@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Doneby</string>
+	<string>I'm Done</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>doneby</string>
+	<string>imdone</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,9 +25,9 @@
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Doneby listens while you hold the button so your spoken words become a task. Audio is handled by the phone’s speech service and is never stored by Doneby.</string>
+	<string>I'm Done listens while you hold the button so your spoken words become a task. Audio is handled by the phone’s speech service and is never stored by I'm Done.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Doneby turns what you say into a task. Apple’s speech recognition may process the audio on Apple servers; Doneby keeps only the resulting text.</string>
+	<string>I'm Done turns what you say into a task. Apple’s speech recognition may process the audio on Apple servers; I'm Done keeps only the resulting text.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleLocalizations</key>
@@ -41,10 +41,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>me.doneby.app</string>
+			<string>me.imdone.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>doneby</string>
+				<string>imdone</string>
 			</array>
 		</dict>
 	</array>

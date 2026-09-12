@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="Doneby"
+        android:label="I'm Done"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -36,20 +36,20 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Invite links: https://doneby.me/j/CODE (verified App Link; needs
+            <!-- Invite links: https://imdone.me/j/CODE (verified App Link; needs
                  /.well-known/assetlinks.json on that host, see docs/STORE_COMPLIANCE.md) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="doneby.me" android:pathPrefix="/j/"/>
+                <data android:scheme="https" android:host="imdone.me" android:pathPrefix="/j/"/>
             </intent-filter>
-            <!-- Custom scheme fallback: doneby://join/CODE -->
+            <!-- Custom scheme fallback: imdone://join/CODE -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="doneby" android:host="join"/>
+                <data android:scheme="imdone" android:host="join"/>
             </intent-filter>
         </activity>
 

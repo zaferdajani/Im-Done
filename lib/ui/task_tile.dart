@@ -86,7 +86,7 @@ class TaskTile extends ConsumerWidget {
                         padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           '${l.claimedBy} ${completionOn(task, day)?.byName ?? ''} · ${l.awaitingConfirmation}',
-                          style: TextStyle(color: DonebyTheme.accent, fontSize: 13, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: ImDoneTheme.accent, fontSize: 13, fontWeight: FontWeight.w600),
                         ),
                       ),
                   ],
@@ -110,7 +110,7 @@ class _CheckButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final color = done ? scheme.primary : (awaiting ? DonebyTheme.accent : scheme.outline);
+    final color = done ? scheme.primary : (awaiting ? ImDoneTheme.accent : scheme.outline);
     return InkResponse(
       onTap: onTap,
       radius: 26,
@@ -125,7 +125,7 @@ class _CheckButton extends StatelessWidget {
         ),
         child: Icon(
           done ? Icons.check_rounded : (awaiting ? Icons.hourglass_top_rounded : null),
-          color: done ? scheme.onPrimary : DonebyTheme.accent,
+          color: done ? scheme.onPrimary : ImDoneTheme.accent,
           size: 22,
         ),
       ),

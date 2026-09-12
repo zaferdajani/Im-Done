@@ -1,6 +1,6 @@
-name: Doneby app (Flutter)
+name: I'm Done app (Flutter)
 
-# Tests + analysis on every change under apps/doneby, and a debug APK you can
+# Tests + analysis on every change, and a debug APK you can
 # install straight onto an Android phone (Actions → this workflow → Artifacts).
 # iOS: an unsigned simulator compile check on macOS, same idea as ios-build.yml.
 on:
@@ -15,7 +15,7 @@ on:
       - '**'
 
 concurrency:
-  group: doneby-${{ github.ref }}
+  group: imdone-${{ github.ref }}
   cancel-in-progress: true
 
 
@@ -49,7 +49,7 @@ jobs:
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
         with:
-          name: doneby-android-debug
+          name: imdone-android-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 14
 
@@ -81,6 +81,6 @@ jobs:
       - run: flutter build web --release
       - uses: actions/upload-artifact@v4
         with:
-          name: doneby-web
+          name: imdone-web
           path: build/web
           retention-days: 14

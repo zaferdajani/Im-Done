@@ -1,5 +1,5 @@
 /**
- * Doneby backend — three small pieces, all about SHARED tasks.
+ * I'm Done backend — three small pieces, all about SHARED tasks.
  *
  *  joinTask(code)      callable  — adds the caller to the task behind an invite code.
  *  deleteAccount()     callable  — App Store 5.1.1(v) / Play policy: erases the user.

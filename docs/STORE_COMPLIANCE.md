@@ -1,4 +1,4 @@
-# Doneby — Store Compliance Checklist (App Store + Google Play)
+# I'm Done — Store Compliance Checklist (App Store + Google Play)
 
 *Compiled 2026-09-12 against the current guidelines. Each row says how THIS codebase satisfies
 it, or what is still owed before submission. "verify" = confirm at submission time.*
@@ -10,7 +10,7 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
 
 ## A. Built into the code (done)
 
-| Requirement | How Doneby satisfies it | Source |
+| Requirement | How I'm Done satisfies it | Source |
 |---|---|---|
 | No login wall (Apple 5.1.1, Play User Data) | Personal tasks, voice capture and reminders work with no account. Sign-in is asked only when a task is switched to *Shared* or an invite link is opened. `lib/ui/task_editor_sheet.dart`, `lib/app.dart` | [Apple guidelines](https://developer.apple.com/app-store/review/guidelines/) |
 | Sign in with Apple when other third-party login is offered (Apple 4.8) | Google + Apple, both wired in `lib/services/cloud/auth_service.dart`; Apple button shown on iOS; entitlement in `ios/Runner/Runner.entitlements` | same |
@@ -28,8 +28,8 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
 | Third-party SDK manifests/signatures | Firebase, Google Sign-In and Flutter plugins at current versions ship their own manifests; run `find ios/Pods -name PrivacyInfo.xcprivacy` after `pod install` to confirm (verify) | [Apple](https://developer.apple.com/support/third-party-SDK-requirements) |
 | targetSdk 36, 16 KB pages | Flutter 3.47 defaults: compileSdk/targetSdk 36, minSdk 24; AGP 9.1 + current NDK build 16 KB-aligned libraries | [Play](https://support.google.com/googleplay/android-developer/answer/11926878) |
 | Arabic + RTL | Every string in `lib/l10n/strings.dart` has en + ar; Material localizations for ar; RTL from the locale | Play pre-launch accessibility |
-| Speech data handling | Audio goes to the OS recogniser (Apple Speech / Android SpeechRecognizer) and is never written to disk or sent to Doneby's backend; only the transcript text is kept | Data safety / App Privacy |
-| Deep links | Android App Links intent filter with `autoVerify` for `https://doneby.me/j/*` + `doneby://join`; iOS associated domain `applinks:doneby.me` + URL scheme | see B |
+| Speech data handling | Audio goes to the OS recogniser (Apple Speech / Android SpeechRecognizer) and is never written to disk or sent to I'm Done's backend; only the transcript text is kept | Data safety / App Privacy |
+| Deep links | Android App Links intent filter with `autoVerify` for `https://imdone.me/j/*` + `imdone://join`; iOS associated domain `applinks:imdone.me` + URL scheme | see B |
 | Age rating / Kids | No child-directed content; do not opt into Families or Kids categories; target 4+ | Apple age ratings 2026 |
 
 ## B. Owed before the first submission (not code)
@@ -44,7 +44,7 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
   Functions; Cloud Messaging with APNs key). Then `flutterfire configure` to replace
   `lib/firebase_options.dart`, add the Play App Signing SHA-1/SHA-256 to the Firebase Android
   app, set `GOOGLE_SERVER_CLIENT_ID` at build time, deploy `functions/` and `firestore.rules`.
-- [ ] **Domain `doneby.me`** (or whatever is chosen) serving: `/.well-known/apple-app-site-association`
+- [ ] **Domain `imdone.me`** (or whatever is chosen) serving: `/.well-known/apple-app-site-association`
   (JSON, no extension, no redirect), `/.well-known/assetlinks.json` (SHA-256 of the **Play App
   Signing** key, not the upload key), `/j/<code>` landing page that opens the app or falls back to
   the store listing, `/privacy`, `/terms`, `/delete-account` (Play requires a web deletion route).
@@ -83,7 +83,7 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
 
 ## D. Common rejections for to-do apps, and the countermeasure
 
-| Rejection | Countermeasure in Doneby |
+| Rejection | Countermeasure in I'm Done |
 |---|---|
 | Apple 4.2 not enough functionality | Voice capture, nag-until-done, shared confirmation, Arabic — all visible in screenshots and review notes |
 | Apple 2.1 crashes / incomplete | Real device test on an IPv6-only network, backend live, demo account |

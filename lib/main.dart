@@ -20,7 +20,7 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [bootstrapProvider.overrideWithValue(boot)],
-      child: const DonebyApp(),
+      child: const ImDoneApp(),
     ),
   );
 }

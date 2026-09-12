@@ -19,12 +19,12 @@ class Cloud {
   /// store listing when the app is not installed.
   static const String inviteBaseUrl = String.fromEnvironment(
     'INVITE_BASE_URL',
-    defaultValue: 'https://doneby.me/j',
+    defaultValue: 'https://imdone.me/j',
   );
 
-  static const String privacyPolicyUrl = 'https://doneby.me/privacy';
-  static const String termsUrl = 'https://doneby.me/terms';
-  static const String deleteAccountWebUrl = 'https://doneby.me/delete-account';
+  static const String privacyPolicyUrl = 'https://imdone.me/privacy';
+  static const String termsUrl = 'https://imdone.me/terms';
+  static const String deleteAccountWebUrl = 'https://imdone.me/delete-account';
 
   static Future<void> init() async {
     if (!DefaultFirebaseOptions.isConfigured) {

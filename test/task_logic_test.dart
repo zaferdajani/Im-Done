@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:doneby/models/task.dart';
-import 'package:doneby/models/task_logic.dart';
+import 'package:imdone/models/task.dart';
+import 'package:imdone/models/task_logic.dart';
 
 Task make({
   Frequency f = Frequency.daily,

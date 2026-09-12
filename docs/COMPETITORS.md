@@ -1,4 +1,4 @@
-# Doneby — Competitive Landscape & Free Alternatives
+# I'm Done — Competitive Landscape & Free Alternatives
 
 *Compiled 2026-09-12 from 20+ live store/vendor/GitHub lookups. "unverified" = not confirmable
 from a primary source.*
@@ -10,7 +10,7 @@ from a primary source.*
 combination, and specifically creator-confirmed completion between adults (not parent → child),
 is unoccupied.
 
-If you want something to use TODAY while Doneby is built:
+If you want something to use TODAY while I'm Done is built:
 
 | Need | Best free option today | What it lacks |
 |---|---|---|
@@ -92,15 +92,15 @@ background limits is the actual product risk, not the interface.
 | [tasks/tasks](https://tasks.org/) | Mature Android to-do, recurring, CalDAV | GPL-3.0 | Best reference for reliable Android alarms; GPL is viral, read it, do not link it |
 | [rxlabz/sytody](https://github.com/rxlabz/sytody) | Flutter speech-to-todo proof of concept | none declared | Reference only |
 | [dominikdoric/house-work-app](https://github.com/dominikdoric/house-work-app) | Flutter + Firebase family chores | MIT | Usable skeleton |
-| [csdcorp/speech_to_text](https://github.com/csdcorp/speech_to_text) | The Flutter STT plugin | BSD-3 (unverified) | **Used by Doneby** |
-| [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) | Local scheduling | BSD-3 (unverified) | **Used by Doneby** |
+| [csdcorp/speech_to_text](https://github.com/csdcorp/speech_to_text) | The Flutter STT plugin | BSD-3 (unverified) | **Used by I'm Done** |
+| [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) | Local scheduling | BSD-3 (unverified) | **Used by I'm Done** |
 | [alarm](https://pub.dev/packages/alarm) | Foreground-service alarms, survives termination | MIT (unverified) | Stronger nag engine if reliability complaints appear; needs Play permission review |
 
 ## 5. Name
 
 "SayDone" is crowded: a Lovable site at say-done.lovable.app, an unrelated saydone.net, and two
 App Store apps **SayDo** and **Saydo AI** (a voice task app for ADHD, a direct near-namesake).
-The project therefore ships as **Doneby** ("done by Tuesday", "done by Sara" — deadline and
+The project therefore ships as **I'm Done** ("done by Tuesday", "done by Sara" — deadline and
 delegation in one word), which returned no store or product hits. Alternatives that also came
 back clean: Naggo, Yapdone, Blurtly, Nagster. Before store submission: trademark search
 (USPTO/EUIPO), exact-match store search, `.com`/`.app` domain check — all **unverified** beyond

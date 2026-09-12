@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// One seed colour, Material 3, generous radii — the whole visual identity.
-class DonebyTheme {
+class ImDoneTheme {
   static const seed = Color(0xFF0E7C86); // deep teal
   static const accent = Color(0xFFFF8A3D); // warm coral for the mic + "done"
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:doneby/models/task.dart';
-import 'package:doneby/services/voice_parser.dart';
+import 'package:imdone/models/task.dart';
+import 'package:imdone/services/voice_parser.dart';
 
 void main() {
   final now = DateTime(2026, 9, 12, 8, 0);

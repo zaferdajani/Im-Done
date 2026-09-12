@@ -1,4 +1,4 @@
-# Doneby — Market & Monetization Research
+# I'm Done — Market & Monetization Research
 
 *Compiled 2026-09-12 from live web research (sources linked inline). Figures marked
 "unverified" could not be confirmed from a primary source.*
@@ -55,7 +55,7 @@ vs monthly 14.2 % vs weekly 5.5 %.
 Churn to plan for: ~72 % of annual subscribers cancel within year one; on Google Play 31 % of
 cancellations are involuntary billing failures (configure grace periods).
 
-### Model scorecard for Doneby
+### Model scorecard for I'm Done
 
 | Model | Verdict |
 |---|---|

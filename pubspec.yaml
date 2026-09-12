@@ -1,5 +1,5 @@
-name: doneby
-description: "Doneby — say a task, get nagged until it is done, share it and confirm."
+name: imdone
+description: "I'm Done — say a task, get nagged until it is done, share it and confirm."
 publish_to: 'none'
 version: 0.1.0+1
 

@@ -1,12 +1,12 @@
 import 'package:app_links/app_links.dart';
 
-/// Invite links look like  https://doneby.me/j/ABCD2345  or  doneby://join/ABCD2345
+/// Invite links look like  https://imdone.me/j/ABCD2345  or  imdone://join/ABCD2345
 class DeepLinks {
   final _links = AppLinks();
 
   static String? inviteCode(Uri uri) {
     final segs = uri.pathSegments.where((s) => s.isNotEmpty).toList();
-    if (uri.scheme == 'doneby' && uri.host == 'join' && segs.isNotEmpty) return _clean(segs.first);
+    if (uri.scheme == 'imdone' && uri.host == 'join' && segs.isNotEmpty) return _clean(segs.first);
     if (segs.length >= 2 && segs[segs.length - 2] == 'j') return _clean(segs.last);
     return null;
   }

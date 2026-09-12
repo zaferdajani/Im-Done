@@ -1,4 +1,4 @@
-package me.doneby.app
+package me.imdone.app
 
 import io.flutter.embedding.android.FlutterActivity
 

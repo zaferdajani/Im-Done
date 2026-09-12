@@ -134,7 +134,7 @@ class _HoldToTalkButtonState extends ConsumerState<HoldToTalkButton> with Single
                       height: 120 * (1 + _pulse.value * 0.5),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: DonebyTheme.accent.withValues(alpha: 0.18 * (1 - _pulse.value)),
+                        color: ImDoneTheme.accent.withValues(alpha: 0.18 * (1 - _pulse.value)),
                       ),
                     ),
                   Transform.scale(scale: scale, child: child),
@@ -157,7 +157,7 @@ class _HoldToTalkButtonState extends ConsumerState<HoldToTalkButton> with Single
                         : [scheme.primary, scheme.primary.withValues(alpha: 0.8)],
                   ),
                   boxShadow: [
-                    BoxShadow(color: (_listening ? DonebyTheme.accent : scheme.primary).withValues(alpha: 0.35), blurRadius: 24, offset: const Offset(0, 10)),
+                    BoxShadow(color: (_listening ? ImDoneTheme.accent : scheme.primary).withValues(alpha: 0.35), blurRadius: 24, offset: const Offset(0, 10)),
                   ],
                 ),
                 child: Icon(_listening ? Icons.graphic_eq_rounded : Icons.mic_rounded, color: Colors.white, size: 42),

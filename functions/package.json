@@ -1,5 +1,5 @@
 {
-  "name": "doneby-functions",
+  "name": "imdone-functions",
   "private": true,
   "engines": { "node": "22" },
   "main": "lib/index.js",
