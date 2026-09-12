@@ -6,25 +6,32 @@ confirm, leave, delete an account) is enforced by Firestore security rules in
 `firestore.rules`, which are tested against the Firestore emulator (38
 scenarios, see below).
 
-## What the project needs, once (Firebase console, project **Im-Done**)
+## What the project needs, once — DONE (verified against the live project 2026-09-12)
 
-1. **Build → Firestore Database → Create database**, location **europe-west2
-   (London)**, production mode.
-2. **Build → Authentication → Get started → Sign-in method**: enable
-   **Anonymous** (the "start now" quick account) and **Google**. Under
-   **Settings → Authorized domains** add `zaferdajani.github.io`.
-3. Then the rules are deployed with `firebase deploy --only firestore:rules`
-   (or the "Deploy Firebase rules" workflow with the two repository secrets).
+- Firestore database exists in **europe-west2 (London)**.
+- Authentication has **Email/Password**, **Google** and **Anonymous** enabled, and
+  `zaferdajani.github.io` is an authorized domain (so the web app can sign in).
+- `firestore.rules` is published (release `cloud.firestore`, done through the
+  Firebase Rules API — the "Deploy Firebase rules" workflow does the same on
+  every push that changes the file).
+- The Android app carries a **committed debug signing key** (`android/app/debug.keystore`,
+  password `android`) whose SHA-1/SHA-256 are registered on the Firebase Android
+  app, and `google-services.json` was regenerated with the matching OAuth client —
+  Google sign-in on the CI-built APK works because every build is signed the same
+  way. That key is a debug key, not a secret; the store release key will be separate.
 
 The app configuration (`lib/firebase_options.dart`, `google-services.json`)
-is already generated and committed; the service-account key is not in the
-repository and must never be.
+is generated and committed; the service-account key is not in the repository
+and must never be.
 
 ## Accounts
 
 - **Quick account**: type a name, start. It is a Firebase anonymous account
   bound to that device. Settings offers "Keep this account with Google" which
   links it, so the same account works on another phone.
+- **Email + password**: a full account with no Google or Apple involved; a
+  quick account can be upgraded to it from Settings, and "Forgot password"
+  sends Firebase's reset mail.
 - **Google / Apple**: full accounts. Apple needs the Apple developer account
   (Service ID + key uploaded to Authentication → Apple) and is required on
   iOS whenever Google is offered.

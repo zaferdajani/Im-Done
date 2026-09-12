@@ -12,7 +12,20 @@
           "package_name": "me.imdone.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "453231448530-9q8eb41138brcrh71ova1pq181g3o2ds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.imdone.app",
+            "certificate_hash": "5d6632aeb8f6260a2fd4bfed5f835d005a8ad1f6"
+          }
+        },
+        {
+          "client_id": "453231448530-nn38oo9j6t4mqmmoqng2d67bm44rqmhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBhu0fL8q7SRLw-Z1mYgLxsrkxBvQ-Cb-w"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453231448530-nn38oo9j6t4mqmmoqng2d67bm44rqmhs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453231448530-l9ap0seumhllli9c8ur42hopgu0fqhlm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "me.imdone.app"
+              }
+            }
+          ]
         }
       }
     }

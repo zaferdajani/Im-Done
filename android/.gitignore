@@ -12,3 +12,7 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# The DEBUG key is deliberately committed: it is not a secret and Google
+# sign-in needs every build to carry the same signature. Release keys never.
+!app/debug.keystore

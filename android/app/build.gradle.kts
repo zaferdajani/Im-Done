@@ -34,6 +34,18 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        // A committed debug key so every CI build carries the SAME signature,
+        // which Google sign-in on Android requires (its SHA-1 is registered
+        // in Firebase). A debug key is not a secret; the release key will be.
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

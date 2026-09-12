@@ -48,13 +48,14 @@ Research: `docs/MARKET_RESEARCH.md` (monetization, pricing, payouts to Jordan),
 ## Setup (engineering steps — not for the owner to run)
 
 1. `flutter pub get && flutter test && flutter analyze` — all green today (17 tests).
-2. Firebase: create a project, enable Auth (Google + Apple), Firestore (`europe-west2`),
-   Functions, Cloud Messaging (upload the APNs key). Run `flutterfire configure` in this folder
-   (replaces `lib/firebase_options.dart`; set `isConfigured` to `true` there), then
-   `cd functions && npm install && npm run build && firebase deploy --only functions,firestore:rules`.
-3. Google Sign-In on Android needs the web client id: `flutter build apk --dart-define=GOOGLE_SERVER_CLIENT_ID=…`
-   and the Play App Signing SHA-1/SHA-256 in the Firebase Android app. iOS needs the reversed
-   client id URL scheme in `Info.plist` (flutterfire prints it).
+2. Firebase project `im-done-17215` is configured on the free plan: Firestore (`europe-west2`),
+   Auth (Email/Password, Google, Anonymous; Apple waits for the Apple developer account), rules
+   published. No Cloud Functions — the rules enforce every product rule and the push sender is the
+   Cloudflare Worker in `push-worker/` (see `docs/FIREBASE_SETUP.md`).
+3. Google Sign-In on Android works out of the box: the public web client id is the default in
+   `lib/services/cloud/cloud.dart` and the committed debug keystore's SHA-1/SHA-256 are registered
+   in Firebase. The store release key must be registered the same way when it exists. iOS needs the
+   reversed client id URL scheme in `Info.plist` (flutterfire prints it).
 4. Invite links: point `INVITE_BASE_URL` (`--dart-define`) at a domain that serves the AASA and
    assetlinks files (checklist in `docs/STORE_COMPLIANCE.md` §B).
 5. Builds: GitHub Actions → "I'm Done app (Flutter)" → run → download `imdone-android-debug` or `imdone-web`.

@@ -8,10 +8,11 @@ class Cloud {
   static bool available = false;
 
   /// Public web client id used by Google Sign-In on Android to mint an ID
-  /// token Firebase accepts. Filled in by the setup step (README).
+  /// token Firebase accepts. This is the project's PUBLIC web client id (it
+  /// also sits in google-services.json); override with --dart-define.
   static const String googleServerClientId = String.fromEnvironment(
     'GOOGLE_SERVER_CLIENT_ID',
-    defaultValue: '',
+    defaultValue: '453231448530-nn38oo9j6t4mqmmoqng2d67bm44rqmhs.apps.googleusercontent.com',
   );
 
   /// Where invite links point. The page there must serve the AASA /
