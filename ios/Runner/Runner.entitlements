@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Universal links for invites (https://doneby.me/j/CODE). The AASA file
+	     must be served at https://doneby.me/.well-known/apple-app-site-association -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:doneby.me</string>
+	</array>
+	<!-- Sign in with Apple (App Store guideline 4.8) -->
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
+	<!-- Push for shared-task events (FCM via APNs) -->
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>

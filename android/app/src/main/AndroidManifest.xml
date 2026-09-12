@@ -1,0 +1,86 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Voice capture (the mic button). Audio goes to the OS speech service only. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- Reminders. Runtime prompt on Android 13+; asked in context after the first task. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- Re-arm reminders after a reboot / app update. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Precise reminder timing. User-granted under "Alarms & reminders";
+         the app falls back to inexact alarms when not granted. Deliberately
+         NOT USE_EXACT_ALARM and NOT USE_FULL_SCREEN_INTENT (Play policy). -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <!-- Shared tasks (Firebase) and invite links. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:label="Doneby"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- Invite links: https://doneby.me/j/CODE (verified App Link; needs
+                 /.well-known/assetlinks.json on that host, see docs/STORE_COMPLIANCE.md) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="doneby.me" android:pathPrefix="/j/"/>
+            </intent-filter>
+            <!-- Custom scheme fallback: doneby://join/CODE -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="doneby" android:host="join"/>
+            </intent-filter>
+        </activity>
+
+        <!-- flutter_local_notifications: deliver scheduled reminders and re-arm after boot -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- Android 11+ package visibility: lets the app find the speech recogniser -->
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
+    </queries>
+</manifest>

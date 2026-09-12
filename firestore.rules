@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isMember(t) { return signedIn() && request.auth.uid in t.data.memberUids; }
+    function isOwner(t) { return signedIn() && request.auth.uid == t.data.ownerUid; }
+
+    // Shared tasks.
+    //  * members READ the document (their phone schedules the reminders from it)
+    //  * only the CREATOR writes it directly (edit, archive, confirm, reject)
+    //  * a member's claim / undo / join / leave goes through Cloud Functions,
+    //    which validate exactly what changes — nobody can confirm their own work
+    //    or pull a stranger into a task from the client.
+    match /tasks/{taskId} {
+      allow read: if isMember(resource);
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.kind == 'shared'
+        && request.resource.data.memberUids == [request.auth.uid];
+      allow update: if isOwner(resource)
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.kind == 'shared';
+      allow delete: if false; // archived, never deleted, so history survives
+    }
+
+    // Invite codes: written by the creator at task creation, read only by the
+    // server. A code alone must not reveal the task.
+    match /invites/{code} {
+      allow read: if false;
+      allow create: if signedIn() && request.resource.data.createdBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // Each user owns their own profile + device tokens.
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+  }
+}

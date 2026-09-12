@@ -1,0 +1,86 @@
+name: Doneby app (Flutter)
+
+# Tests + analysis on every change under apps/doneby, and a debug APK you can
+# install straight onto an Android phone (Actions → this workflow → Artifacts).
+# iOS: an unsigned simulator compile check on macOS, same idea as ios-build.yml.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '**'
+      - '.github/workflows/app.yml'
+  pull_request:
+    paths:
+      - '**'
+
+concurrency:
+  group: doneby-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
+
+  android-apk:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --debug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doneby-android-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 14
+
+  ios-compile-check:
+    runs-on: macos-15
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build ios --simulator --no-codesign
+
+  web:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build web --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doneby-web
+          path: build/web
+          retention-days: 14
