@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../l10n/strings.dart';
+import '../l10n/supported.dart';
 import '../models/task.dart';
 
 String formatTime(BuildContext context, int hour, int minute) => MaterialLocalizations.of(context).formatTimeOfDay(
@@ -35,7 +36,7 @@ String frequencySummary(L10n l, String lang, Task t) {
     case Frequency.weekdays:
       base = l.freqSummaryWeekdays;
     case Frequency.weekly:
-      final days = (t.weekdays.toList()..sort()).map((d) => l.weekdayShort[d - 1]).join(lang == 'ar' ? '، ' : ', ');
+      final days = (t.weekdays.toList()..sort()).map((d) => l.weekdayShort[d - 1]).join(listSeparator(lang));
       base = days.isEmpty ? l.freqWeekly : l.freqSummaryWeekly.fill({'days': days});
     case Frequency.everyNDays:
       base = l.freqSummaryEveryN.fill({'n': t.everyNDays});

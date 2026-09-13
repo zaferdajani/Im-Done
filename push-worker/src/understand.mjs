@@ -41,12 +41,16 @@ export function languageCode(whisperLanguage) {
  * time as an ISO string with weekday, so "tomorrow" and "next Monday" are
  * resolved in THEIR calendar, not the worker's.
  */
-export function buildSystemPrompt({ now, weekday, uiLanguage }) {
+export function buildSystemPrompt({ now, weekday, uiLanguage, preferred }) {
+  const pref = preferred && preferred !== 'en'
+    ? `The speaker's preferred language is "${preferred}" (${LANGUAGES[preferred] ?? preferred}); they usually speak it or English. When the words could belong to more than one language, prefer that one.`
+    : "The speaker's preferred language is English.";
   return [
     'You turn one spoken sentence into a reminder task. Reply with ONE JSON object and nothing else.',
     'The sentence may be in any language, in any accent or dialect, and may mix languages. Do not translate the task: keep the title in the language it was spoken.',
     `The speaker's current local date and time is ${now} (${weekday}). Resolve relative dates against it.`,
     `The app is displayed in "${uiLanguage}".`,
+    pref,
     '',
     'Fields:',
     '  "title": the task itself, short, in the spoken language, without the schedule words ("call the pharmacy", not "call the pharmacy every day at 9").',

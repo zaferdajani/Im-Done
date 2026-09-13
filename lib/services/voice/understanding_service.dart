@@ -133,6 +133,9 @@ class UnderstandingService {
               'X-Now': now.toIso8601String().split('.').first,
               'X-Weekday': weekdays[now.weekday - 1],
               'X-Ui-Language': uiLanguage,
+              // The person's own language, so the listener checks it first
+              // when a guess is doubtful (Urdu vs Hindi, Ukrainian vs Russian).
+              'X-Preferred-Language': uiLanguage,
             },
             body: wav,
           )

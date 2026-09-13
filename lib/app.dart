@@ -7,9 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme.dart';
 import 'l10n/strings.dart';
+import 'l10n/supported.dart';
 import 'services/reminder_scheduler.dart';
+import 'services/settings_store.dart';
 import 'state/providers.dart';
 import 'ui/home_screen.dart';
+import 'ui/welcome_screen.dart';
 import 'ui/add_person_screen.dart';
 import 'ui/invite_landing_screen.dart';
 import 'ui/task_detail_screen.dart';
@@ -127,14 +130,19 @@ class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserv
       debugShowCheckedModeBanner: false,
       theme: ImDoneTheme.light(),
       darkTheme: ImDoneTheme.dark(),
+      themeMode: switch (ref.watch(settingsProvider).themeMode) {
+        AppTheme.system => ThemeMode.system,
+        AppTheme.light => ThemeMode.light,
+        AppTheme.dark => ThemeMode.dark,
+      },
       locale: Locale(code),
-      supportedLocales: const [Locale('en'), Locale('ar')],
+      supportedLocales: [for (final l in supportedLanguages) Locale(l.$1)],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const HomeScreen(),
+      home: ref.watch(settingsProvider).setupDone ? const HomeScreen() : const WelcomeScreen(),
     );
   }
 }

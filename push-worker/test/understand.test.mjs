@@ -83,6 +83,9 @@ test('the prompt names every language and dialect the product shows', () => {
   for (const d of ARABIC_DIALECTS) assert.ok(s.includes(d), d);
   assert.ok(s.includes('Sunday'));
   assert.ok(s.includes('Do not translate'));
+  const p = buildSystemPrompt({ now: 'x', weekday: 'y', uiLanguage: 'en', preferred: 'ur' });
+  assert.ok(p.includes('"ur" (Urdu)'));
+  assert.ok(buildSystemPrompt({ now: 'x', weekday: 'y', uiLanguage: 'en', preferred: null }).includes('preferred language is English'));
 });
 
 test('audio bounds', () => {

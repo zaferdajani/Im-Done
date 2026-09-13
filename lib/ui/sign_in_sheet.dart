@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/strings.dart';
+import '../l10n/supported.dart';
 import '../services/cloud/auth_service.dart';
 import '../state/providers.dart';
 
@@ -77,7 +78,31 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
             Text(l.quickStartTitle, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             Text(l.quickStartHint, style: TextStyle(color: scheme.onSurfaceVariant, height: 1.4)),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            // The language question belongs beside the sign-up, as asked:
+            // it is what the app answers in and what the listener checks first.
+            Row(
+              children: [
+                Icon(Icons.translate_rounded, size: 18, color: scheme.onSurfaceVariant),
+                const SizedBox(width: 8),
+                Text(l.language, style: TextStyle(color: scheme.onSurfaceVariant)),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: ref.watch(languageCodeProvider),
+                    isExpanded: true,
+                    underline: const SizedBox.shrink(),
+                    items: [for (final lang in supportedLanguages) DropdownMenuItem(value: lang.$1, child: Text(lang.$2))],
+                    onChanged: (v) {
+                      if (v == null) return;
+                      final settings = ref.read(settingsProvider);
+                      ref.read(settingsProvider.notifier).update(settings.copyWith(languageCode: v));
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             if (!b.cloudAvailable)
               Text(l.cloudUnavailable, style: TextStyle(color: scheme.error))
             else ...[

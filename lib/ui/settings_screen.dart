@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
+import '../l10n/supported.dart';
 import '../services/cloud/cloud.dart';
 import '../services/settings_store.dart';
 import '../state/providers.dart';
@@ -37,19 +38,35 @@ class SettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         children: [
           _Section(l.language),
-          SegmentedButton<String>(
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: DropdownButton<String>(
+                value: settings.languageCode ?? 'system',
+                isExpanded: true,
+                underline: const SizedBox.shrink(),
+                items: [
+                  DropdownMenuItem(value: 'system', child: Text(l.languageSystem)),
+                  for (final lang in supportedLanguages) DropdownMenuItem(value: lang.$1, child: Text(lang.$2)),
+                ],
+                onChanged: (v) {
+                  if (v == null) return;
+                  ref.read(settingsProvider.notifier).update(
+                        v == 'system' ? settings.copyWith(clearLanguage: true) : settings.copyWith(languageCode: v),
+                      );
+                },
+              ),
+            ),
+          ),
+          _Section(l.appearance),
+          SegmentedButton<AppTheme>(
             segments: [
-              ButtonSegment(value: 'system', label: Text(l.languageSystem)),
-              const ButtonSegment(value: 'en', label: Text('English')),
-              const ButtonSegment(value: 'ar', label: Text('العربية')),
+              ButtonSegment(value: AppTheme.system, label: Text(l.themeSystem), icon: const Icon(Icons.brightness_auto_rounded)),
+              ButtonSegment(value: AppTheme.light, label: Text(l.themeLight), icon: const Icon(Icons.light_mode_rounded)),
+              ButtonSegment(value: AppTheme.dark, label: Text(l.themeDark), icon: const Icon(Icons.dark_mode_rounded)),
             ],
-            selected: {settings.languageCode ?? 'system'},
-            onSelectionChanged: (s) {
-              final v = s.first;
-              ref.read(settingsProvider.notifier).update(
-                    v == 'system' ? settings.copyWith(clearLanguage: true) : settings.copyWith(languageCode: v),
-                  );
-            },
+            selected: {settings.themeMode},
+            onSelectionChanged: (v) => ref.read(settingsProvider.notifier).update(settings.copyWith(themeMode: v.first)),
           ),
           _Section(l.voiceSection),
           Card(

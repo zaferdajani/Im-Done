@@ -74,14 +74,14 @@ function corsHeaders(request) {
   return {
     'Access-Control-Allow-Origin': request.headers.get('Origin') ?? '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Now, X-Weekday, X-Ui-Language',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Now, X-Weekday, X-Ui-Language, X-Preferred-Language',
   };
 }
 
 // ---------------------------------------------------------------- voice → task
 const GROQ = 'https://api.groq.com/openai/v1';
 const WHISPER_MODEL = 'whisper-large-v3-turbo';
-const CHAT_MODELS = ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b'];
+const CHAT_MODELS = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.6-27b'];
 const GEMINI_MODEL = 'gemini-2.5-flash';
 
 async function transcribe(request, env, cors) {
@@ -94,14 +94,27 @@ async function transcribe(request, env, cors) {
     now: sanitize(request.headers.get('X-Now'), 40) || new Date().toISOString(),
     weekday: sanitize(request.headers.get('X-Weekday'), 12) || 'unknown weekday',
     uiLanguage: sanitize(request.headers.get('X-Ui-Language'), 8) || 'en',
+    preferred: (sanitize(request.headers.get('X-Preferred-Language'), 8) || '').toLowerCase() || null,
   };
+  const warnings = [];
 
   let transcript = null;
   let detected = null;
   let engine = null;
   if (env.GROQ_API_KEY) {
     try {
-      const w = await groqWhisper(env.GROQ_API_KEY, audio, contentType);
+      let w = await groqWhisper(env.GROQ_API_KEY, audio, contentType);
+      // The person told us their language. Whisper cannot be given a
+      // preference, only a certainty, so it runs free first; when it lands
+      // on a language that is routinely confused with the preferred one
+      // (Urdu heard as Hindi, Malay as Indonesian, Ukrainian as Russian…)
+      // the preferred language is checked first, as asked.
+      if (context.preferred && w.language !== context.preferred && confusable(context.preferred, w.language)) {
+        try {
+          const again = await groqWhisper(env.GROQ_API_KEY, audio, contentType, context.preferred);
+          if (again.text.trim()) { w = { text: again.text, language: context.preferred }; warnings.push(`re-heard as preferred ${context.preferred} (first guess ${w.language})`); }
+        } catch (e) { warnings.push(`preferred re-run failed: ${String(e?.message ?? e).slice(0, 120)}`); }
+      }
       transcript = w.text;
       detected = w.language;
       engine = 'groq-whisper';
@@ -128,18 +141,25 @@ async function transcribe(request, env, cors) {
         raw = await groqChat(env.GROQ_API_KEY, model, buildSystemPrompt(context), buildUserPrompt(transcript, detected));
         engine += `+${model}`;
         break;
-      } catch { /* next model */ }
+      } catch (e) { warnings.push(`${model}: ${String(e?.message ?? e).slice(0, 160)}`); }
     }
   }
   if (raw === null && env.GEMINI_API_KEY) {
     try {
       raw = await geminiText(env.GEMINI_API_KEY, buildSystemPrompt(context), buildUserPrompt(transcript, detected));
       engine += '+gemini';
-    } catch { /* fall through: title = transcript */ }
+    } catch (e) { warnings.push(`gemini: ${String(e?.message ?? e).slice(0, 160)}`); }
   }
   // With no structuring model the transcript itself becomes the task title.
   const parsed = parseUnderstanding(raw ?? '{}', transcript, detected);
-  return json({ ...parsed, engine }, 200, cors);
+  return json({ ...parsed, engine, ...(warnings.length ? { warnings } : {}) }, 200, cors);
+}
+
+/** Language pairs Whisper mixes up when the speaker's own language is known. */
+const CONFUSABLE = [['ur', 'hi'], ['ms', 'id'], ['uk', 'ru'], ['gu', 'hi'], ['pa', 'hi'], ['fa', 'ar'], ['ur', 'ar'], ['pt', 'es'], ['it', 'es'], ['nl', 'de'], ['sv', 'no'], ['sv', 'da'], ['zh', 'ja'], ['ko', 'ja']];
+function confusable(preferred, detected) {
+  if (!detected) return true; // nothing detected at all: try what they told us
+  return CONFUSABLE.some(([a, b]) => (a === preferred && b === detected) || (b === preferred && a === detected));
 }
 
 function sanitize(v, max) {
@@ -155,14 +175,15 @@ function extractTranscript(raw) {
   }
 }
 
-async function groqWhisper(key, audio, contentType) {
+async function groqWhisper(key, audio, contentType, language) {
   const form = new FormData();
-  const ext = /wav/.test(contentType) ? 'wav' : /webm/.test(contentType) ? 'webm' : /ogg/.test(contentType) ? 'ogg' : /mp4|m4a|aac/.test(contentType) ? 'm4a' : 'wav';
+  const ext = /wav/.test(contentType) ? 'wav' : /webm/.test(contentType) ? 'webm' : /ogg/.test(contentType) ? 'ogg' : /mpeg|mp3/.test(contentType) ? 'mp3' : /mp4|m4a|aac/.test(contentType) ? 'm4a' : 'wav';
   form.append('file', new Blob([audio], { type: contentType }), `speech.${ext}`);
   form.append('model', WHISPER_MODEL);
   form.append('response_format', 'verbose_json');
   form.append('temperature', '0');
-  // No `language`: that is what turns detection on.
+  // No `language` = automatic detection; set only for the preferred re-run.
+  if (language) form.append('language', language);
   const res = await fetch(`${GROQ}/audio/transcriptions`, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form });
   if (!res.ok) throw new Error(`whisper ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();
@@ -176,8 +197,14 @@ async function groqChat(key, model, system, user) {
     body: JSON.stringify({
       model,
       temperature: 0,
-      max_tokens: 400,
-      response_format: { type: 'json_object' },
+      // gpt-oss "thinks" before answering and the thinking counts against
+      // max_tokens: a low cap cut the JSON off and the task fell back to a
+      // plain title. Keep the cap generous; medium effort reads dialect words
+      // ("ونص المسا") that low effort waves through as standard Arabic.
+      max_tokens: 1500,
+      ...(model.startsWith('openai/gpt-oss') ? { reasoning_effort: 'medium' } : {}),
+      // Groq's JSON mode rejected valid answers carrying Arabic text; the
+      // object is extracted from the reply instead (parseUnderstanding).
       messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
     }),
   });

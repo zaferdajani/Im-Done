@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../l10n/strings.dart';
+import '../l10n/supported.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
 import '../services/settings_store.dart';
@@ -32,7 +33,7 @@ final languageCodeProvider = Provider<String>((ref) {
   final chosen = ref.watch(settingsProvider).languageCode;
   if (chosen != null) return chosen;
   final device = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-  return device == 'ar' ? 'ar' : 'en';
+  return isSupportedLanguage(device) ? device : 'en';
 });
 
 final l10nProvider = Provider<L10n>((ref) => L10n.forCode(ref.watch(languageCodeProvider)));

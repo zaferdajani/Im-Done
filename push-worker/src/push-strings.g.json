@@ -1,0 +1,130 @@
+{
+ "ar": {
+  "pushAdded": "{who} شارك مهمة معك",
+  "pushJoined": "انضم {who}",
+  "pushClaimed": "{who} علّم المهمة كمُنجزة",
+  "pushClaimedBody": "{title} — هل تؤكد؟",
+  "pushConfirmed": "أكّدها {who}",
+  "pushRejected": "{who} يقول: لم تُنجز بعد"
+ },
+ "en": {
+  "pushAdded": "{who} shared a task with you",
+  "pushJoined": "{who} joined",
+  "pushClaimed": "{who} marked it done",
+  "pushClaimedBody": "{title} — confirm?",
+  "pushConfirmed": "Confirmed by {who}",
+  "pushRejected": "{who} says: not done yet"
+ },
+ "es": {
+  "pushAdded": "{who} compartió una tarea contigo",
+  "pushJoined": "{who} se unió",
+  "pushClaimed": "{who} la marcó como hecha",
+  "pushClaimedBody": "{title} — ¿confirmas?",
+  "pushConfirmed": "Confirmada por {who}",
+  "pushRejected": "{who} dice: aún no está hecha"
+ },
+ "fa": {
+  "pushAdded": "{who} کاری را با شما به اشتراک گذاشت",
+  "pushJoined": "{who} پیوست",
+  "pushClaimed": "{who} آن را انجام‌شده علامت زد",
+  "pushClaimedBody": "{title} — تأیید می‌کنید؟",
+  "pushConfirmed": "{who} تأیید کرد",
+  "pushRejected": "{who} می‌گوید: هنوز انجام نشده"
+ },
+ "fr": {
+  "pushAdded": "{who} a partagé une tâche avec vous",
+  "pushJoined": "{who} a rejoint",
+  "pushClaimed": "{who} l'a marquée comme faite",
+  "pushClaimedBody": "{title} — confirmer ?",
+  "pushConfirmed": "Confirmée par {who}",
+  "pushRejected": "{who} dit : pas encore faite"
+ },
+ "gu": {
+  "pushAdded": "{who} એ તમારી સાથે એક કામ શેર કર્યું",
+  "pushJoined": "{who} જોડાયા",
+  "pushClaimed": "{who} એ તેને પૂરું બતાવ્યું",
+  "pushClaimedBody": "{title} — પુષ્ટિ કરશો?",
+  "pushConfirmed": "{who} એ પુષ્ટિ કરી",
+  "pushRejected": "{who} કહે છે: હજી પૂરું નથી થયું"
+ },
+ "hi": {
+  "pushAdded": "{who} ने आपके साथ एक काम साझा किया",
+  "pushJoined": "{who} जुड़ गए",
+  "pushClaimed": "{who} ने इसे पूरा बताया",
+  "pushClaimedBody": "{title} — पुष्टि करें?",
+  "pushConfirmed": "{who} ने पुष्टि की",
+  "pushRejected": "{who} कहते हैं: अभी पूरा नहीं हुआ"
+ },
+ "it": {
+  "pushAdded": "{who} ha condiviso un'attività con te",
+  "pushJoined": "{who} si è unito",
+  "pushClaimed": "{who} l'ha segnata come fatta",
+  "pushClaimedBody": "{title} — confermi?",
+  "pushConfirmed": "Confermata da {who}",
+  "pushRejected": "{who} dice: non ancora fatta"
+ },
+ "ja": {
+  "pushAdded": "{who} さんがタスクを共有しました",
+  "pushJoined": "{who} さんが参加しました",
+  "pushClaimed": "{who} さんが完了にしました",
+  "pushClaimedBody": "{title} — 確認しますか？",
+  "pushConfirmed": "{who} さんが確認しました",
+  "pushRejected": "{who} さん：まだ完了していません"
+ },
+ "ko": {
+  "pushAdded": "{who} 님이 할 일을 공유했어요",
+  "pushJoined": "{who} 님이 참여했어요",
+  "pushClaimed": "{who} 님이 완료로 표시했어요",
+  "pushClaimedBody": "{title} — 확인할까요?",
+  "pushConfirmed": "{who} 님이 확인했어요",
+  "pushRejected": "{who} 님: 아직 완료되지 않았어요"
+ },
+ "pt": {
+  "pushAdded": "{who} compartilhou uma tarefa com você",
+  "pushJoined": "{who} entrou",
+  "pushClaimed": "{who} marcou como feita",
+  "pushClaimedBody": "{title} — confirmar?",
+  "pushConfirmed": "Confirmada por {who}",
+  "pushRejected": "{who} diz: ainda não está feita"
+ },
+ "ru": {
+  "pushAdded": "{who} поделился(-ась) с вами задачей",
+  "pushJoined": "{who} присоединился(-ась)",
+  "pushClaimed": "{who} отметил(а) как выполненную",
+  "pushClaimedBody": "{title} — подтвердить?",
+  "pushConfirmed": "Подтвердил(а) {who}",
+  "pushRejected": "{who}: ещё не выполнено"
+ },
+ "tr": {
+  "pushAdded": "{who} sizinle bir görev paylaştı",
+  "pushJoined": "{who} katıldı",
+  "pushClaimed": "{who} tamamlandı olarak işaretledi",
+  "pushClaimedBody": "{title} — onaylıyor musunuz?",
+  "pushConfirmed": "{who} onayladı",
+  "pushRejected": "{who} diyor ki: henüz tamamlanmadı"
+ },
+ "uk": {
+  "pushAdded": "{who} поділився(-лась) з вами завданням",
+  "pushJoined": "{who} приєднався(-лась)",
+  "pushClaimed": "{who} позначив(ла) як виконане",
+  "pushClaimedBody": "{title} — підтвердити?",
+  "pushConfirmed": "Підтвердив(ла) {who}",
+  "pushRejected": "{who}: ще не виконано"
+ },
+ "ur": {
+  "pushAdded": "{who} نے آپ کے ساتھ ایک کام شیئر کیا",
+  "pushJoined": "{who} شامل ہو گئے",
+  "pushClaimed": "{who} نے اسے مکمل بتایا",
+  "pushClaimedBody": "{title} — تصدیق کریں؟",
+  "pushConfirmed": "{who} نے تصدیق کی",
+  "pushRejected": "{who} کہتے ہیں: ابھی مکمل نہیں ہوا"
+ },
+ "zh": {
+  "pushAdded": "{who} 与你共享了一个任务",
+  "pushJoined": "{who} 已加入",
+  "pushClaimed": "{who} 已标记为完成",
+  "pushClaimedBody": "{title} — 确认吗？",
+  "pushConfirmed": "{who} 已确认",
+  "pushRejected": "{who} 说：还没完成"
+ }
+}

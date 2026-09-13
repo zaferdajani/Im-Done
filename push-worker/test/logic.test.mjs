@@ -30,6 +30,14 @@ test('a stranger gets nothing sent, whatever they ask', () => {
 });
 test('messages follow the recipient language and fall back to English', () => {
   assert.equal(message('claimed', 'ar', 'Water plants', 'Bob').title, 'Bob علّم المهمة كمُنجزة');
-  assert.equal(message('claimed', 'fr', 'Water plants', 'Bob').title, 'Bob marked it done');
+  assert.equal(message('claimed', 'fr', 'Water plants', 'Bob').title, "Bob l'a marquée comme faite");
+  assert.equal(message('claimed', 'sw', 'Water plants', 'Bob').title, 'Bob marked it done');
   assert.equal(message('added', 'en', 'Water plants', 'Alice').body, 'Water plants');
+});
+
+test('push messages come from the shared language tables', () => {
+  assert.deepEqual(message('claimed', 'ar', 'Water plants', 'Bob'), { title: 'Bob علّم المهمة كمُنجزة', body: 'Water plants — هل تؤكد؟' });
+  assert.equal(message('added', 'es', 'Regar', 'Ana').title, 'Ana compartió una tarea contigo');
+  assert.equal(message('joined', 'xx', 'T', 'Zed').title, 'Zed joined');
+  assert.equal(message('rejected', 'ja', 'T', '花子').title, '花子 さん：まだ完了していません');
 });
