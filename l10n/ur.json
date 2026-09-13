@@ -192,5 +192,14 @@
  "groupLabel": "گروپ",
  "groupHint": "مثلاً گھر، کام، بچے",
  "allGroups": "سب",
- "noGroup": "کوئی گروپ نہیں"
+ "noGroup": "کوئی گروپ نہیں",
+ "shareGroup": "گروپ شیئر کریں",
+ "groupPeople": "اس گروپ کے لوگ",
+ "groupInviteMessage": "I'm Done پر میرے گروپ ”{group}“ میں شامل ہوں:",
+ "groupSharedHint": "یہ گروپ {n} لوگوں کے ساتھ شیئر ہے۔ یہاں کے نئے کام بھی ان کے ساتھ شیئر ہوں گے۔",
+ "groupShareDone": "پورا گروپ اب {name} کے ساتھ شیئر ہے",
+ "groupOnlyOwn": "صرف آپ کے بنائے ہوئے کام شیئر کیے جا سکتے ہیں۔",
+ "groupJoined": "آپ گروپ ”{group}“ میں شامل ہو گئے",
+ "shareInviteLink": "دعوتی لنک شیئر کریں",
+ "groupNobodyYet": "ابھی کوئی نہیں۔ کوڈ سے کسی کو شامل کریں یا لنک شیئر کریں۔"
 }

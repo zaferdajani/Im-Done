@@ -308,6 +308,14 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
               decoration: InputDecoration(hintText: l.groupHint, prefixIcon: const Icon(Icons.folder_outlined)),
               onChanged: (_) => setState(() {}),
             ),
+            if (_group.text.trim().isNotEmpty && ref.read(taskActionsProvider).peopleOfGroup(_group.text.trim()).isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  l.groupSharedHint.fill({'n': ref.read(taskActionsProvider).peopleOfGroup(_group.text.trim()).length}),
+                  style: TextStyle(color: scheme.primary, fontSize: 13),
+                ),
+              ),
             if (ref.watch(groupNamesProvider).isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),

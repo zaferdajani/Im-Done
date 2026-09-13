@@ -190,6 +190,15 @@ const l10nAr = L10n(
   groupHint: 'مثل: البيت، العمل، الأولاد',
   allGroups: 'الكل',
   noGroup: 'بلا مجموعة',
+  shareGroup: 'مشاركة المجموعة',
+  groupPeople: 'الأشخاص في هذه المجموعة',
+  groupInviteMessage: 'انضم إلى مجموعتي «{group}» على خلّصت:',
+  groupSharedHint: 'يشارك {n} أشخاص هذه المجموعة، وستُشارك المهام الجديدة فيها معهم أيضًا.',
+  groupShareDone: 'أصبحت المجموعة كلها مشتركة مع {name}',
+  groupOnlyOwn: 'يمكن مشاركة المهام التي أنشأتها أنت فقط.',
+  groupJoined: 'انضممت إلى مجموعة «{group}»',
+  shareInviteLink: 'مشاركة رابط الدعوة',
+  groupNobodyYet: 'لا أحد بعد. أضف شخصًا بالرمز أو شارك الرابط.',
 );
 
 const l10nEn = L10n(
@@ -379,6 +388,15 @@ const l10nEn = L10n(
   groupHint: 'e.g. Home, Work, Kids',
   allGroups: 'All',
   noGroup: 'No group',
+  shareGroup: 'Share group',
+  groupPeople: 'People in this group',
+  groupInviteMessage: 'Join my group “{group}” on I\'m Done:',
+  groupSharedHint: '{n} people share this group. New tasks here are shared with them too.',
+  groupShareDone: 'The whole group is now shared with {name}',
+  groupOnlyOwn: 'Only the tasks you created can be shared.',
+  groupJoined: 'You joined the group “{group}”',
+  shareInviteLink: 'Share invite link',
+  groupNobodyYet: 'Nobody yet. Add someone by code or share the link.',
 );
 
 const l10nEs = L10n(
@@ -568,6 +586,15 @@ const l10nEs = L10n(
   groupHint: 'p. ej. Casa, Trabajo, Niños',
   allGroups: 'Todas',
   noGroup: 'Sin grupo',
+  shareGroup: 'Compartir grupo',
+  groupPeople: 'Personas en este grupo',
+  groupInviteMessage: 'Únete a mi grupo «{group}» en I\'m Done:',
+  groupSharedHint: '{n} personas comparten este grupo. Las tareas nuevas también se compartirán con ellas.',
+  groupShareDone: 'Todo el grupo ahora se comparte con {name}',
+  groupOnlyOwn: 'Solo se pueden compartir las tareas que creaste.',
+  groupJoined: 'Te uniste al grupo «{group}»',
+  shareInviteLink: 'Compartir enlace de invitación',
+  groupNobodyYet: 'Nadie todavía. Agrega a alguien con su código o comparte el enlace.',
 );
 
 const l10nFa = L10n(
@@ -757,6 +784,15 @@ const l10nFa = L10n(
   groupHint: 'مثلاً خانه، کار، بچه‌ها',
   allGroups: 'همه',
   noGroup: 'بدون گروه',
+  shareGroup: 'اشتراک‌گذاری گروه',
+  groupPeople: 'افراد این گروه',
+  groupInviteMessage: 'به گروه من «{group}» در I\'m Done بپیوندید:',
+  groupSharedHint: '{n} نفر در این گروه شریک‌اند. کارهای جدید اینجا هم با آن‌ها به اشتراک گذاشته می‌شود.',
+  groupShareDone: 'کل گروه اکنون با {name} به اشتراک گذاشته شد',
+  groupOnlyOwn: 'فقط کارهایی که خودتان ساخته‌اید قابل اشتراک‌گذاری است.',
+  groupJoined: 'به گروه «{group}» پیوستید',
+  shareInviteLink: 'اشتراک‌گذاری پیوند دعوت',
+  groupNobodyYet: 'هنوز کسی نیست. با کد کسی را اضافه کنید یا پیوند را به اشتراک بگذارید.',
 );
 
 const l10nFr = L10n(
@@ -946,6 +982,15 @@ const l10nFr = L10n(
   groupHint: 'ex. : Maison, Travail, Enfants',
   allGroups: 'Toutes',
   noGroup: 'Sans groupe',
+  shareGroup: 'Partager le groupe',
+  groupPeople: 'Personnes dans ce groupe',
+  groupInviteMessage: 'Rejoignez mon groupe « {group} » sur I\'m Done :',
+  groupSharedHint: '{n} personnes partagent ce groupe. Les nouvelles tâches ici leur seront aussi partagées.',
+  groupShareDone: 'Tout le groupe est maintenant partagé avec {name}',
+  groupOnlyOwn: 'Seules les tâches que vous avez créées peuvent être partagées.',
+  groupJoined: 'Vous avez rejoint le groupe « {group} »',
+  shareInviteLink: 'Partager le lien d\'invitation',
+  groupNobodyYet: 'Personne pour l\'instant. Ajoutez quelqu\'un par code ou partagez le lien.',
 );
 
 const l10nGu = L10n(
@@ -1135,6 +1180,15 @@ const l10nGu = L10n(
   groupHint: 'જેમ કે ઘર, કામ, બાળકો',
   allGroups: 'બધાં',
   noGroup: 'કોઈ જૂથ નહીં',
+  shareGroup: 'જૂથ શેર કરો',
+  groupPeople: 'આ જૂથના લોકો',
+  groupInviteMessage: 'I\'m Done પર મારા જૂથ “{group}” માં જોડાઓ:',
+  groupSharedHint: 'આ જૂથ {n} લોકો સાથે શેર છે. અહીંનાં નવાં કામ પણ તેમની સાથે શેર થશે.',
+  groupShareDone: 'આખું જૂથ હવે {name} સાથે શેર છે',
+  groupOnlyOwn: 'ફક્ત તમે બનાવેલાં કામ જ શેર થઈ શકે.',
+  groupJoined: 'તમે જૂથ “{group}” માં જોડાયા',
+  shareInviteLink: 'આમંત્રણ લિંક શેર કરો',
+  groupNobodyYet: 'હજી કોઈ નહીં. કોડથી કોઈને ઉમેરો અથવા લિંક શેર કરો.',
 );
 
 const l10nHi = L10n(
@@ -1324,6 +1378,15 @@ const l10nHi = L10n(
   groupHint: 'जैसे घर, काम, बच्चे',
   allGroups: 'सभी',
   noGroup: 'कोई समूह नहीं',
+  shareGroup: 'समूह साझा करें',
+  groupPeople: 'इस समूह के लोग',
+  groupInviteMessage: 'I\'m Done पर मेरे समूह “{group}” में शामिल हों:',
+  groupSharedHint: 'यह समूह {n} लोगों के साथ साझा है। यहाँ के नए काम भी उनके साथ साझा होंगे।',
+  groupShareDone: 'पूरा समूह अब {name} के साथ साझा है',
+  groupOnlyOwn: 'केवल आपके बनाए काम ही साझा किए जा सकते हैं।',
+  groupJoined: 'आप समूह “{group}” में शामिल हो गए',
+  shareInviteLink: 'आमंत्रण लिंक साझा करें',
+  groupNobodyYet: 'अभी कोई नहीं। कोड से किसी को जोड़ें या लिंक साझा करें।',
 );
 
 const l10nIt = L10n(
@@ -1513,6 +1576,15 @@ const l10nIt = L10n(
   groupHint: 'es. Casa, Lavoro, Bambini',
   allGroups: 'Tutte',
   noGroup: 'Nessun gruppo',
+  shareGroup: 'Condividi gruppo',
+  groupPeople: 'Persone in questo gruppo',
+  groupInviteMessage: 'Unisciti al mio gruppo «{group}» su I\'m Done:',
+  groupSharedHint: '{n} persone condividono questo gruppo. Anche le nuove attività qui saranno condivise con loro.',
+  groupShareDone: 'Tutto il gruppo è ora condiviso con {name}',
+  groupOnlyOwn: 'Si possono condividere solo le attività che hai creato.',
+  groupJoined: 'Ti sei unito al gruppo «{group}»',
+  shareInviteLink: 'Condividi link di invito',
+  groupNobodyYet: 'Ancora nessuno. Aggiungi qualcuno con il codice o condividi il link.',
 );
 
 const l10nJa = L10n(
@@ -1702,6 +1774,15 @@ const l10nJa = L10n(
   groupHint: '例：家、仕事、子ども',
   allGroups: 'すべて',
   noGroup: 'グループなし',
+  shareGroup: 'グループを共有',
+  groupPeople: 'このグループのメンバー',
+  groupInviteMessage: 'I\'m Done のグループ「{group}」に参加してください：',
+  groupSharedHint: 'このグループは {n} 人と共有中です。ここに追加した新しいタスクも共有されます。',
+  groupShareDone: 'グループ全体を {name} さんと共有しました',
+  groupOnlyOwn: '共有できるのは自分が作成したタスクだけです。',
+  groupJoined: 'グループ「{group}」に参加しました',
+  shareInviteLink: '招待リンクを共有',
+  groupNobodyYet: 'まだ誰もいません。コードで追加するか、リンクを共有してください。',
 );
 
 const l10nKo = L10n(
@@ -1891,6 +1972,15 @@ const l10nKo = L10n(
   groupHint: '예: 집, 회사, 아이들',
   allGroups: '전체',
   noGroup: '그룹 없음',
+  shareGroup: '그룹 공유',
+  groupPeople: '이 그룹의 사람들',
+  groupInviteMessage: 'I\'m Done에서 내 그룹 “{group}”에 참여하세요:',
+  groupSharedHint: '이 그룹은 {n}명과 공유 중이에요. 여기에 추가한 새 할 일도 함께 공유돼요.',
+  groupShareDone: '그룹 전체를 {name} 님과 공유했어요',
+  groupOnlyOwn: '내가 만든 할 일만 공유할 수 있어요.',
+  groupJoined: '그룹 “{group}”에 참여했어요',
+  shareInviteLink: '초대 링크 공유',
+  groupNobodyYet: '아직 아무도 없어요. 코드로 추가하거나 링크를 공유하세요.',
 );
 
 const l10nPt = L10n(
@@ -2080,6 +2170,15 @@ const l10nPt = L10n(
   groupHint: 'ex.: Casa, Trabalho, Filhos',
   allGroups: 'Todas',
   noGroup: 'Sem grupo',
+  shareGroup: 'Compartilhar grupo',
+  groupPeople: 'Pessoas neste grupo',
+  groupInviteMessage: 'Entre no meu grupo "{group}" no I\'m Done:',
+  groupSharedHint: '{n} pessoas compartilham este grupo. Tarefas novas aqui também serão compartilhadas com elas.',
+  groupShareDone: 'O grupo inteiro agora está compartilhado com {name}',
+  groupOnlyOwn: 'Só as tarefas que você criou podem ser compartilhadas.',
+  groupJoined: 'Você entrou no grupo "{group}"',
+  shareInviteLink: 'Compartilhar link de convite',
+  groupNobodyYet: 'Ninguém ainda. Adicione alguém pelo código ou compartilhe o link.',
 );
 
 const l10nRu = L10n(
@@ -2269,6 +2368,15 @@ const l10nRu = L10n(
   groupHint: 'напр. Дом, Работа, Дети',
   allGroups: 'Все',
   noGroup: 'Без группы',
+  shareGroup: 'Поделиться группой',
+  groupPeople: 'Участники группы',
+  groupInviteMessage: 'Присоединяйтесь к моей группе «{group}» в I\'m Done:',
+  groupSharedHint: 'Эту группу видят {n} чел. Новые задачи здесь тоже будут общими.',
+  groupShareDone: 'Вся группа теперь доступна {name}',
+  groupOnlyOwn: 'Поделиться можно только задачами, которые создали вы.',
+  groupJoined: 'Вы присоединились к группе «{group}»',
+  shareInviteLink: 'Поделиться ссылкой-приглашением',
+  groupNobodyYet: 'Пока никого. Добавьте кого-нибудь по коду или поделитесь ссылкой.',
 );
 
 const l10nTr = L10n(
@@ -2458,6 +2566,15 @@ const l10nTr = L10n(
   groupHint: 'örn. Ev, İş, Çocuklar',
   allGroups: 'Tümü',
   noGroup: 'Grupsuz',
+  shareGroup: 'Grubu paylaş',
+  groupPeople: 'Bu gruptaki kişiler',
+  groupInviteMessage: 'I\'m Done\'daki "{group}" grubuma katıl:',
+  groupSharedHint: 'Bu grubu {n} kişi paylaşıyor. Buradaki yeni görevler de onlarla paylaşılır.',
+  groupShareDone: 'Tüm grup artık {name} ile paylaşılıyor',
+  groupOnlyOwn: 'Yalnızca sizin oluşturduğunuz görevler paylaşılabilir.',
+  groupJoined: '"{group}" grubuna katıldınız',
+  shareInviteLink: 'Davet bağlantısını paylaş',
+  groupNobodyYet: 'Henüz kimse yok. Kodla birini ekleyin veya bağlantıyı paylaşın.',
 );
 
 const l10nUk = L10n(
@@ -2647,6 +2764,15 @@ const l10nUk = L10n(
   groupHint: 'напр. Дім, Робота, Діти',
   allGroups: 'Усі',
   noGroup: 'Без групи',
+  shareGroup: 'Поділитися групою',
+  groupPeople: 'Учасники групи',
+  groupInviteMessage: 'Приєднуйтесь до моєї групи «{group}» в I\'m Done:',
+  groupSharedHint: 'Цю групу бачать {n} осіб. Нові завдання тут теж будуть спільними.',
+  groupShareDone: 'Уся група тепер доступна {name}',
+  groupOnlyOwn: 'Поділитися можна лише завданнями, які створили ви.',
+  groupJoined: 'Ви приєдналися до групи «{group}»',
+  shareInviteLink: 'Поділитися посиланням-запрошенням',
+  groupNobodyYet: 'Поки нікого. Додайте когось за кодом або поділіться посиланням.',
 );
 
 const l10nUr = L10n(
@@ -2836,6 +2962,15 @@ const l10nUr = L10n(
   groupHint: 'مثلاً گھر، کام، بچے',
   allGroups: 'سب',
   noGroup: 'کوئی گروپ نہیں',
+  shareGroup: 'گروپ شیئر کریں',
+  groupPeople: 'اس گروپ کے لوگ',
+  groupInviteMessage: 'I\'m Done پر میرے گروپ ”{group}“ میں شامل ہوں:',
+  groupSharedHint: 'یہ گروپ {n} لوگوں کے ساتھ شیئر ہے۔ یہاں کے نئے کام بھی ان کے ساتھ شیئر ہوں گے۔',
+  groupShareDone: 'پورا گروپ اب {name} کے ساتھ شیئر ہے',
+  groupOnlyOwn: 'صرف آپ کے بنائے ہوئے کام شیئر کیے جا سکتے ہیں۔',
+  groupJoined: 'آپ گروپ ”{group}“ میں شامل ہو گئے',
+  shareInviteLink: 'دعوتی لنک شیئر کریں',
+  groupNobodyYet: 'ابھی کوئی نہیں۔ کوڈ سے کسی کو شامل کریں یا لنک شیئر کریں۔',
 );
 
 const l10nZh = L10n(
@@ -3025,6 +3160,15 @@ const l10nZh = L10n(
   groupHint: '例如：家庭、工作、孩子',
   allGroups: '全部',
   noGroup: '未分组',
+  shareGroup: '共享分组',
+  groupPeople: '此分组的成员',
+  groupInviteMessage: '加入我在 I\'m Done 上的分组“{group}”：',
+  groupSharedHint: '此分组已与 {n} 人共享，这里的新任务也会共享给他们。',
+  groupShareDone: '整个分组已与 {name} 共享',
+  groupOnlyOwn: '只能共享你创建的任务。',
+  groupJoined: '你已加入分组“{group}”',
+  shareInviteLink: '分享邀请链接',
+  groupNobodyYet: '还没有人。通过代码添加，或分享链接。',
 );
 
 /// Every language the app can display, by ISO 639-1 code.

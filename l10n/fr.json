@@ -192,5 +192,14 @@
  "groupLabel": "Groupe",
  "groupHint": "ex. : Maison, Travail, Enfants",
  "allGroups": "Toutes",
- "noGroup": "Sans groupe"
+ "noGroup": "Sans groupe",
+ "shareGroup": "Partager le groupe",
+ "groupPeople": "Personnes dans ce groupe",
+ "groupInviteMessage": "Rejoignez mon groupe « {group} » sur I'm Done :",
+ "groupSharedHint": "{n} personnes partagent ce groupe. Les nouvelles tâches ici leur seront aussi partagées.",
+ "groupShareDone": "Tout le groupe est maintenant partagé avec {name}",
+ "groupOnlyOwn": "Seules les tâches que vous avez créées peuvent être partagées.",
+ "groupJoined": "Vous avez rejoint le groupe « {group} »",
+ "shareInviteLink": "Partager le lien d'invitation",
+ "groupNobodyYet": "Personne pour l'instant. Ajoutez quelqu'un par code ou partagez le lien."
 }

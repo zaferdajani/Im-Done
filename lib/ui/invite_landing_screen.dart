@@ -36,10 +36,15 @@ class _InviteLandingScreenState extends ConsumerState<InviteLandingScreen> {
     }
     setState(() => _busy = true);
     try {
-      final taskId = await ref.read(taskActionsProvider).join(widget.code);
+      final result = await ref.read(taskActionsProvider).join(widget.code);
       if (!mounted) return;
+      if (result.group case final g?) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.groupJoined.fill({'group': g}))));
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.joined)));
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => TaskDetailScreen(taskId: taskId)));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => TaskDetailScreen(taskId: result.taskId!)));
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);

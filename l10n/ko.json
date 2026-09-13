@@ -192,5 +192,14 @@
  "groupLabel": "그룹",
  "groupHint": "예: 집, 회사, 아이들",
  "allGroups": "전체",
- "noGroup": "그룹 없음"
+ "noGroup": "그룹 없음",
+ "shareGroup": "그룹 공유",
+ "groupPeople": "이 그룹의 사람들",
+ "groupInviteMessage": "I'm Done에서 내 그룹 “{group}”에 참여하세요:",
+ "groupSharedHint": "이 그룹은 {n}명과 공유 중이에요. 여기에 추가한 새 할 일도 함께 공유돼요.",
+ "groupShareDone": "그룹 전체를 {name} 님과 공유했어요",
+ "groupOnlyOwn": "내가 만든 할 일만 공유할 수 있어요.",
+ "groupJoined": "그룹 “{group}”에 참여했어요",
+ "shareInviteLink": "초대 링크 공유",
+ "groupNobodyYet": "아직 아무도 없어요. 코드로 추가하거나 링크를 공유하세요."
 }

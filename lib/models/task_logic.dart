@@ -120,3 +120,17 @@ int stableHash(String id) {
 int notificationId(String taskId, int dayOrdinal, int index) =>
     ((stableHash(taskId) * 8 + (dayOrdinal % 8)) * 64 + (index % 64)) &
     0x7fffffff;
+
+/// The people a group is shared with: everyone on any shared task in that
+/// group that [uid] created, minus [uid]. A new task filed under the group
+/// is shared with exactly these people.
+List<TaskMember> groupPeople(Iterable<Task> tasks, String group, String uid) {
+  final seen = <String, TaskMember>{};
+  for (final t in tasks) {
+    if (t.group != group || !t.isShared || t.ownerUid != uid || t.archived) continue;
+    for (final m in t.members) {
+      if (m.uid != uid) seen.putIfAbsent(m.uid, () => m);
+    }
+  }
+  return seen.values.toList();
+}

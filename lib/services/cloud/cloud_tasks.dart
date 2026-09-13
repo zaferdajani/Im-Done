@@ -158,6 +158,57 @@ class CloudTasks {
   }
 
   /// The creator adds a person directly by their personal code.
+  /// The owner appends people already known by uid (a group's members
+  /// following a new task into the group). Skips anyone already on it.
+  Future<void> addMembers(Task task, List<TaskMember> people) async {
+    final fresh = people.where((p) => !task.members.any((m) => m.uid == p.uid)).toList();
+    if (fresh.isEmpty) return;
+    await _col.doc(task.id).update({
+      'memberUids': FieldValue.arrayUnion([for (final p in fresh) p.uid]),
+      'members': FieldValue.arrayUnion([for (final p in fresh) p.toJson()]),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  /// What an invite code opens: one task, or a whole group of task codes.
+  Future<ResolvedInvite?> resolveInvite(String code) async {
+    final invite = await _db.collection('invites').doc(code).get();
+    final d = invite.data();
+    if (d == null) return null;
+    if (d['kind'] == 'group') {
+      return ResolvedInvite.group(
+        (d['group'] as String?) ?? '',
+        ((d['taskCodes'] as List?) ?? const []).whereType<String>().toList(),
+      );
+    }
+    final taskId = d['taskId'] as String?;
+    return taskId == null ? null : ResolvedInvite.task(taskId);
+  }
+
+  /// One invite per (creator, group): created on first share, and kept in
+  /// step with the group's task codes on every later call, so a link handed
+  /// out last week still opens the tasks added since.
+  Future<String> ensureGroupInvite(String uid, String group, List<String> taskCodes) async {
+    final existing = await _db.collection('invites').where('createdBy', isEqualTo: uid).where('kind', isEqualTo: 'group').where('group', isEqualTo: group).limit(1).get();
+    if (existing.docs.isNotEmpty) {
+      final d = existing.docs.first;
+      final have = ((d.data()['taskCodes'] as List?) ?? const []).whereType<String>().toSet();
+      if (!have.containsAll(taskCodes) || have.length != taskCodes.length) {
+        await d.reference.update({'taskCodes': taskCodes, 'updatedAt': FieldValue.serverTimestamp()});
+      }
+      return d.id;
+    }
+    final code = newInviteCode();
+    await _db.collection('invites').doc(code).set({
+      'kind': 'group',
+      'group': group,
+      'createdBy': uid,
+      'taskCodes': taskCodes,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+    return code;
+  }
+
   Future<void> addMemberByCode(Task task, String code) async {
     final person = await lookupPersonalCode(code);
     if (person == null) throw StateError('no such code');
@@ -203,4 +254,13 @@ class CloudTasks {
     if (code != null) await _db.collection('codes').doc(code).delete();
     await _db.collection('users').doc(uid).delete();
   }
+}
+
+class ResolvedInvite {
+  const ResolvedInvite.task(this.taskId) : group = null, taskCodes = const [];
+  const ResolvedInvite.group(this.group, this.taskCodes) : taskId = null;
+  final String? taskId;
+  final String? group;
+  final List<String> taskCodes;
+  bool get isGroup => group != null;
 }

@@ -37,6 +37,13 @@ await t('stranger cannot read', () => assertFails(getDoc(doc(db(stranger), 'task
 await t('invite readable by signed-in', () => assertSucceeds(getDoc(doc(db(stranger), 'invites/ABCD2345'))));
 await t('invite not readable anonymously', () => assertFails(getDoc(doc(anon, 'invites/ABCD2345'))));
 
+console.log('group invites');
+await t('creator makes a group invite', () => assertSucceeds(setDoc(doc(db(owner), 'invites/GRP00001'), { kind: 'group', group: 'Home', createdBy: owner, taskCodes: ['ABCD2345'] })));
+await t('creator grows it', () => assertSucceeds(updateDoc(doc(db(owner), 'invites/GRP00001'), { taskCodes: ['ABCD2345', 'ZZZZ9999'] })));
+await t('someone else cannot change it', () => assertFails(updateDoc(doc(db(stranger), 'invites/GRP00001'), { taskCodes: ['EVIL0000'] })));
+await t('creator cannot hand it to someone else', () => assertFails(updateDoc(doc(db(owner), 'invites/GRP00001'), { createdBy: stranger })));
+await t('a single-task invite cannot be repointed', () => assertFails(updateDoc(doc(db(owner), 'invites/ABCD2345'), { taskId: 'other' })));
+
 console.log('join');
 const joinPayload = (code) => ({ memberUids: arrayUnion(member), members: arrayUnion(bobMember), joinCode: code, updatedAt: 'now' });
 await t('join with wrong code refused', () => assertFails(updateDoc(doc(db(member), 'tasks/t1'), joinPayload('WRONG000'))));

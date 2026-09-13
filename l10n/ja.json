@@ -192,5 +192,14 @@
  "groupLabel": "グループ",
  "groupHint": "例：家、仕事、子ども",
  "allGroups": "すべて",
- "noGroup": "グループなし"
+ "noGroup": "グループなし",
+ "shareGroup": "グループを共有",
+ "groupPeople": "このグループのメンバー",
+ "groupInviteMessage": "I'm Done のグループ「{group}」に参加してください：",
+ "groupSharedHint": "このグループは {n} 人と共有中です。ここに追加した新しいタスクも共有されます。",
+ "groupShareDone": "グループ全体を {name} さんと共有しました",
+ "groupOnlyOwn": "共有できるのは自分が作成したタスクだけです。",
+ "groupJoined": "グループ「{group}」に参加しました",
+ "shareInviteLink": "招待リンクを共有",
+ "groupNobodyYet": "まだ誰もいません。コードで追加するか、リンクを共有してください。"
 }

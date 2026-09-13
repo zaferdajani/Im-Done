@@ -192,5 +192,14 @@
  "groupLabel": "જૂથ",
  "groupHint": "જેમ કે ઘર, કામ, બાળકો",
  "allGroups": "બધાં",
- "noGroup": "કોઈ જૂથ નહીં"
+ "noGroup": "કોઈ જૂથ નહીં",
+ "shareGroup": "જૂથ શેર કરો",
+ "groupPeople": "આ જૂથના લોકો",
+ "groupInviteMessage": "I'm Done પર મારા જૂથ “{group}” માં જોડાઓ:",
+ "groupSharedHint": "આ જૂથ {n} લોકો સાથે શેર છે. અહીંનાં નવાં કામ પણ તેમની સાથે શેર થશે.",
+ "groupShareDone": "આખું જૂથ હવે {name} સાથે શેર છે",
+ "groupOnlyOwn": "ફક્ત તમે બનાવેલાં કામ જ શેર થઈ શકે.",
+ "groupJoined": "તમે જૂથ “{group}” માં જોડાયા",
+ "shareInviteLink": "આમંત્રણ લિંક શેર કરો",
+ "groupNobodyYet": "હજી કોઈ નહીં. કોડથી કોઈને ઉમેરો અથવા લિંક શેર કરો."
 }

@@ -169,6 +169,15 @@ class L10n {
     required this.groupHint,
     required this.allGroups,
     required this.noGroup,
+    required this.shareGroup,
+    required this.groupPeople,
+    required this.groupInviteMessage,
+    required this.groupSharedHint,
+    required this.groupShareDone,
+    required this.groupOnlyOwn,
+    required this.groupJoined,
+    required this.shareInviteLink,
+    required this.groupNobodyYet,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -357,6 +366,15 @@ class L10n {
   final String groupHint;
   final String allGroups;
   final String noGroup;
+  final String shareGroup;
+  final String groupPeople;
+  final String groupInviteMessage;
+  final String groupSharedHint;
+  final String groupShareDone;
+  final String groupOnlyOwn;
+  final String groupJoined;
+  final String shareInviteLink;
+  final String groupNobodyYet;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;

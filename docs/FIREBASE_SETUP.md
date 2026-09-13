@@ -56,6 +56,15 @@ Messaging → Web Push certificates; not set up yet.
   leaves every task, archives owned ones, removes the code and profile, then
   deletes the Auth user (re-signing in first if Firebase asks).
 
+## Group invites
+
+`invites/{code}` holds either one task (`taskId`) or a GROUP (`kind: 'group'`,
+`group`, `taskCodes`: the invite codes of every task the creator has in that
+group). Joining a group link joins each task through its own code, so the
+per-task join rule is the only join rule; the group invite's creator may
+update its code list as tasks join the group (rule tested). Rules live:
+ruleset `eb2a807c-2d25-4269-b6fa-ae520ed6c0f8` (2026-09-13).
+
 ## Voice understanding — the same worker
 
 `POST /transcribe` on the push worker takes the recording and answers with the

@@ -192,5 +192,14 @@
  "groupLabel": "分组",
  "groupHint": "例如：家庭、工作、孩子",
  "allGroups": "全部",
- "noGroup": "未分组"
+ "noGroup": "未分组",
+ "shareGroup": "共享分组",
+ "groupPeople": "此分组的成员",
+ "groupInviteMessage": "加入我在 I'm Done 上的分组“{group}”：",
+ "groupSharedHint": "此分组已与 {n} 人共享，这里的新任务也会共享给他们。",
+ "groupShareDone": "整个分组已与 {name} 共享",
+ "groupOnlyOwn": "只能共享你创建的任务。",
+ "groupJoined": "你已加入分组“{group}”",
+ "shareInviteLink": "分享邀请链接",
+ "groupNobodyYet": "还没有人。通过代码添加，或分享链接。"
 }

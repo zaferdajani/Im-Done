@@ -104,6 +104,25 @@ void main() {
     expect(a, lessThan(0x7fffffff));
   });
 
+  test('a group is shared with everyone on my shared tasks in it, never me', () {
+    Task mk(String id, {String? group, bool shared = true, String owner = 'me', List<String> members = const []}) => Task(
+          id: id, title: id, kind: shared ? TaskKind.shared : TaskKind.personal, ownerUid: owner, ownerName: owner,
+          frequency: Frequency.daily, hour: 9, minute: 0, createdAt: DateTime(2026), group: group,
+          members: [for (final m in [owner, ...members]) TaskMember(uid: m, name: m.toUpperCase(), joinedAt: DateTime(2026))],
+        );
+    final tasks = [
+      mk('a', group: 'Home', members: ['bob', 'sara']),
+      mk('b', group: 'Home', members: ['sara', 'tom']),
+      mk('c', group: 'Work', members: ['zed']),
+      mk('d', group: 'Home', owner: 'bob', members: ['me', 'eve']), // not mine: eve does not follow
+      mk('e', group: 'Home', shared: false),
+    ];
+    final people = groupPeople(tasks, 'Home', 'me').map((m) => m.uid).toList();
+    expect(people, unorderedEquals(['bob', 'sara', 'tom']));
+    expect(groupPeople(tasks, 'Work', 'me').map((m) => m.uid), ['zed']);
+    expect(groupPeople(tasks, 'Nope', 'me'), isEmpty);
+  });
+
   test('json round trip', () {
     final t = make(f: Frequency.weekly, wd: {2, 5}, start: DateTime(2026, 9, 10), kind: TaskKind.shared,
         completions: {'2026-09-12': Completion(byUid: 'u2', byName: 'S', at: DateTime(2026, 9, 12, 9))});

@@ -192,5 +192,14 @@
  "groupLabel": "Grup",
  "groupHint": "örn. Ev, İş, Çocuklar",
  "allGroups": "Tümü",
- "noGroup": "Grupsuz"
+ "noGroup": "Grupsuz",
+ "shareGroup": "Grubu paylaş",
+ "groupPeople": "Bu gruptaki kişiler",
+ "groupInviteMessage": "I'm Done'daki \"{group}\" grubuma katıl:",
+ "groupSharedHint": "Bu grubu {n} kişi paylaşıyor. Buradaki yeni görevler de onlarla paylaşılır.",
+ "groupShareDone": "Tüm grup artık {name} ile paylaşılıyor",
+ "groupOnlyOwn": "Yalnızca sizin oluşturduğunuz görevler paylaşılabilir.",
+ "groupJoined": "\"{group}\" grubuna katıldınız",
+ "shareInviteLink": "Davet bağlantısını paylaş",
+ "groupNobodyYet": "Henüz kimse yok. Kodla birini ekleyin veya bağlantıyı paylaşın."
 }

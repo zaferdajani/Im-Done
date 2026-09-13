@@ -192,5 +192,14 @@
  "groupLabel": "Group",
  "groupHint": "e.g. Home, Work, Kids",
  "allGroups": "All",
- "noGroup": "No group"
+ "noGroup": "No group",
+ "shareGroup": "Share group",
+ "groupPeople": "People in this group",
+ "groupInviteMessage": "Join my group “{group}” on I'm Done:",
+ "groupSharedHint": "{n} people share this group. New tasks here are shared with them too.",
+ "groupShareDone": "The whole group is now shared with {name}",
+ "groupOnlyOwn": "Only the tasks you created can be shared.",
+ "groupJoined": "You joined the group “{group}”",
+ "shareInviteLink": "Share invite link",
+ "groupNobodyYet": "Nobody yet. Add someone by code or share the link."
 }

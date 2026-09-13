@@ -7,6 +7,7 @@ import '../models/task_logic.dart';
 import '../services/voice/understanding_service.dart';
 import '../state/providers.dart';
 import 'format.dart';
+import 'group_share_sheet.dart';
 import 'settings_screen.dart';
 import 'task_detail_screen.dart';
 import 'task_editor_sheet.dart';
@@ -92,17 +93,35 @@ class HomeScreen extends ConsumerWidget {
           if (groups.isNotEmpty)
             SizedBox(
               height: 44,
-              child: ListView(
+              child: Row(children: [
+                Expanded(
+                  child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   _GroupChip(label: l.allGroups, selected: activeFilter == null, onTap: () => ref.read(groupFilterProvider.notifier).set(null)),
                   for (final g in groups)
-                    _GroupChip(label: g, selected: activeFilter == g, onTap: () => ref.read(groupFilterProvider.notifier).set(g)),
+                    _GroupChip(
+                      label: g,
+                      selected: activeFilter == g,
+                      onTap: () => ref.read(groupFilterProvider.notifier).set(g),
+                      onLongPress: () => showGroupShareSheet(context, g),
+                    ),
                   if (hasUngrouped)
                     _GroupChip(label: l.noGroup, selected: activeFilter == '', onTap: () => ref.read(groupFilterProvider.notifier).set('')),
                 ],
               ),
+                ),
+                if (activeFilter != null && activeFilter.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 8),
+                    child: IconButton.filledTonal(
+                      tooltip: l.shareGroup,
+                      icon: const Icon(Icons.person_add_alt_1_rounded, size: 20),
+                      onPressed: () => showGroupShareSheet(context, activeFilter),
+                    ),
+                  ),
+              ]),
             ),
           Expanded(
             child: allTasks.isEmpty
@@ -209,13 +228,17 @@ class _Empty extends StatelessWidget {
 }
 
 class _GroupChip extends StatelessWidget {
-  const _GroupChip({required this.label, required this.selected, required this.onTap});
+  const _GroupChip({required this.label, required this.selected, required this.onTap, this.onLongPress});
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsetsDirectional.only(end: 8),
-        child: ChoiceChip(label: Text(label), selected: selected, onSelected: (_) => onTap(), showCheckmark: false),
+        child: GestureDetector(
+          onLongPress: onLongPress,
+          child: ChoiceChip(label: Text(label), selected: selected, onSelected: (_) => onTap(), showCheckmark: false),
+        ),
       );
 }

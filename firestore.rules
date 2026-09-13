@@ -90,7 +90,12 @@ service cloud.firestore {
       allow read: if signedIn();
       allow create: if signedIn() && request.resource.data.createdBy == uid();
       allow delete: if signedIn() && resource.data.createdBy == uid();
-      allow update: if false;
+      // A GROUP invite lists the task codes it opens and grows when a task
+      // joins the group; only its creator may change it, and never who
+      // created it or which task a single-task invite points at.
+      allow update: if signedIn() && resource.data.createdBy == uid()
+        && request.resource.data.createdBy == uid()
+        && request.resource.data.get('taskId', null) == resource.data.get('taskId', null);
     }
 
     // Personal codes: the code IS what you hand out. A signed-in person may

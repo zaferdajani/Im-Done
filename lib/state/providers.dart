@@ -9,6 +9,7 @@ import '../l10n/strings.dart';
 import '../l10n/supported.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
+import '../services/cloud/cloud.dart';
 import '../services/settings_store.dart';
 import 'bootstrap.dart';
 
@@ -155,9 +156,16 @@ class TaskActions {
         createdAt: DateTime.now(),
       );
 
+  /// People a group is shared with, from the caller's own tasks.
+  List<TaskMember> peopleOfGroup(String group) => groupPeople(ref.read(allTasksProvider), group, ref.read(myUidProvider));
+
   Future<Task> save(Task t) async {
+    // A task filed under a group that is shared with people is shared with
+    // them too — that is what sharing a group means.
+    final user = ref.read(authUserProvider).value;
+    final inherit = t.group != null && user != null ? peopleOfGroup(t.group!) : const <TaskMember>[];
+    if (!t.isShared && inherit.isNotEmpty) t = t.copyWith(kind: TaskKind.shared);
     if (t.isShared) {
-      final user = ref.read(authUserProvider).value;
       if (user == null) throw StateError('sign-in required');
       final me = TaskMember(uid: user.uid, name: ref.read(myNameProvider), joinedAt: DateTime.now());
       final existing = ref.read(allTasksProvider).where((x) => x.id == t.id).firstOrNull;
@@ -165,9 +173,12 @@ class TaskActions {
         // Brand-new shared task (or a personal one being turned shared).
         final shared = t.copyWith(ownerUid: user.uid, ownerName: me.name, members: [me]);
         if (existing != null) await ref.read(localTasksProvider.notifier).remove(t.id);
-        return _b.cloudTasks.create(shared);
+        final created = await _b.cloudTasks.create(shared);
+        await _followGroup(created, inherit);
+        return created;
       }
       await _b.cloudTasks.update(t);
+      if (t.ownerUid == user.uid) await _followGroup(t, inherit);
       return t;
     }
     await ref.read(localTasksProvider.notifier).upsert(t.copyWith(ownerUid: localOwnerUid));
@@ -222,10 +233,87 @@ class TaskActions {
     _b.push.notify('rejected', t.id, toUid: claimant);
   }
 
-  Future<String> join(String code) async {
-    final taskId = await _b.cloudTasks.joinByCode(code, ref.read(myUidProvider), ref.read(myNameProvider));
-    _b.push.notify('joined', taskId);
-    return taskId;
+  /// The group's people follow a task into the group; each is told once.
+  Future<void> _followGroup(Task t, List<TaskMember> people) async {
+    final fresh = people.where((p) => !t.members.any((m) => m.uid == p.uid)).toList();
+    if (fresh.isEmpty) return;
+    await _b.cloudTasks.addMembers(t, fresh);
+    for (final p in fresh) {
+      _b.push.notify('added', t.id, toUid: p.uid);
+    }
+    await _refreshGroupInvite(t.group!);
+  }
+
+  /// Joins whatever the code opens: one task, or every task of a group.
+  /// Returns the group name when it was a group, else the task id.
+  Future<JoinResult> join(String code) async {
+    final invite = await _b.cloudTasks.resolveInvite(code);
+    if (invite == null) throw StateError('invite not found');
+    final uid = ref.read(myUidProvider);
+    final name = ref.read(myNameProvider);
+    if (!invite.isGroup) {
+      final taskId = await _b.cloudTasks.joinByCode(code, uid, name);
+      _b.push.notify('joined', taskId);
+      return JoinResult(taskId: taskId);
+    }
+    var joined = 0;
+    for (final taskCode in invite.taskCodes) {
+      try {
+        final taskId = await _b.cloudTasks.joinByCode(taskCode, uid, name);
+        _b.push.notify('joined', taskId);
+        joined++;
+      } catch (_) {
+        // A task since archived or deleted: the rest of the group still joins.
+      }
+    }
+    if (joined == 0 && invite.taskCodes.isNotEmpty) throw StateError('invite not found');
+    ref.read(groupFilterProvider.notifier).set(invite.group);
+    return JoinResult(group: invite.group, joined: joined);
+  }
+
+  /// Shares every task the caller created in [group] with the holder of a
+  /// personal code, turning personal tasks into shared ones on the way.
+  /// Returns how many tasks now include that person.
+  Future<int> shareGroupByCode(String group, String code) async {
+    final clean = code.trim().toUpperCase();
+    final person = await _b.cloudTasks.lookupPersonalCode(clean);
+    if (person == null) throw StateError('no such code');
+    final uid = ref.read(myUidProvider);
+    var count = 0;
+    for (final t in ref.read(allTasksProvider).where((t) => t.group == group && !t.archived && (t.ownerUid == uid || t.ownerUid == localOwnerUid))) {
+      var shared = t;
+      if (!t.isShared) shared = await save(t.copyWith(kind: TaskKind.shared));
+      if (shared.members.any((m) => m.uid == person.uid)) {
+        count++;
+        continue;
+      }
+      await _b.cloudTasks.addMembers(shared, [person]);
+      _b.push.notify('added', shared.id, toUid: person.uid);
+      count++;
+    }
+    await _refreshGroupInvite(group);
+    return count;
+  }
+
+  /// The link that lets anyone join the whole group. Personal tasks in the
+  /// group become shared first, because a link can only open shared tasks.
+  Future<String> groupInviteLink(String group) async {
+    for (final t in ref.read(allTasksProvider).where((t) => t.group == group && !t.archived && !t.isShared)) {
+      await save(t.copyWith(kind: TaskKind.shared));
+    }
+    final code = await _refreshGroupInvite(group);
+    if (code == null) throw StateError('nothing to share');
+    return '${Cloud.inviteBaseUrl}/$code';
+  }
+
+  Future<String?> _refreshGroupInvite(String group) async {
+    final uid = ref.read(myUidProvider);
+    final codes = [
+      for (final t in ref.read(allTasksProvider))
+        if (t.group == group && t.isShared && t.ownerUid == uid && !t.archived && t.inviteCode != null) t.inviteCode!,
+    ];
+    if (codes.isEmpty) return null;
+    return _b.cloudTasks.ensureGroupInvite(uid, group, codes);
   }
 
   Future<void> deleteAccount() => _b.auth.deleteAccount(_b.cloudTasks.eraseEverythingOf);
@@ -294,3 +382,10 @@ final incomingInviteProvider = StreamProvider<String>((ref) {
   });
   return ctl.stream;
 });
+
+class JoinResult {
+  const JoinResult({this.taskId, this.group, this.joined = 1});
+  final String? taskId;
+  final String? group;
+  final int joined;
+}
