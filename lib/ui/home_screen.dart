@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../l10n/strings.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
+import '../services/voice/understanding_service.dart';
 import '../state/providers.dart';
 import 'format.dart';
 import 'settings_screen.dart';
@@ -15,10 +16,14 @@ import 'widgets/hold_to_talk_button.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  Future<void> _create(BuildContext context, WidgetRef ref, {String? spoken}) async {
+  Future<void> _create(BuildContext context, WidgetRef ref, {String? spoken, Understanding? understood}) async {
     final actions = ref.read(taskActionsProvider);
     var draft = actions.newDraft();
-    if (spoken != null) draft = draftFromSpeech(draft, spoken);
+    if (understood != null) {
+      draft = applyUnderstanding(draft, understood);
+    } else if (spoken != null) {
+      draft = draftFromSpeech(draft, spoken);
+    }
     final saved = await showTaskEditor(context, draft: draft, isNew: true);
     if (saved != null && saved.isShared && context.mounted) {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => TaskDetailScreen(taskId: saved.id, openInvite: true)));
@@ -130,6 +135,7 @@ class HomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 6, bottom: 6),
               child: HoldToTalkButton(
                 onTranscript: (text) => _create(context, ref, spoken: text),
+                onUnderstood: (u) => _create(context, ref, understood: u),
                 onTypeInstead: () => _create(context, ref),
               ),
             ),

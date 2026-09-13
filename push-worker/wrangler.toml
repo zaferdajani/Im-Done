@@ -4,6 +4,8 @@ compatibility_date = "2026-09-01"
 
 # Secrets (set with `wrangler secret put NAME`):
 #   FIREBASE_SERVICE_ACCOUNT  the JSON key of the Firebase service account
+#   GROQ_API_KEY              free key from console.groq.com (voice → text, all languages)
+#   GEMINI_API_KEY            optional fallback, free key from aistudio.google.com
 # Vars:
 [vars]
 FIREBASE_PROJECT_ID = "im-done-17215"

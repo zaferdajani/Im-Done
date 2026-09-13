@@ -28,7 +28,7 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
 | Third-party SDK manifests/signatures | Firebase, Google Sign-In and Flutter plugins at current versions ship their own manifests; run `find ios/Pods -name PrivacyInfo.xcprivacy` after `pod install` to confirm (verify) | [Apple](https://developer.apple.com/support/third-party-SDK-requirements) |
 | targetSdk 36, 16 KB pages | Flutter 3.47 defaults: compileSdk/targetSdk 36, minSdk 24; AGP 9.1 + current NDK build 16 KB-aligned libraries | [Play](https://support.google.com/googleplay/android-developer/answer/11926878) |
 | Arabic + RTL | Every string in `lib/l10n/strings.dart` has en + ar; Material localizations for ar; RTL from the locale | Play pre-launch accessibility |
-| Speech data handling | Audio goes to the OS recogniser (Apple Speech / Android SpeechRecognizer) and is never written to disk or sent to I'm Done's backend; only the transcript text is kept | Data safety / App Privacy |
+| Speech data handling | Default: the recording is sent (TLS) to I'm Done's worker, transcribed by Groq Whisper / Gemini in memory and discarded; text + language kept. Declare **Audio: collected, processed ephemerally, not shared for ads** on Play Data safety and **Audio Data** on App Privacy. Optional device-only mode uses the OS recogniser and sends nothing | Data safety / App Privacy |
 | Deep links | Android App Links intent filter with `autoVerify` for `https://imdone.me/j/*` + `imdone://join`; iOS associated domain `applinks:imdone.me` + URL scheme | see B |
 | Age rating / Kids | No child-directed content; do not opt into Families or Kids categories; target 4+ | Apple age ratings 2026 |
 
@@ -52,8 +52,9 @@ Play 16 KB page size since 1 Nov 2025. Android developer verification first enfo
 - [ ] **App Privacy (Apple) / Data safety (Play) forms**, consistent with the build:
   *Email, Name, User ID* (account, only if the user signs in), *Device ID* (push token),
   *User content* (task text), all "not used for tracking", encrypted in transit, deletable.
-  **Audio:** declare voice as processed but not collected only if the final speech path is
-  on-device; Android's `SpeechRecognizer` and Apple's server recognition may route audio through
+  **Audio:** the default path sends audio to I'm Done's own worker (and on to Groq / Google
+  Gemini as processors), so declare audio as collected and processed ephemerally; only the
+  device-only setting is on-device; Android's `SpeechRecognizer` and Apple's server recognition may route audio through
   Google/Apple — say so in the policy (verify against the shipping build; this is the most
   commonly mis-declared item for voice apps).
 - [ ] **Demo account in review notes** (Apple 2.1): a Google-authenticated test account already

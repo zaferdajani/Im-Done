@@ -45,6 +45,10 @@ final authUserProvider = StreamProvider<User?>((ref) {
 });
 
 /// Signed-in uid, or the local pseudo-owner when there is no account.
+/// True when sharing must first ask who this is: nobody is signed in, or
+/// only a nameless anonymous identity (created silently for voice) exists.
+bool needsSignIn(User? user) => user == null || (user.isAnonymous && (user.displayName ?? '').trim().isEmpty);
+
 final myUidProvider = Provider<String>((ref) => ref.watch(authUserProvider).value?.uid ?? localOwnerUid);
 
 final myNameProvider = Provider<String>((ref) {

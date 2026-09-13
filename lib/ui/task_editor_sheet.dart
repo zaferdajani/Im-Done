@@ -95,7 +95,7 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.cloudUnavailable)));
       return;
     }
-    if (ref.read(authUserProvider).value == null) {
+    if (needsSignIn(ref.read(authUserProvider).value)) {
       final user = await showSignInSheet(context);
       if (user == null) return;
     }

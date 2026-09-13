@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../core/theme.dart';
 import '../l10n/strings.dart';
+import '../models/languages.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
 import '../services/cloud/cloud.dart';
@@ -103,11 +104,17 @@ class TaskDetailScreen extends ConsumerWidget {
                 text: task.nagEveryMinutes == 0 ? l.nagOff : '${l.nagEvery} ${task.nagEveryMinutes} min × ${task.nagRepeats}',
               ),
               _Pill(icon: task.isShared ? Icons.group_rounded : Icons.person_rounded, text: task.isShared ? l.kindShared : l.kindPersonal),
+              if (languageLabel(task.language, task.dialect, lang) case final spoken?)
+                _Pill(icon: Icons.translate_rounded, text: '${l.spokenIn} $spoken'),
             ],
           ),
           if (task.note?.trim().isNotEmpty == true) ...[
             const SizedBox(height: 14),
             Text(task.note!.trim(), style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 15, height: 1.4)),
+          ],
+          if (task.transcript?.trim().isNotEmpty == true && task.transcript!.trim() != task.title.trim()) ...[
+            const SizedBox(height: 10),
+            Text('${l.heardLabel}: “${task.transcript!.trim()}”', style: TextStyle(color: scheme.outline, fontSize: 13, fontStyle: FontStyle.italic)),
           ],
           const SizedBox(height: 24),
           // ------------------------------------------------ today's status

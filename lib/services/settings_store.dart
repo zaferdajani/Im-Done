@@ -6,26 +6,35 @@ class AppSettings {
     required this.languageCode, // null = follow the system
     required this.onboarded,
     required this.displayName,
+    this.voiceEngine = VoiceEngine.cloud,
   });
 
   final String? languageCode;
   final bool onboarded;
   final String displayName;
 
-  AppSettings copyWith({String? languageCode, bool clearLanguage = false, bool? onboarded, String? displayName}) =>
+  /// Where speech is understood: the cloud (every language, needs internet)
+  /// or the phone's own recogniser (English/Arabic, nothing leaves it).
+  final VoiceEngine voiceEngine;
+
+  AppSettings copyWith({String? languageCode, bool clearLanguage = false, bool? onboarded, String? displayName, VoiceEngine? voiceEngine}) =>
       AppSettings(
         languageCode: clearLanguage ? null : (languageCode ?? this.languageCode),
         onboarded: onboarded ?? this.onboarded,
         displayName: displayName ?? this.displayName,
+        voiceEngine: voiceEngine ?? this.voiceEngine,
       );
 
   static const empty = AppSettings(languageCode: null, onboarded: false, displayName: '');
 }
 
+enum VoiceEngine { cloud, device }
+
 class SettingsStore {
   static const _kLang = 'languageCode';
   static const _kOnboarded = 'onboarded';
   static const _kName = 'displayName';
+  static const _kVoice = 'voiceEngine';
 
   Future<AppSettings> read() async {
     final p = await SharedPreferences.getInstance();
@@ -33,6 +42,7 @@ class SettingsStore {
       languageCode: p.getString(_kLang),
       onboarded: p.getBool(_kOnboarded) ?? false,
       displayName: p.getString(_kName) ?? '',
+      voiceEngine: p.getString(_kVoice) == 'device' ? VoiceEngine.device : VoiceEngine.cloud,
     );
   }
 
@@ -45,5 +55,6 @@ class SettingsStore {
     }
     await p.setBool(_kOnboarded, s.onboarded);
     await p.setString(_kName, s.displayName);
+    await p.setString(_kVoice, s.voiceEngine.name);
   }
 }

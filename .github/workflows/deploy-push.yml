@@ -15,6 +15,9 @@ jobs:
     defaults:
       run:
         working-directory: push-worker
+    env:
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      HAS_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,9 +25,13 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm test
-      - run: npx wrangler deploy
+      # Without the token the worker is deployed by hand (wrangler deploy);
+      # the tests above still guard every change.
+      - if: ${{ env.HAS_TOKEN == 'true' }}
+        run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      - run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | npx wrangler secret put FIREBASE_SERVICE_ACCOUNT
+      - if: ${{ env.HAS_TOKEN == 'true' && env.HAS_SA == 'true' }}
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' | npx wrangler secret put FIREBASE_SERVICE_ACCOUNT
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

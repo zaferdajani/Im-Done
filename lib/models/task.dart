@@ -101,6 +101,9 @@ class Task {
     this.completions = const {},
     this.inviteCode,
     this.archived = false,
+    this.language,
+    this.dialect,
+    this.transcript,
   });
 
   final String id;
@@ -139,6 +142,12 @@ class Task {
   final String? inviteCode;
   final bool archived;
 
+  /// Language the task was spoken in (ISO 639-1), the Arabic variety when
+  /// known, and the words as heard. Null for typed tasks.
+  final String? language;
+  final String? dialect;
+  final String? transcript;
+
   bool get isShared => kind == TaskKind.shared;
 
   Task copyWith({
@@ -162,6 +171,9 @@ class Task {
     Map<String, Completion>? completions,
     String? inviteCode,
     bool? archived,
+    String? language,
+    String? dialect,
+    String? transcript,
   }) =>
       Task(
         id: id,
@@ -184,6 +196,9 @@ class Task {
         completions: completions ?? this.completions,
         inviteCode: inviteCode ?? this.inviteCode,
         archived: archived ?? this.archived,
+        language: language ?? this.language,
+        dialect: dialect ?? this.dialect,
+        transcript: transcript ?? this.transcript,
       );
 
   Map<String, dynamic> toJson() => {
@@ -208,6 +223,9 @@ class Task {
         'completions': completions.map((k, v) => MapEntry(k, v.toJson())),
         'inviteCode': inviteCode,
         'archived': archived,
+        if (language != null) 'language': language,
+        if (dialect != null) 'dialect': dialect,
+        if (transcript != null) 'transcript': transcript,
       };
 
   static Task fromJson(Map<String, dynamic> j) => Task(
@@ -243,6 +261,9 @@ class Task {
         ),
         inviteCode: j['inviteCode'] as String?,
         archived: (j['archived'] as bool?) ?? false,
+        language: j['language'] as String?,
+        dialect: j['dialect'] as String?,
+        transcript: j['transcript'] as String?,
       );
 
   String encode() => jsonEncode(toJson());

@@ -1,10 +1,19 @@
-// I'm Done push sender — the one piece of server the free Firebase plan
-// lacks. A phone calls POST /notify with its Firebase sign-in token and
-// {taskId, kind, toUid?}; this worker checks the caller really is a member
-// of that task, decides who may be told (logic.mjs), and sends the push
-// through Firebase Cloud Messaging with a service-account key that never
-// leaves here.
+// I'm Done's only server, a free Cloudflare Worker with two jobs:
+//
+//   POST /notify      push between phones. The caller sends its Firebase
+//                     sign-in token and {taskId, kind, toUid?}; the worker
+//                     checks membership, decides recipients (logic.mjs) and
+//                     sends through Firebase Cloud Messaging with a
+//                     service-account key that never leaves here.
+//   POST /transcribe  voice → task. The caller sends the recorded audio; the
+//                     worker transcribes it with automatic language detection
+//                     (Groq's Whisper large-v3-turbo, free tier), then asks a
+//                     free language model to turn the words into task fields
+//                     and, for Arabic, to name the dialect (understand.mjs).
+//                     Falls back to Gemini when a key for it is set. Audio is
+//                     processed in memory and never stored.
 import { KINDS, message, recipients } from './logic.mjs';
+import { audioAcceptable, buildSystemPrompt, buildUserPrompt, languageCode, parseUnderstanding } from './understand.mjs';
 
 const GOOGLE_CERTS = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com';
 
@@ -13,7 +22,10 @@ export default {
     const cors = corsHeaders(request);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     const url = new URL(request.url);
-    if (request.method !== 'POST' || url.pathname !== '/notify') {
+    if (request.method === 'GET' && url.pathname === '/health') {
+      return json({ ok: true, transcribe: Boolean(env.GROQ_API_KEY || env.GEMINI_API_KEY) }, 200, cors);
+    }
+    if (request.method !== 'POST' || !['/notify', '/transcribe'].includes(url.pathname)) {
       return json({ error: 'not found' }, 404, cors);
     }
     try {
@@ -26,6 +38,7 @@ export default {
       } catch {
         return json({ error: 'unauthenticated' }, 401, cors);
       }
+      if (url.pathname === '/transcribe') return transcribe(request, env, cors);
 
       const body = await request.json().catch(() => ({}));
       const kind = String(body.kind ?? '');
@@ -60,9 +73,143 @@ export default {
 function corsHeaders(request) {
   return {
     'Access-Control-Allow-Origin': request.headers.get('Origin') ?? '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Now, X-Weekday, X-Ui-Language',
   };
+}
+
+// ---------------------------------------------------------------- voice → task
+const GROQ = 'https://api.groq.com/openai/v1';
+const WHISPER_MODEL = 'whisper-large-v3-turbo';
+const CHAT_MODELS = ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b'];
+const GEMINI_MODEL = 'gemini-2.5-flash';
+
+async function transcribe(request, env, cors) {
+  if (!env.GROQ_API_KEY && !env.GEMINI_API_KEY) return json({ error: 'transcription not configured' }, 503, cors);
+  const contentType = request.headers.get('Content-Type') ?? 'audio/wav';
+  const audio = new Uint8Array(await request.arrayBuffer());
+  const check = audioAcceptable(audio.byteLength, contentType);
+  if (!check.ok) return json({ error: check.reason }, 400, cors);
+  const context = {
+    now: sanitize(request.headers.get('X-Now'), 40) || new Date().toISOString(),
+    weekday: sanitize(request.headers.get('X-Weekday'), 12) || 'unknown weekday',
+    uiLanguage: sanitize(request.headers.get('X-Ui-Language'), 8) || 'en',
+  };
+
+  let transcript = null;
+  let detected = null;
+  let engine = null;
+  if (env.GROQ_API_KEY) {
+    try {
+      const w = await groqWhisper(env.GROQ_API_KEY, audio, contentType);
+      transcript = w.text;
+      detected = w.language;
+      engine = 'groq-whisper';
+    } catch (e) {
+      if (!env.GEMINI_API_KEY) return json({ error: 'transcription failed', detail: String(e?.message ?? e) }, 502, cors);
+    }
+  }
+  if (transcript === null && env.GEMINI_API_KEY) {
+    // Gemini hears the audio and structures it in one call.
+    try {
+      const raw = await geminiUnderstand(env.GEMINI_API_KEY, audio, contentType, context);
+      const parsed = parseUnderstanding(raw, extractTranscript(raw), null);
+      return json({ ...parsed, engine: 'gemini' }, 200, cors);
+    } catch (e) {
+      return json({ error: 'transcription failed', detail: String(e?.message ?? e) }, 502, cors);
+    }
+  }
+  if (!transcript || !transcript.trim()) return json({ error: 'nothing heard' }, 422, cors);
+
+  let raw = null;
+  if (env.GROQ_API_KEY) {
+    for (const model of CHAT_MODELS) {
+      try {
+        raw = await groqChat(env.GROQ_API_KEY, model, buildSystemPrompt(context), buildUserPrompt(transcript, detected));
+        engine += `+${model}`;
+        break;
+      } catch { /* next model */ }
+    }
+  }
+  if (raw === null && env.GEMINI_API_KEY) {
+    try {
+      raw = await geminiText(env.GEMINI_API_KEY, buildSystemPrompt(context), buildUserPrompt(transcript, detected));
+      engine += '+gemini';
+    } catch { /* fall through: title = transcript */ }
+  }
+  // With no structuring model the transcript itself becomes the task title.
+  const parsed = parseUnderstanding(raw ?? '{}', transcript, detected);
+  return json({ ...parsed, engine }, 200, cors);
+}
+
+function sanitize(v, max) {
+  return v ? String(v).replace(/[^A-Za-z0-9:+\-T.Z _]/g, '').slice(0, max) : '';
+}
+function extractTranscript(raw) {
+  try {
+    const m = String(raw).match(/\{[\s\S]*\}/);
+    const j = m ? JSON.parse(m[0]) : {};
+    return typeof j.transcript === 'string' ? j.transcript : '';
+  } catch {
+    return '';
+  }
+}
+
+async function groqWhisper(key, audio, contentType) {
+  const form = new FormData();
+  const ext = /wav/.test(contentType) ? 'wav' : /webm/.test(contentType) ? 'webm' : /ogg/.test(contentType) ? 'ogg' : /mp4|m4a|aac/.test(contentType) ? 'm4a' : 'wav';
+  form.append('file', new Blob([audio], { type: contentType }), `speech.${ext}`);
+  form.append('model', WHISPER_MODEL);
+  form.append('response_format', 'verbose_json');
+  form.append('temperature', '0');
+  // No `language`: that is what turns detection on.
+  const res = await fetch(`${GROQ}/audio/transcriptions`, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form });
+  if (!res.ok) throw new Error(`whisper ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const j = await res.json();
+  return { text: String(j.text ?? ''), language: languageCode(j.language) };
+}
+
+async function groqChat(key, model, system, user) {
+  const res = await fetch(`${GROQ}/chat/completions`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      temperature: 0,
+      max_tokens: 400,
+      response_format: { type: 'json_object' },
+      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+    }),
+  });
+  if (!res.ok) throw new Error(`chat ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const j = await res.json();
+  return j.choices?.[0]?.message?.content ?? '{}';
+}
+
+async function geminiUnderstand(key, audio, contentType, context) {
+  const prompt = buildSystemPrompt(context) + '\nAlso include "transcript": the exact words spoken, in their original language.';
+  return geminiGenerate(key, [
+    { text: prompt },
+    { inlineData: { mimeType: contentType.split(';')[0], data: base64(audio) } },
+  ]);
+}
+async function geminiText(key, system, user) {
+  return geminiGenerate(key, [{ text: `${system}\n\n${user}` }]);
+}
+async function geminiGenerate(key, parts) {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { temperature: 0, responseMimeType: 'application/json' } }),
+  });
+  if (!res.ok) throw new Error(`gemini ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const j = await res.json();
+  return j.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '{}';
+}
+function base64(bytes) {
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
 }
 function json(obj, status, headers) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', ...headers } });

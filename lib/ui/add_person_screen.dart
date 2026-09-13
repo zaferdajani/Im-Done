@@ -34,7 +34,7 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
       setState(() => _loading = false);
       return;
     }
-    if (ref.read(authUserProvider).value == null) {
+    if (needsSignIn(ref.read(authUserProvider).value)) {
       final user = await showSignInSheet(context);
       if (user == null) {
         if (mounted) Navigator.of(context).maybePop();

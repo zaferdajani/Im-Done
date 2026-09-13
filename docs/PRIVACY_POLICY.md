@@ -11,10 +11,14 @@ lets you share a task with people you invite.
 **Personal tasks stay on your phone.** Tasks you create for yourself, their reminders and your
 settings are stored only on your device. They are not sent to us. No account is needed.
 
-**Voice.** When you hold the microphone button, your phone's own speech service (Apple Speech on
-iPhone, Google speech recognition on Android) converts your voice to text. I'm Done keeps only the
-text. I'm Done does not record, store or transmit audio. Apple or Google may process the audio on
-their servers under their own policies.
+**Voice.** When you hold the microphone button, I'm Done records your voice and, by default,
+sends that recording over an encrypted connection to I'm Done's own processing service, which
+uses a speech-recognition model to turn it into text in whatever language you spoke and to read
+the task and its schedule out of the words. The recording is processed in memory and discarded
+immediately; it is never stored, and only the text, the detected language and the task fields are
+kept with your task. If you prefer, Settings → Voice switches to your phone's own speech service
+(Apple Speech on iPhone, Google speech recognition on Android), in which case no audio leaves the
+phone and only English and Arabic are recognised.
 
 **Shared tasks need an account.** If you share a task or accept an invitation, you sign in with
 Google or Apple. We then store: your name and email (from the sign-in provider), a user ID, the

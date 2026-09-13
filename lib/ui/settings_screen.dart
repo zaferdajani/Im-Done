@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
 import '../services/cloud/cloud.dart';
+import '../services/settings_store.dart';
 import '../state/providers.dart';
 import 'sign_in_sheet.dart';
 import 'widgets/my_code_card.dart';
@@ -49,6 +50,29 @@ class SettingsScreen extends ConsumerWidget {
                     v == 'system' ? settings.copyWith(clearLanguage: true) : settings.copyWith(languageCode: v),
                   );
             },
+          ),
+          _Section(l.voiceSection),
+          Card(
+            child: RadioGroup<VoiceEngine>(
+              groupValue: settings.voiceEngine,
+              onChanged: (v) => ref.read(settingsProvider.notifier).update(settings.copyWith(voiceEngine: v)),
+              child: Column(
+                children: [
+                  RadioListTile<VoiceEngine>(
+                    value: VoiceEngine.cloud,
+                    title: Text(l.voiceCloudTitle),
+                    subtitle: Text(l.voiceCloudBody),
+                    isThreeLine: true,
+                  ),
+                  RadioListTile<VoiceEngine>(
+                    value: VoiceEngine.device,
+                    title: Text(l.voiceDeviceTitle),
+                    subtitle: Text(l.voiceDeviceBody),
+                    isThreeLine: true,
+                  ),
+                ],
+              ),
+            ),
           ),
           _Section(l.notifications),
           Card(

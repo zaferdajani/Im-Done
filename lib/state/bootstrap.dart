@@ -10,6 +10,8 @@ import '../services/local_store.dart';
 import '../services/reminder_scheduler.dart';
 import '../services/settings_store.dart';
 import '../services/speech_service.dart';
+import '../services/voice/recorder_service.dart';
+import '../services/voice/understanding_service.dart';
 
 /// Everything that must exist before the first frame, built once in main().
 class AppBootstrap {
@@ -20,6 +22,8 @@ class AppBootstrap {
     required this.initialTasks,
     required this.scheduler,
     required this.speech,
+    required this.recorder,
+    required this.understanding,
     required this.auth,
     required this.cloudTasks,
     required this.push,
@@ -32,6 +36,8 @@ class AppBootstrap {
   final List<Task> initialTasks;
   final ReminderScheduler scheduler;
   final SpeechService speech;
+  final RecorderService recorder;
+  final UnderstandingService understanding;
   final AuthService auth;
   final CloudTasks cloudTasks;
   final PushService push;
@@ -53,6 +59,8 @@ class AppBootstrap {
       initialTasks: tasks,
       scheduler: ReminderScheduler(FlutterLocalNotificationsPlugin()),
       speech: SpeechService(),
+      recorder: RecorderService(),
+      understanding: UnderstandingService(),
       auth: AuthService(),
       cloudTasks: CloudTasks(),
       push: PushService(),

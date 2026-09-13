@@ -130,6 +130,18 @@ class L10n {
     required this.inviteNoAppHint,
     required this.notNow,
     required this.speechUnavailableWeb,
+    required this.understanding,
+    required this.voiceSection,
+    required this.voiceCloudTitle,
+    required this.voiceCloudBody,
+    required this.voiceDeviceTitle,
+    required this.voiceDeviceBody,
+    required this.voiceOffline,
+    required this.voiceNothingHeard,
+    required this.voiceFailed,
+    required this.voiceUnconfigured,
+    required this.heardLabel,
+    required this.spokenIn,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -285,6 +297,18 @@ class L10n {
   final String inviteNoAppHint;
   final String notNow;
   final String speechUnavailableWeb;
+  final String understanding;
+  final String voiceSection;
+  final String voiceCloudTitle;
+  final String voiceCloudBody;
+  final String voiceDeviceTitle;
+  final String voiceDeviceBody;
+  final String voiceOffline;
+  final String voiceNothingHeard;
+  final String voiceFailed;
+  final String voiceUnconfigured;
+  final String heardLabel;
+  final String spokenIn;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;
@@ -401,7 +425,7 @@ class L10n {
     privacyPolicy: 'Privacy policy',
     terms: 'Terms of use',
     micPermissionTitle: 'Use the microphone?',
-    micPermissionBody: 'I\'m Done listens while you hold the button and turns your words into a task. Your voice is processed by the phone’s speech service and is never stored by I\'m Done.',
+    micPermissionBody: 'I\'m Done listens while you hold the button and turns your words into a task, in any language. The recording is sent to I\'m Done\'s processing service to be understood and is discarded straight after — it is never stored. You can switch to the phone\'s own recognition in Settings.',
     micPermissionAllow: 'Continue',
     micDenied: 'Microphone access is off. You can type the task, or enable the microphone in Settings.',
     speechUnavailable: 'Speech recognition is not available on this device. You can type the task.',
@@ -445,6 +469,18 @@ class L10n {
     inviteNoAppHint: 'No app yet? You can join here in the browser and install the app later; your account carries over.',
     notNow: 'Not now',
     speechUnavailableWeb: 'This browser has no speech recognition (Firefox does not support it). Use Chrome, Edge or Safari for voice, or type the task.',
+    understanding: 'Understanding…',
+    voiceSection: 'Voice',
+    voiceCloudTitle: 'Every language and accent',
+    voiceCloudBody: 'Arabic in any dialect, English, Spanish, Chinese, Urdu, Hindi and many more, detected automatically. The recording is sent to I\'m Done\'s processing service, understood, and discarded — never stored. Needs internet.',
+    voiceDeviceTitle: 'This phone only',
+    voiceDeviceBody: 'Uses the phone\'s own speech recognition in the app language (English or Arabic). Nothing leaves the phone.',
+    voiceOffline: 'No connection — the recording could not be understood. Try again, or type the task.',
+    voiceNothingHeard: 'Nothing was heard. Hold the button and speak, then release.',
+    voiceFailed: 'Could not understand that. Try again, or type the task.',
+    voiceUnconfigured: 'Voice understanding is not switched on yet. Using the phone\'s own recognition for now.',
+    heardLabel: 'Heard',
+    spokenIn: 'Spoken in',
     quickStartTitle: 'Start in two seconds',
     quickStartHint: 'No email, no password. Type your name and you are in; you get a personal code people can use to add you to a task.',
     yourName: 'Your name',
@@ -557,7 +593,7 @@ class L10n {
     privacyPolicy: 'سياسة الخصوصية',
     terms: 'شروط الاستخدام',
     micPermissionTitle: 'استخدام الميكروفون؟',
-    micPermissionBody: 'يستمع خلّصت أثناء ضغطك على الزر ويحوّل كلامك إلى مهمة. يعالج صوتَك خدمةُ التعرف على الكلام في هاتفك، ولا يخزّنه خلّصت أبدًا.',
+    micPermissionBody: 'يستمع خلّصت أثناء ضغطك على الزر ويحوّل كلامك إلى مهمة بأي لغة. يُرسل التسجيل إلى خدمة المعالجة الخاصة بخلّصت ليُفهم ثم يُحذف فورًا، ولا يُخزّن أبدًا. يمكنك التحويل إلى تعرف الهاتف على الكلام من الإعدادات.',
     micPermissionAllow: 'متابعة',
     micDenied: 'الوصول إلى الميكروفون مغلق. يمكنك كتابة المهمة أو تفعيل الميكروفون من الإعدادات.',
     speechUnavailable: 'التعرف على الكلام غير متاح على هذا الجهاز. يمكنك كتابة المهمة.',
@@ -601,6 +637,18 @@ class L10n {
     inviteNoAppHint: 'لا تملك التطبيق بعد؟ يمكنك الانضمام هنا من المتصفح وتثبيت التطبيق لاحقًا؛ حسابك ينتقل معك.',
     notNow: 'ليس الآن',
     speechUnavailableWeb: 'هذا المتصفح لا يدعم التعرف على الكلام (فايرفوكس لا يدعمه). استخدم Chrome أو Edge أو Safari للصوت، أو اكتب المهمة.',
+    understanding: 'أفهم ما قلته…',
+    voiceSection: 'الصوت',
+    voiceCloudTitle: 'كل اللغات واللهجات',
+    voiceCloudBody: 'العربية بأي لهجة، والإنجليزية والإسبانية والصينية والأردية والهندية وغيرها، تُكتشف تلقائيًا. يُرسل التسجيل إلى خدمة المعالجة الخاصة بخلّصت ليُفهم ثم يُحذف، ولا يُخزّن أبدًا. يحتاج إلى إنترنت.',
+    voiceDeviceTitle: 'على هذا الهاتف فقط',
+    voiceDeviceBody: 'يستخدم التعرف على الكلام في هاتفك بلغة التطبيق (الإنجليزية أو العربية). لا يغادر شيء الهاتف.',
+    voiceOffline: 'لا يوجد اتصال، فتعذّر فهم التسجيل. حاول مرة أخرى أو اكتب المهمة.',
+    voiceNothingHeard: 'لم يُسمع شيء. اضغط مطوّلًا على الزر وتكلّم ثم ارفع إصبعك.',
+    voiceFailed: 'تعذّر فهم ذلك. حاول مرة أخرى أو اكتب المهمة.',
+    voiceUnconfigured: 'فهم الصوت لم يُفعَّل بعد. سيُستخدم تعرف الهاتف على الكلام حاليًا.',
+    heardLabel: 'ما سُمع',
+    spokenIn: 'قيلت بـ',
     quickStartTitle: 'ابدأ خلال ثانيتين',
     quickStartHint: 'بلا بريد ولا كلمة مرور. اكتب اسمك وتدخل مباشرة، وتحصل على رمز شخصي يستخدمه الآخرون لإضافتك إلى مهمة.',
     yourName: 'اسمك',

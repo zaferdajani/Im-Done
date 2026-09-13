@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/theme.dart';
 import '../l10n/strings.dart';
+import '../models/languages.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
 import '../state/providers.dart';
@@ -70,6 +71,15 @@ class TaskTile extends ConsumerWidget {
                           style: TextStyle(fontWeight: FontWeight.w600, color: overdue ? scheme.error : scheme.primary),
                         ),
                         Text(frequencySummary(l, lang, task), style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
+                        if (languageLabel(task.language, task.dialect, lang) case final spoken?)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.translate_rounded, size: 14, color: scheme.onSurfaceVariant),
+                              const SizedBox(width: 3),
+                              Text(spoken, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12)),
+                            ],
+                          ),
                         if (task.isShared)
                           Row(
                             mainAxisSize: MainAxisSize.min,

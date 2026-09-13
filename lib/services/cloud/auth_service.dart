@@ -35,6 +35,29 @@ class AuthService {
 
   bool get isAnonymous => _auth.currentUser?.isAnonymous ?? false;
 
+  /// A signed-in identity with no questions asked: the current user, or a
+  /// fresh anonymous one. Used so voice understanding (which the server
+  /// only serves to signed-in callers) never puts a login wall in front of
+  /// the microphone. Sharing still asks for a name, because a member with
+  /// no name is useless to the others.
+  Future<User?> ensureSignedIn() async {
+    final current = _auth.currentUser;
+    if (current != null) return current;
+    try {
+      return (await _auth.signInAnonymously()).user;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<String?> idToken() async {
+    try {
+      return await _auth.currentUser?.getIdToken();
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Email + password. Signs in if the address is known, otherwise creates
   /// the account. A quick (anonymous) account is LINKED instead, so its
   /// tasks and code are kept.

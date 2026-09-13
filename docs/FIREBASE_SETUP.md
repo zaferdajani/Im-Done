@@ -56,6 +56,15 @@ Messaging → Web Push certificates; not set up yet.
   leaves every task, archives owned ones, removes the code and profile, then
   deletes the Auth user (re-signing in first if Firebase asks).
 
+## Voice understanding — the same worker
+
+`POST /transcribe` on the push worker takes the recording and answers with the
+task fields. It needs one free key as a worker secret: `GROQ_API_KEY` from
+console.groq.com (optionally `GEMINI_API_KEY` from aistudio.google.com as a
+fallback). Set with `npx wrangler secret put GROQ_API_KEY` in `push-worker/`.
+Until it is set the worker answers 503 and the app quietly uses the phone's own
+recogniser. `GET /health` reports whether voice is switched on.
+
 ## Testing the rules
 
 `tests/rules/` runs against the emulator: `cd tests/rules && npm install &&
