@@ -45,7 +45,11 @@ class HomeScreen extends ConsumerWidget {
 
     final dueToday = tasks.where((t) => isDueOn(t, today)).toList()
       ..sort((a, b) => (a.hour * 60 + a.minute).compareTo(b.hour * 60 + b.minute));
-    final open = dueToday.where((t) => !isDoneOn(t, today)).toList();
+    final open = dueToday.where((t) => !isDoneOn(t, today)).toList()
+      ..sort((a, b) {
+        final byImportance = a.importance.index.compareTo(b.importance.index);
+        return byImportance != 0 ? byImportance : (a.hour * 60 + a.minute).compareTo(b.hour * 60 + b.minute);
+      });
     final doneList = dueToday.where((t) => isDoneOn(t, today)).toList();
 
     // Next 7 days, excluding today.

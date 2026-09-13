@@ -6,7 +6,7 @@ import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../l10n/strings.dart';
-import '../models/task.dart';
+import '../models/task.dart' hide Importance;
 import '../models/task_logic.dart';
 
 /// What a tapped notification carries back into the app.

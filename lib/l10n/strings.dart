@@ -142,6 +142,10 @@ class L10n {
     required this.voiceUnconfigured,
     required this.heardLabel,
     required this.spokenIn,
+    required this.importanceLabel,
+    required this.importanceHigh,
+    required this.importanceMedium,
+    required this.importanceLow,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -309,6 +313,10 @@ class L10n {
   final String voiceUnconfigured;
   final String heardLabel;
   final String spokenIn;
+  final String importanceLabel;
+  final String importanceHigh;
+  final String importanceMedium;
+  final String importanceLow;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;
@@ -481,6 +489,10 @@ class L10n {
     voiceUnconfigured: 'Voice understanding is not switched on yet. Using the phone\'s own recognition for now.',
     heardLabel: 'Heard',
     spokenIn: 'Spoken in',
+    importanceLabel: 'Importance',
+    importanceHigh: 'High',
+    importanceMedium: 'Medium',
+    importanceLow: 'Low',
     quickStartTitle: 'Start in two seconds',
     quickStartHint: 'No email, no password. Type your name and you are in; you get a personal code people can use to add you to a task.',
     yourName: 'Your name',
@@ -649,6 +661,10 @@ class L10n {
     voiceUnconfigured: 'فهم الصوت لم يُفعَّل بعد. سيُستخدم تعرف الهاتف على الكلام حاليًا.',
     heardLabel: 'ما سُمع',
     spokenIn: 'قيلت بـ',
+    importanceLabel: 'الأهمية',
+    importanceHigh: 'عالية',
+    importanceMedium: 'متوسطة',
+    importanceLow: 'منخفضة',
     quickStartTitle: 'ابدأ خلال ثانيتين',
     quickStartHint: 'بلا بريد ولا كلمة مرور. اكتب اسمك وتدخل مباشرة، وتحصل على رمز شخصي يستخدمه الآخرون لإضافتك إلى مهمة.',
     yourName: 'اسمك',

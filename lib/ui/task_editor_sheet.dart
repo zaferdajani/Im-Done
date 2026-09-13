@@ -182,6 +182,17 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
                 child: Text(l.kindSharedHint, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
               ),
             const SizedBox(height: 18),
+            _Label(l.importanceLabel),
+            SegmentedButton<Importance>(
+              segments: [
+                ButtonSegment(value: Importance.high, label: Text(l.importanceHigh), icon: Icon(importanceIcon(Importance.high))),
+                ButtonSegment(value: Importance.medium, label: Text(l.importanceMedium)),
+                ButtonSegment(value: Importance.low, label: Text(l.importanceLow), icon: Icon(importanceIcon(Importance.low))),
+              ],
+              selected: {_t.importance},
+              onSelectionChanged: (s) => _set(_t.copyWith(importance: s.first)),
+            ),
+            const SizedBox(height: 18),
             _Label(l.frequencyLabel),
             Wrap(
               spacing: 8,

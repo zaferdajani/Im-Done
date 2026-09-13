@@ -45,3 +45,22 @@ String frequencySummary(L10n l, String lang, Task t) {
   }
   return base;
 }
+
+String importanceName(L10n l, Importance i) => switch (i) {
+      Importance.high => l.importanceHigh,
+      Importance.medium => l.importanceMedium,
+      Importance.low => l.importanceLow,
+    };
+
+/// Red for high, nothing special for medium, muted for low.
+Color? importanceColor(ColorScheme scheme, Importance i) => switch (i) {
+      Importance.high => scheme.error,
+      Importance.medium => null,
+      Importance.low => scheme.outline,
+    };
+
+IconData importanceIcon(Importance i) => switch (i) {
+      Importance.high => Icons.priority_high_rounded,
+      Importance.medium => Icons.remove_rounded,
+      Importance.low => Icons.arrow_downward_rounded,
+    };

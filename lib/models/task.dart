@@ -6,6 +6,10 @@ enum TaskKind { personal, shared }
 /// How often the task recurs.
 enum Frequency { once, daily, weekdays, weekly, everyNDays }
 
+/// How much the task matters. Medium is the default; high sorts first on
+/// the day's list and is marked in red, low in grey.
+enum Importance { high, medium, low }
+
 /// A completion of one occurrence (one calendar day) of a task.
 ///
 /// For a shared task the completion is *claimed* by a member and must be
@@ -104,6 +108,7 @@ class Task {
     this.language,
     this.dialect,
     this.transcript,
+    this.importance = Importance.medium,
   });
 
   final String id;
@@ -148,6 +153,8 @@ class Task {
   final String? dialect;
   final String? transcript;
 
+  final Importance importance;
+
   bool get isShared => kind == TaskKind.shared;
 
   Task copyWith({
@@ -174,6 +181,7 @@ class Task {
     String? language,
     String? dialect,
     String? transcript,
+    Importance? importance,
   }) =>
       Task(
         id: id,
@@ -199,6 +207,7 @@ class Task {
         language: language ?? this.language,
         dialect: dialect ?? this.dialect,
         transcript: transcript ?? this.transcript,
+        importance: importance ?? this.importance,
       );
 
   Map<String, dynamic> toJson() => {
@@ -226,6 +235,7 @@ class Task {
         if (language != null) 'language': language,
         if (dialect != null) 'dialect': dialect,
         if (transcript != null) 'transcript': transcript,
+        'importance': importance.name,
       };
 
   static Task fromJson(Map<String, dynamic> j) => Task(
@@ -264,6 +274,7 @@ class Task {
         language: j['language'] as String?,
         dialect: j['dialect'] as String?,
         transcript: j['transcript'] as String?,
+        importance: Importance.values.where((i) => i.name == j['importance']).firstOrNull ?? Importance.medium,
       );
 
   String encode() => jsonEncode(toJson());

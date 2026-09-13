@@ -71,6 +71,15 @@ class TaskTile extends ConsumerWidget {
                           style: TextStyle(fontWeight: FontWeight.w600, color: overdue ? scheme.error : scheme.primary),
                         ),
                         Text(frequencySummary(l, lang, task), style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
+                        if (task.importance != Importance.medium)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(importanceIcon(task.importance), size: 14, color: importanceColor(scheme, task.importance)),
+                              const SizedBox(width: 2),
+                              Text(importanceName(l, task.importance), style: TextStyle(color: importanceColor(scheme, task.importance), fontSize: 12, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
                         if (languageLabel(task.language, task.dialect, lang) case final spoken?)
                           Row(
                             mainAxisSize: MainAxisSize.min,

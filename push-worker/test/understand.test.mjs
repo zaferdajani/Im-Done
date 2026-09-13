@@ -58,6 +58,13 @@ test('invalid schedule shapes degrade instead of inventing', () => {
   assert.equal(parseUnderstanding('{"title":"x","frequency":"hourly"}', 'x', 'en').frequency, 'once');
 });
 
+test('importance defaults to medium and only takes the three values', () => {
+  assert.equal(parseUnderstanding('{"title":"x"}', 'x', 'en').importance, 'medium');
+  assert.equal(parseUnderstanding('{"title":"x","importance":"high"}', 'x', 'en').importance, 'high');
+  assert.equal(parseUnderstanding('{"title":"x","importance":"urgent"}', 'x', 'en').importance, 'medium');
+  assert.equal(parseUnderstanding('{"title":"x","importance":"low"}', 'x', 'en').importance, 'low');
+});
+
 test('a dialect is only kept for arabic and only from the list', () => {
   assert.equal(parseUnderstanding('{"title":"x","language":"en","dialect":"egyptian"}', 'x', 'en').dialect, null);
   assert.equal(parseUnderstanding('{"title":"x","language":"ar","dialect":"martian"}', 'x', 'ar').dialect, null);

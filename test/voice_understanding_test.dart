@@ -81,4 +81,12 @@ void main() {
     expect(back.dialect, isNull);
     expect(back.transcript, 'x y');
   });
+
+  test('importance is medium unless said otherwise, and survives storage', () {
+    expect(draft().importance, Importance.medium);
+    expect(applyUnderstanding(draft(), Understanding.fromJson({'title': 'x', 'transcript': 'x'})).importance, Importance.medium);
+    expect(applyUnderstanding(draft(), Understanding.fromJson({'title': 'x', 'transcript': 'x', 'importance': 'high'})).importance, Importance.high);
+    expect(Task.decode(draft().copyWith(title: 'x', importance: Importance.low).encode()).importance, Importance.low);
+    expect(Task.fromJson({'id': 'a', 'title': 'old'}).importance, Importance.medium);
+  });
 }

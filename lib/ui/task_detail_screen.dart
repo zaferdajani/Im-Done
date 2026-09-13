@@ -104,6 +104,7 @@ class TaskDetailScreen extends ConsumerWidget {
                 text: task.nagEveryMinutes == 0 ? l.nagOff : '${l.nagEvery} ${task.nagEveryMinutes} min × ${task.nagRepeats}',
               ),
               _Pill(icon: task.isShared ? Icons.group_rounded : Icons.person_rounded, text: task.isShared ? l.kindShared : l.kindPersonal),
+              _Pill(icon: importanceIcon(task.importance), text: '${l.importanceLabel}: ${importanceName(l, task.importance)}'),
               if (languageLabel(task.language, task.dialect, lang) case final spoken?)
                 _Pill(icon: Icons.translate_rounded, text: '${l.spokenIn} $spoken'),
             ],

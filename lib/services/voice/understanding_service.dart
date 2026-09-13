@@ -23,6 +23,7 @@ class Understanding {
     this.date,
     this.periodDays,
     this.note,
+    this.importance,
     this.engine,
   });
 
@@ -38,6 +39,7 @@ class Understanding {
   final DateTime? date;
   final int? periodDays;
   final String? note;
+  final Importance? importance;
   final String? engine;
 
   static Understanding fromJson(Map<String, dynamic> j) {
@@ -62,6 +64,7 @@ class Understanding {
       date: date,
       periodDays: asInt(j['periodDays']),
       note: (j['note'] as String?)?.trim(),
+      importance: Importance.values.where((i) => i.name == j['importance']).firstOrNull,
       engine: j['engine'] as String?,
     );
   }
@@ -93,6 +96,7 @@ Task applyUnderstanding(Task draft, Understanding u) {
     periodStart: start,
     periodEnd: end,
     note: (u.note?.isNotEmpty ?? false) ? u.note : draft.note,
+    importance: u.importance ?? draft.importance,
     language: u.language,
     dialect: u.dialect,
     transcript: u.transcript.isEmpty ? null : u.transcript,
