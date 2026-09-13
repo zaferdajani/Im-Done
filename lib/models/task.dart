@@ -109,6 +109,7 @@ class Task {
     this.dialect,
     this.transcript,
     this.importance = Importance.medium,
+    this.group,
   });
 
   final String id;
@@ -155,6 +156,9 @@ class Task {
 
   final Importance importance;
 
+  /// A free name that gathers tasks ("Home", "Work", "Kids"). Null = none.
+  final String? group;
+
   bool get isShared => kind == TaskKind.shared;
 
   Task copyWith({
@@ -182,6 +186,8 @@ class Task {
     String? dialect,
     String? transcript,
     Importance? importance,
+    String? group,
+    bool clearGroup = false,
   }) =>
       Task(
         id: id,
@@ -208,6 +214,7 @@ class Task {
         dialect: dialect ?? this.dialect,
         transcript: transcript ?? this.transcript,
         importance: importance ?? this.importance,
+        group: clearGroup ? null : (group ?? this.group),
       );
 
   Map<String, dynamic> toJson() => {
@@ -236,6 +243,7 @@ class Task {
         if (dialect != null) 'dialect': dialect,
         if (transcript != null) 'transcript': transcript,
         'importance': importance.name,
+        if (group != null) 'group': group,
       };
 
   static Task fromJson(Map<String, dynamic> j) => Task(
@@ -275,6 +283,7 @@ class Task {
         dialect: j['dialect'] as String?,
         transcript: j['transcript'] as String?,
         importance: Importance.values.where((i) => i.name == j['importance']).firstOrNull ?? Importance.medium,
+        group: (j['group'] as String?)?.trim().isEmpty ?? true ? null : (j['group'] as String).trim(),
       );
 
   String encode() => jsonEncode(toJson());

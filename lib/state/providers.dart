@@ -106,6 +106,27 @@ final allTasksProvider = Provider<List<Task>>((ref) {
 
 /// Shared tasks I created where somebody has claimed today and I have not
 /// yet confirmed.
+/// Every group name in use, most used first — feeds the editor's suggestions
+/// and the home filter. A group exists only while a task carries its name.
+final groupNamesProvider = Provider<List<String>>((ref) {
+  final counts = <String, int>{};
+  for (final t in ref.watch(allTasksProvider)) {
+    final g = t.group;
+    if (g != null) counts[g] = (counts[g] ?? 0) + 1;
+  }
+  final names = counts.keys.toList()..sort((a, b) => counts[b]!.compareTo(counts[a]!));
+  return names;
+});
+
+/// The home screen's group filter: null = all, '' = tasks with no group.
+class GroupFilterNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void set(String? g) => state = g;
+}
+
+final groupFilterProvider = NotifierProvider<GroupFilterNotifier, String?>(GroupFilterNotifier.new);
+
 final pendingConfirmationsProvider = Provider<List<Task>>((ref) {
   final uid = ref.watch(myUidProvider);
   final today = DateTime.now();

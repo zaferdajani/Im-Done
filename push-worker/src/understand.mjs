@@ -63,6 +63,7 @@ export function buildSystemPrompt({ now, weekday, uiLanguage, preferred }) {
     '  "date": ISO date (YYYY-MM-DD) for a one-off or for the first day of a repeating task, or null when it starts today.',
     '  "periodDays": integer number of days the task runs ("for two weeks" = 14), or null.',
     '  "note": anything spoken that is not the task or its schedule, else null.',
+    '  "group": a group the speaker files the task under ("for work", "in my home list", "للشغل", "para la casa") — the group name only, in the spoken language, else null. Never invent one.',
     '  "importance": "high" when the speaker says it is urgent, very important, a must, critical ("ضروري", "مهم جدًا", "urgente", "急ぎ"); "low" when they say it is not important, whenever, if there is time, low priority ("مش مهم", "لو فضيت"); otherwise "medium".',
     '',
     'Never invent a schedule the speaker did not say. When nothing is scheduled, frequency is "once" with hour and minute null.',
@@ -110,7 +111,8 @@ export function parseUnderstanding(raw, transcript, detectedLanguage) {
   const periodDays = int(j.periodDays, 1, 3660);
   const note = typeof j.note === 'string' && j.note.trim() ? j.note.trim().slice(0, 500) : null;
   const importance = ['high', 'medium', 'low'].includes(j.importance) ? j.importance : 'medium';
-  return { title, language, dialect, frequency, weekdays, everyNDays, hour, minute, date, periodDays, note, importance, transcript: String(transcript ?? '').trim() };
+  const group = typeof j.group === 'string' && j.group.trim() ? j.group.trim().slice(0, 40) : null;
+  return { title, language, dialect, frequency, weekdays, everyNDays, hour, minute, date, periodDays, note, importance, group, transcript: String(transcript ?? '').trim() };
 }
 
 /** Audio the endpoint accepts: bounded so one caller cannot eat the day's quota. */

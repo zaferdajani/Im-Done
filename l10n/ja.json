@@ -188,5 +188,9 @@
  "pushClaimed": "{who} さんが完了にしました",
  "pushClaimedBody": "{title} — 確認しますか？",
  "pushConfirmed": "{who} さんが確認しました",
- "pushRejected": "{who} さん：まだ完了していません"
+ "pushRejected": "{who} さん：まだ完了していません",
+ "groupLabel": "グループ",
+ "groupHint": "例：家、仕事、子ども",
+ "allGroups": "すべて",
+ "noGroup": "グループなし"
 }

@@ -38,8 +38,14 @@ class HomeScreen extends ConsumerWidget {
     final l = L10n.of(context);
     final lang = ref.watch(languageCodeProvider);
     final scheme = Theme.of(context).colorScheme;
-    final tasks = ref.watch(allTasksProvider);
-    final pending = ref.watch(pendingConfirmationsProvider);
+    final allTasks = ref.watch(allTasksProvider);
+    final groups = ref.watch(groupNamesProvider);
+    final groupFilter = ref.watch(groupFilterProvider);
+    final hasUngrouped = allTasks.any((t) => t.group == null);
+    // A filter naming a group that no longer exists falls back to all.
+    final activeFilter = groupFilter != null && (groupFilter == '' ? hasUngrouped : groups.contains(groupFilter)) ? groupFilter : null;
+    final tasks = activeFilter == null ? allTasks : allTasks.where((t) => (t.group ?? '') == activeFilter).toList();
+    final pending = ref.watch(pendingConfirmationsProvider).where(tasks.contains).toList();
     final notifOn = ref.watch(notificationsEnabledProvider).value ?? true;
     final today = DateTime.now();
 
@@ -83,8 +89,23 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
+          if (groups.isNotEmpty)
+            SizedBox(
+              height: 44,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  _GroupChip(label: l.allGroups, selected: activeFilter == null, onTap: () => ref.read(groupFilterProvider.notifier).set(null)),
+                  for (final g in groups)
+                    _GroupChip(label: g, selected: activeFilter == g, onTap: () => ref.read(groupFilterProvider.notifier).set(g)),
+                  if (hasUngrouped)
+                    _GroupChip(label: l.noGroup, selected: activeFilter == '', onTap: () => ref.read(groupFilterProvider.notifier).set('')),
+                ],
+              ),
+            ),
           Expanded(
-            child: tasks.isEmpty
+            child: allTasks.isEmpty
                 ? _Empty(l: l)
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
@@ -185,4 +206,16 @@ class _Empty extends StatelessWidget {
       ),
     );
   }
+}
+
+class _GroupChip extends StatelessWidget {
+  const _GroupChip({required this.label, required this.selected, required this.onTap});
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsetsDirectional.only(end: 8),
+        child: ChoiceChip(label: Text(label), selected: selected, onSelected: (_) => onTap(), showCheckmark: false),
+      );
 }

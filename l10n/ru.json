@@ -188,5 +188,9 @@
  "pushClaimed": "{who} отметил(а) как выполненную",
  "pushClaimedBody": "{title} — подтвердить?",
  "pushConfirmed": "Подтвердил(а) {who}",
- "pushRejected": "{who}: ещё не выполнено"
+ "pushRejected": "{who}: ещё не выполнено",
+ "groupLabel": "Группа",
+ "groupHint": "напр. Дом, Работа, Дети",
+ "allGroups": "Все",
+ "noGroup": "Без группы"
 }

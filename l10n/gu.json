@@ -188,5 +188,9 @@
  "pushClaimed": "{who} એ તેને પૂરું બતાવ્યું",
  "pushClaimedBody": "{title} — પુષ્ટિ કરશો?",
  "pushConfirmed": "{who} એ પુષ્ટિ કરી",
- "pushRejected": "{who} કહે છે: હજી પૂરું નથી થયું"
+ "pushRejected": "{who} કહે છે: હજી પૂરું નથી થયું",
+ "groupLabel": "જૂથ",
+ "groupHint": "જેમ કે ઘર, કામ, બાળકો",
+ "allGroups": "બધાં",
+ "noGroup": "કોઈ જૂથ નહીં"
 }

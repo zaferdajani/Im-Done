@@ -188,5 +188,9 @@
  "pushClaimed": "{who} ने इसे पूरा बताया",
  "pushClaimedBody": "{title} — पुष्टि करें?",
  "pushConfirmed": "{who} ने पुष्टि की",
- "pushRejected": "{who} कहते हैं: अभी पूरा नहीं हुआ"
+ "pushRejected": "{who} कहते हैं: अभी पूरा नहीं हुआ",
+ "groupLabel": "समूह",
+ "groupHint": "जैसे घर, काम, बच्चे",
+ "allGroups": "सभी",
+ "noGroup": "कोई समूह नहीं"
 }

@@ -188,5 +188,9 @@
  "pushClaimed": "{who} آن را انجام‌شده علامت زد",
  "pushClaimedBody": "{title} — تأیید می‌کنید؟",
  "pushConfirmed": "{who} تأیید کرد",
- "pushRejected": "{who} می‌گوید: هنوز انجام نشده"
+ "pushRejected": "{who} می‌گوید: هنوز انجام نشده",
+ "groupLabel": "گروه",
+ "groupHint": "مثلاً خانه، کار، بچه‌ها",
+ "allGroups": "همه",
+ "noGroup": "بدون گروه"
 }

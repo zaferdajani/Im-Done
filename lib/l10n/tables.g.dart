@@ -186,6 +186,10 @@ const l10nAr = L10n(
   pushClaimedBody: '{title} — هل تؤكد؟',
   pushConfirmed: 'أكّدها {who}',
   pushRejected: '{who} يقول: لم تُنجز بعد',
+  groupLabel: 'المجموعة',
+  groupHint: 'مثل: البيت، العمل، الأولاد',
+  allGroups: 'الكل',
+  noGroup: 'بلا مجموعة',
 );
 
 const l10nEn = L10n(
@@ -371,6 +375,10 @@ const l10nEn = L10n(
   pushClaimedBody: '{title} — confirm?',
   pushConfirmed: 'Confirmed by {who}',
   pushRejected: '{who} says: not done yet',
+  groupLabel: 'Group',
+  groupHint: 'e.g. Home, Work, Kids',
+  allGroups: 'All',
+  noGroup: 'No group',
 );
 
 const l10nEs = L10n(
@@ -556,6 +564,10 @@ const l10nEs = L10n(
   pushClaimedBody: '{title} — ¿confirmas?',
   pushConfirmed: 'Confirmada por {who}',
   pushRejected: '{who} dice: aún no está hecha',
+  groupLabel: 'Grupo',
+  groupHint: 'p. ej. Casa, Trabajo, Niños',
+  allGroups: 'Todas',
+  noGroup: 'Sin grupo',
 );
 
 const l10nFa = L10n(
@@ -741,6 +753,10 @@ const l10nFa = L10n(
   pushClaimedBody: '{title} — تأیید می‌کنید؟',
   pushConfirmed: '{who} تأیید کرد',
   pushRejected: '{who} می‌گوید: هنوز انجام نشده',
+  groupLabel: 'گروه',
+  groupHint: 'مثلاً خانه، کار، بچه‌ها',
+  allGroups: 'همه',
+  noGroup: 'بدون گروه',
 );
 
 const l10nFr = L10n(
@@ -926,6 +942,10 @@ const l10nFr = L10n(
   pushClaimedBody: '{title} — confirmer ?',
   pushConfirmed: 'Confirmée par {who}',
   pushRejected: '{who} dit : pas encore faite',
+  groupLabel: 'Groupe',
+  groupHint: 'ex. : Maison, Travail, Enfants',
+  allGroups: 'Toutes',
+  noGroup: 'Sans groupe',
 );
 
 const l10nGu = L10n(
@@ -1111,6 +1131,10 @@ const l10nGu = L10n(
   pushClaimedBody: '{title} — પુષ્ટિ કરશો?',
   pushConfirmed: '{who} એ પુષ્ટિ કરી',
   pushRejected: '{who} કહે છે: હજી પૂરું નથી થયું',
+  groupLabel: 'જૂથ',
+  groupHint: 'જેમ કે ઘર, કામ, બાળકો',
+  allGroups: 'બધાં',
+  noGroup: 'કોઈ જૂથ નહીં',
 );
 
 const l10nHi = L10n(
@@ -1296,6 +1320,10 @@ const l10nHi = L10n(
   pushClaimedBody: '{title} — पुष्टि करें?',
   pushConfirmed: '{who} ने पुष्टि की',
   pushRejected: '{who} कहते हैं: अभी पूरा नहीं हुआ',
+  groupLabel: 'समूह',
+  groupHint: 'जैसे घर, काम, बच्चे',
+  allGroups: 'सभी',
+  noGroup: 'कोई समूह नहीं',
 );
 
 const l10nIt = L10n(
@@ -1481,6 +1509,10 @@ const l10nIt = L10n(
   pushClaimedBody: '{title} — confermi?',
   pushConfirmed: 'Confermata da {who}',
   pushRejected: '{who} dice: non ancora fatta',
+  groupLabel: 'Gruppo',
+  groupHint: 'es. Casa, Lavoro, Bambini',
+  allGroups: 'Tutte',
+  noGroup: 'Nessun gruppo',
 );
 
 const l10nJa = L10n(
@@ -1666,6 +1698,10 @@ const l10nJa = L10n(
   pushClaimedBody: '{title} — 確認しますか？',
   pushConfirmed: '{who} さんが確認しました',
   pushRejected: '{who} さん：まだ完了していません',
+  groupLabel: 'グループ',
+  groupHint: '例：家、仕事、子ども',
+  allGroups: 'すべて',
+  noGroup: 'グループなし',
 );
 
 const l10nKo = L10n(
@@ -1851,6 +1887,10 @@ const l10nKo = L10n(
   pushClaimedBody: '{title} — 확인할까요?',
   pushConfirmed: '{who} 님이 확인했어요',
   pushRejected: '{who} 님: 아직 완료되지 않았어요',
+  groupLabel: '그룹',
+  groupHint: '예: 집, 회사, 아이들',
+  allGroups: '전체',
+  noGroup: '그룹 없음',
 );
 
 const l10nPt = L10n(
@@ -2036,6 +2076,10 @@ const l10nPt = L10n(
   pushClaimedBody: '{title} — confirmar?',
   pushConfirmed: 'Confirmada por {who}',
   pushRejected: '{who} diz: ainda não está feita',
+  groupLabel: 'Grupo',
+  groupHint: 'ex.: Casa, Trabalho, Filhos',
+  allGroups: 'Todas',
+  noGroup: 'Sem grupo',
 );
 
 const l10nRu = L10n(
@@ -2221,6 +2265,10 @@ const l10nRu = L10n(
   pushClaimedBody: '{title} — подтвердить?',
   pushConfirmed: 'Подтвердил(а) {who}',
   pushRejected: '{who}: ещё не выполнено',
+  groupLabel: 'Группа',
+  groupHint: 'напр. Дом, Работа, Дети',
+  allGroups: 'Все',
+  noGroup: 'Без группы',
 );
 
 const l10nTr = L10n(
@@ -2406,6 +2454,10 @@ const l10nTr = L10n(
   pushClaimedBody: '{title} — onaylıyor musunuz?',
   pushConfirmed: '{who} onayladı',
   pushRejected: '{who} diyor ki: henüz tamamlanmadı',
+  groupLabel: 'Grup',
+  groupHint: 'örn. Ev, İş, Çocuklar',
+  allGroups: 'Tümü',
+  noGroup: 'Grupsuz',
 );
 
 const l10nUk = L10n(
@@ -2591,6 +2643,10 @@ const l10nUk = L10n(
   pushClaimedBody: '{title} — підтвердити?',
   pushConfirmed: 'Підтвердив(ла) {who}',
   pushRejected: '{who}: ще не виконано',
+  groupLabel: 'Група',
+  groupHint: 'напр. Дім, Робота, Діти',
+  allGroups: 'Усі',
+  noGroup: 'Без групи',
 );
 
 const l10nUr = L10n(
@@ -2776,6 +2832,10 @@ const l10nUr = L10n(
   pushClaimedBody: '{title} — تصدیق کریں؟',
   pushConfirmed: '{who} نے تصدیق کی',
   pushRejected: '{who} کہتے ہیں: ابھی مکمل نہیں ہوا',
+  groupLabel: 'گروپ',
+  groupHint: 'مثلاً گھر، کام، بچے',
+  allGroups: 'سب',
+  noGroup: 'کوئی گروپ نہیں',
 );
 
 const l10nZh = L10n(
@@ -2961,6 +3021,10 @@ const l10nZh = L10n(
   pushClaimedBody: '{title} — 确认吗？',
   pushConfirmed: '{who} 已确认',
   pushRejected: '{who} 说：还没完成',
+  groupLabel: '分组',
+  groupHint: '例如：家庭、工作、孩子',
+  allGroups: '全部',
+  noGroup: '未分组',
 );
 
 /// Every language the app can display, by ISO 639-1 code.

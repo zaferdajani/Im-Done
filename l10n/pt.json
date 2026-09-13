@@ -188,5 +188,9 @@
  "pushClaimed": "{who} marcou como feita",
  "pushClaimedBody": "{title} — confirmar?",
  "pushConfirmed": "Confirmada por {who}",
- "pushRejected": "{who} diz: ainda não está feita"
+ "pushRejected": "{who} diz: ainda não está feita",
+ "groupLabel": "Grupo",
+ "groupHint": "ex.: Casa, Trabalho, Filhos",
+ "allGroups": "Todas",
+ "noGroup": "Sem grupo"
 }

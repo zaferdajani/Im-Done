@@ -165,6 +165,10 @@ class L10n {
     required this.pushClaimedBody,
     required this.pushConfirmed,
     required this.pushRejected,
+    required this.groupLabel,
+    required this.groupHint,
+    required this.allGroups,
+    required this.noGroup,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -349,6 +353,10 @@ class L10n {
   final String pushClaimedBody;
   final String pushConfirmed;
   final String pushRejected;
+  final String groupLabel;
+  final String groupHint;
+  final String allGroups;
+  final String noGroup;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;

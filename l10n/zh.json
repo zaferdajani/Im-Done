@@ -188,5 +188,9 @@
  "pushClaimed": "{who} 已标记为完成",
  "pushClaimedBody": "{title} — 确认吗？",
  "pushConfirmed": "{who} 已确认",
- "pushRejected": "{who} 说：还没完成"
+ "pushRejected": "{who} 说：还没完成",
+ "groupLabel": "分组",
+ "groupHint": "例如：家庭、工作、孩子",
+ "allGroups": "全部",
+ "noGroup": "未分组"
 }

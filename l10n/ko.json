@@ -188,5 +188,9 @@
  "pushClaimed": "{who} 님이 완료로 표시했어요",
  "pushClaimedBody": "{title} — 확인할까요?",
  "pushConfirmed": "{who} 님이 확인했어요",
- "pushRejected": "{who} 님: 아직 완료되지 않았어요"
+ "pushRejected": "{who} 님: 아직 완료되지 않았어요",
+ "groupLabel": "그룹",
+ "groupHint": "예: 집, 회사, 아이들",
+ "allGroups": "전체",
+ "noGroup": "그룹 없음"
 }

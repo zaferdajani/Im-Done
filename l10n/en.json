@@ -188,5 +188,9 @@
  "pushClaimed": "{who} marked it done",
  "pushClaimedBody": "{title} — confirm?",
  "pushConfirmed": "Confirmed by {who}",
- "pushRejected": "{who} says: not done yet"
+ "pushRejected": "{who} says: not done yet",
+ "groupLabel": "Group",
+ "groupHint": "e.g. Home, Work, Kids",
+ "allGroups": "All",
+ "noGroup": "No group"
 }

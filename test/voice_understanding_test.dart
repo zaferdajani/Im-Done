@@ -89,4 +89,13 @@ void main() {
     expect(Task.decode(draft().copyWith(title: 'x', importance: Importance.low).encode()).importance, Importance.low);
     expect(Task.fromJson({'id': 'a', 'title': 'old'}).importance, Importance.medium);
   });
+
+  test('a group is kept from speech, stored, and cleared cleanly', () {
+    final u = Understanding.fromJson({'title': 'buy milk', 'transcript': 'buy milk for the house', 'group': 'Home'});
+    final t = applyUnderstanding(draft(), u);
+    expect(t.group, 'Home');
+    expect(Task.decode(t.encode()).group, 'Home');
+    expect(t.copyWith(clearGroup: true).group, isNull);
+    expect(Task.fromJson({'id': 'a', 'title': 'old', 'group': '  '}).group, isNull);
+  });
 }

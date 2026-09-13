@@ -188,5 +188,9 @@
  "pushClaimed": "{who} tamamlandı olarak işaretledi",
  "pushClaimedBody": "{title} — onaylıyor musunuz?",
  "pushConfirmed": "{who} onayladı",
- "pushRejected": "{who} diyor ki: henüz tamamlanmadı"
+ "pushRejected": "{who} diyor ki: henüz tamamlanmadı",
+ "groupLabel": "Grup",
+ "groupHint": "örn. Ev, İş, Çocuklar",
+ "allGroups": "Tümü",
+ "noGroup": "Grupsuz"
 }

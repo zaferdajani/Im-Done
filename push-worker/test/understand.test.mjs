@@ -65,6 +65,12 @@ test('importance defaults to medium and only takes the three values', () => {
   assert.equal(parseUnderstanding('{"title":"x","importance":"low"}', 'x', 'en').importance, 'low');
 });
 
+test('a group is a short name or nothing', () => {
+  assert.equal(parseUnderstanding('{"title":"x","group":" Work "}', 'x', 'en').group, 'Work');
+  assert.equal(parseUnderstanding('{"title":"x","group":""}', 'x', 'en').group, null);
+  assert.equal(parseUnderstanding('{"title":"x"}', 'x', 'en').group, null);
+});
+
 test('a dialect is only kept for arabic and only from the list', () => {
   assert.equal(parseUnderstanding('{"title":"x","language":"en","dialect":"egyptian"}', 'x', 'en').dialect, null);
   assert.equal(parseUnderstanding('{"title":"x","language":"ar","dialect":"martian"}', 'x', 'ar').dialect, null);

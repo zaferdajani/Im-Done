@@ -188,5 +188,9 @@
  "pushClaimed": "{who} علّم المهمة كمُنجزة",
  "pushClaimedBody": "{title} — هل تؤكد؟",
  "pushConfirmed": "أكّدها {who}",
- "pushRejected": "{who} يقول: لم تُنجز بعد"
+ "pushRejected": "{who} يقول: لم تُنجز بعد",
+ "groupLabel": "المجموعة",
+ "groupHint": "مثل: البيت، العمل، الأولاد",
+ "allGroups": "الكل",
+ "noGroup": "بلا مجموعة"
 }

@@ -52,12 +52,14 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
   late Task _t = widget.draft;
   late final TextEditingController _title = TextEditingController(text: widget.draft.title);
   late final TextEditingController _note = TextEditingController(text: widget.draft.note ?? '');
+  late final TextEditingController _group = TextEditingController(text: widget.draft.group ?? '');
   bool _saving = false;
 
   @override
   void dispose() {
     _title.dispose();
     _note.dispose();
+    _group.dispose();
     super.dispose();
   }
 
@@ -108,7 +110,8 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
     setState(() => _saving = true);
     final l = ref.read(l10nProvider);
     try {
-      var t = _t.copyWith(title: title, note: _note.text.trim());
+      final group = _group.text.trim();
+      var t = _t.copyWith(title: title, note: _note.text.trim(), group: group.isEmpty ? null : group, clearGroup: group.isEmpty);
       if (t.frequency == Frequency.once && t.periodStart == null) {
         final n = DateTime.now();
         t = t.copyWith(periodStart: DateTime(n.year, n.month, n.day));
@@ -296,6 +299,31 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
                   const SizedBox(width: 8),
                   Text(l.nagTimes),
                 ],
+              ),
+            const SizedBox(height: 14),
+            _Label(l.groupLabel),
+            TextField(
+              controller: _group,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(hintText: l.groupHint, prefixIcon: const Icon(Icons.folder_outlined)),
+              onChanged: (_) => setState(() {}),
+            ),
+            if (ref.watch(groupNamesProvider).isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: [
+                    for (final g in ref.watch(groupNamesProvider))
+                      ChoiceChip(
+                        label: Text(g),
+                        selected: _group.text.trim() == g,
+                        showCheckmark: false,
+                        onSelected: (on) => setState(() => _group.text = on ? g : ''),
+                      ),
+                  ],
+                ),
               ),
             const SizedBox(height: 14),
             TextField(
