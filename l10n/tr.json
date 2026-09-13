@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "\"{group}\" grubundan ayrılınsın mı? Görevlerini ve hatırlatmalarını artık görmezsiniz.",
  "leftGroup": "Gruptan ayrıldınız",
  "removeFromGroup": "{name} bu gruptan çıkarılsın mı?",
- "removedFromGroup": "{name} artık bu grubu görmüyor"
+ "removedFromGroup": "{name} artık bu grubu görmüyor",
+ "renameGroup": "Grubu yeniden adlandır",
+ "newGroupName": "Yeni ad",
+ "groupRenamed": "Grup yeniden adlandırıldı",
+ "categoryLabel": "Kategori",
+ "categoryNone": "Yok",
+ "categoryHealth": "Sağlık",
+ "categoryWork": "İş",
+ "categoryHome": "Ev",
+ "categoryShopping": "Alışveriş",
+ "categoryFamily": "Aile",
+ "categoryMoney": "Para",
+ "categoryStudy": "Ders",
+ "categoryErrands": "Ayak işleri",
+ "categoryFitness": "Spor"
 }

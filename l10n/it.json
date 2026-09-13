@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Uscire da «{group}»? Non vedrai più le sue attività né i promemoria.",
  "leftGroup": "Sei uscito dal gruppo",
  "removeFromGroup": "Rimuovere {name} da questo gruppo?",
- "removedFromGroup": "{name} non vede più questo gruppo"
+ "removedFromGroup": "{name} non vede più questo gruppo",
+ "renameGroup": "Rinomina gruppo",
+ "newGroupName": "Nuovo nome",
+ "groupRenamed": "Gruppo rinominato",
+ "categoryLabel": "Categoria",
+ "categoryNone": "Nessuna",
+ "categoryHealth": "Salute",
+ "categoryWork": "Lavoro",
+ "categoryHome": "Casa",
+ "categoryShopping": "Spesa",
+ "categoryFamily": "Famiglia",
+ "categoryMoney": "Soldi",
+ "categoryStudy": "Studio",
+ "categoryErrands": "Commissioni",
+ "categoryFitness": "Sport"
 }

@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "”{group}“ چھوڑ دیں؟ آپ کو اس کے کام اور یاد دہانیاں نظر آنا بند ہو جائیں گی۔",
  "leftGroup": "آپ نے گروپ چھوڑ دیا",
  "removeFromGroup": "{name} کو اس گروپ سے نکالیں؟",
- "removedFromGroup": "{name} کو اب یہ گروپ نظر نہیں آتا"
+ "removedFromGroup": "{name} کو اب یہ گروپ نظر نہیں آتا",
+ "renameGroup": "گروپ کا نام بدلیں",
+ "newGroupName": "نیا نام",
+ "groupRenamed": "گروپ کا نام بدل گیا",
+ "categoryLabel": "زمرہ",
+ "categoryNone": "کوئی نہیں",
+ "categoryHealth": "صحت",
+ "categoryWork": "کام",
+ "categoryHome": "گھر",
+ "categoryShopping": "خریداری",
+ "categoryFamily": "خاندان",
+ "categoryMoney": "پیسہ",
+ "categoryStudy": "پڑھائی",
+ "categoryErrands": "باہر کے کام",
+ "categoryFitness": "ورزش"
 }

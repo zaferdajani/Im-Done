@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "“{group}”에서 나갈까요? 이 그룹의 할 일과 알림이 더 이상 보이지 않아요.",
  "leftGroup": "그룹에서 나왔어요",
  "removeFromGroup": "{name} 님을 이 그룹에서 제외할까요?",
- "removedFromGroup": "{name} 님에게 이 그룹이 더 이상 보이지 않아요"
+ "removedFromGroup": "{name} 님에게 이 그룹이 더 이상 보이지 않아요",
+ "renameGroup": "그룹 이름 변경",
+ "newGroupName": "새 이름",
+ "groupRenamed": "그룹 이름을 변경했어요",
+ "categoryLabel": "카테고리",
+ "categoryNone": "없음",
+ "categoryHealth": "건강",
+ "categoryWork": "업무",
+ "categoryHome": "집",
+ "categoryShopping": "쇼핑",
+ "categoryFamily": "가족",
+ "categoryMoney": "돈",
+ "categoryStudy": "공부",
+ "categoryErrands": "볼일",
+ "categoryFitness": "운동"
 }

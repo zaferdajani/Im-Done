@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "“{group}” छोड़ें? आपको इसके काम और उनके रिमाइंडर दिखना बंद हो जाएँगे।",
  "leftGroup": "आपने समूह छोड़ दिया",
  "removeFromGroup": "{name} को इस समूह से हटाएँ?",
- "removedFromGroup": "{name} को अब यह समूह नहीं दिखता"
+ "removedFromGroup": "{name} को अब यह समूह नहीं दिखता",
+ "renameGroup": "समूह का नाम बदलें",
+ "newGroupName": "नया नाम",
+ "groupRenamed": "समूह का नाम बदल गया",
+ "categoryLabel": "श्रेणी",
+ "categoryNone": "कोई नहीं",
+ "categoryHealth": "सेहत",
+ "categoryWork": "काम",
+ "categoryHome": "घर",
+ "categoryShopping": "खरीदारी",
+ "categoryFamily": "परिवार",
+ "categoryMoney": "पैसा",
+ "categoryStudy": "पढ़ाई",
+ "categoryErrands": "बाहर के काम",
+ "categoryFitness": "व्यायाम"
 }

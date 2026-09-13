@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/theme.dart';
 import '../l10n/strings.dart';
+import '../models/categories.dart';
 import '../models/languages.dart';
 import '../models/task.dart';
 import '../models/task_logic.dart';
@@ -71,6 +72,15 @@ class TaskTile extends ConsumerWidget {
                           style: TextStyle(fontWeight: FontWeight.w600, color: overdue ? scheme.error : scheme.primary),
                         ),
                         Text(frequencySummary(l, lang, task), style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
+                        if (categoryByKey(task.category) case final c?)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(c.icon, size: 14, color: c.color),
+                              const SizedBox(width: 3),
+                              Text(categoryName(l, c.key), style: TextStyle(color: c.color, fontSize: 12, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
                         if (task.group case final g?)
                           Row(
                             mainAxisSize: MainAxisSize.min,

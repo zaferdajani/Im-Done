@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Вийти з «{group}»? Ви більше не бачитимете її завдань і нагадувань.",
  "leftGroup": "Ви вийшли з групи",
  "removeFromGroup": "Вилучити {name} з цієї групи?",
- "removedFromGroup": "{name} більше не бачить цю групу"
+ "removedFromGroup": "{name} більше не бачить цю групу",
+ "renameGroup": "Перейменувати групу",
+ "newGroupName": "Нова назва",
+ "groupRenamed": "Групу перейменовано",
+ "categoryLabel": "Категорія",
+ "categoryNone": "Немає",
+ "categoryHealth": "Здоров’я",
+ "categoryWork": "Робота",
+ "categoryHome": "Дім",
+ "categoryShopping": "Покупки",
+ "categoryFamily": "Сім’я",
+ "categoryMoney": "Гроші",
+ "categoryStudy": "Навчання",
+ "categoryErrands": "Справи поза домом",
+ "categoryFitness": "Спорт"
 }

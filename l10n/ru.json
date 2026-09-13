@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Покинуть «{group}»? Вы перестанете видеть её задачи и напоминания.",
  "leftGroup": "Вы покинули группу",
  "removeFromGroup": "Удалить {name} из этой группы?",
- "removedFromGroup": "{name} больше не видит эту группу"
+ "removedFromGroup": "{name} больше не видит эту группу",
+ "renameGroup": "Переименовать группу",
+ "newGroupName": "Новое название",
+ "groupRenamed": "Группа переименована",
+ "categoryLabel": "Категория",
+ "categoryNone": "Нет",
+ "categoryHealth": "Здоровье",
+ "categoryWork": "Работа",
+ "categoryHome": "Дом",
+ "categoryShopping": "Покупки",
+ "categoryFamily": "Семья",
+ "categoryMoney": "Деньги",
+ "categoryStudy": "Учёба",
+ "categoryErrands": "Дела вне дома",
+ "categoryFitness": "Спорт"
 }

@@ -209,6 +209,14 @@ class CloudTasks {
     return code;
   }
 
+  /// A renamed group keeps its invite (links already handed out still work).
+  Future<void> renameGroupInvite(String uid, String from, String to) async {
+    final existing = await _db.collection('invites').where('createdBy', isEqualTo: uid).where('kind', isEqualTo: 'group').where('group', isEqualTo: from).get();
+    for (final d in existing.docs) {
+      await d.reference.update({'group': to, 'updatedAt': FieldValue.serverTimestamp()});
+    }
+  }
+
   Future<void> addMemberByCode(Task task, String code) async {
     final person = await lookupPersonalCode(code);
     if (person == null) throw StateError('no such code');

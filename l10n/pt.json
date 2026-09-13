@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Sair de \"{group}\"? Você deixará de ver as tarefas e os lembretes dele.",
  "leftGroup": "Você saiu do grupo",
  "removeFromGroup": "Remover {name} deste grupo?",
- "removedFromGroup": "{name} não vê mais este grupo"
+ "removedFromGroup": "{name} não vê mais este grupo",
+ "renameGroup": "Renomear grupo",
+ "newGroupName": "Novo nome",
+ "groupRenamed": "Grupo renomeado",
+ "categoryLabel": "Categoria",
+ "categoryNone": "Nenhuma",
+ "categoryHealth": "Saúde",
+ "categoryWork": "Trabalho",
+ "categoryHome": "Casa",
+ "categoryShopping": "Compras",
+ "categoryFamily": "Família",
+ "categoryMoney": "Dinheiro",
+ "categoryStudy": "Estudos",
+ "categoryErrands": "Tarefas de rua",
+ "categoryFitness": "Exercício"
 }

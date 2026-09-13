@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Leave “{group}”? You will stop seeing its tasks and their reminders.",
  "leftGroup": "You left the group",
  "removeFromGroup": "Remove {name} from this group?",
- "removedFromGroup": "{name} no longer sees this group"
+ "removedFromGroup": "{name} no longer sees this group",
+ "renameGroup": "Rename group",
+ "newGroupName": "New name",
+ "groupRenamed": "Group renamed",
+ "categoryLabel": "Category",
+ "categoryNone": "None",
+ "categoryHealth": "Health",
+ "categoryWork": "Work",
+ "categoryHome": "Home",
+ "categoryShopping": "Shopping",
+ "categoryFamily": "Family",
+ "categoryMoney": "Money",
+ "categoryStudy": "Study",
+ "categoryErrands": "Errands",
+ "categoryFitness": "Fitness"
 }

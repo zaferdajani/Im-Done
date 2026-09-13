@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "هل تغادر «{group}»؟ لن ترى مهامها ولا تذكيراتها بعد الآن.",
  "leftGroup": "غادرت المجموعة",
  "removeFromGroup": "هل تزيل {name} من هذه المجموعة؟",
- "removedFromGroup": "لم يعد {name} يرى هذه المجموعة"
+ "removedFromGroup": "لم يعد {name} يرى هذه المجموعة",
+ "renameGroup": "إعادة تسمية المجموعة",
+ "newGroupName": "الاسم الجديد",
+ "groupRenamed": "تمت إعادة تسمية المجموعة",
+ "categoryLabel": "التصنيف",
+ "categoryNone": "بلا",
+ "categoryHealth": "صحة",
+ "categoryWork": "عمل",
+ "categoryHome": "بيت",
+ "categoryShopping": "تسوّق",
+ "categoryFamily": "عائلة",
+ "categoryMoney": "مال",
+ "categoryStudy": "دراسة",
+ "categoryErrands": "مشاوير",
+ "categoryFitness": "رياضة"
 }

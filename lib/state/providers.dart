@@ -333,6 +333,35 @@ class TaskActions {
     return removed;
   }
 
+  /// Renames the group on every task the caller owns in it. Tasks other
+  /// people shared under that name keep theirs (they are not ours to
+  /// rename), so they stay listed under the old name until their owner
+  /// renames too. Returns how many tasks moved.
+  Future<int> renameGroup(String from, String to) async {
+    final name = to.trim();
+    if (name.isEmpty || name == from) return 0;
+    final uid = ref.read(myUidProvider);
+    var moved = 0;
+    for (final t in ref.read(allTasksProvider).where((t) => t.group == from && !t.archived)) {
+      if (!t.isShared) {
+        await ref.read(localTasksProvider.notifier).upsert(t.copyWith(group: name));
+        moved++;
+      } else if (t.ownerUid == uid) {
+        await _b.cloudTasks.update(t.copyWith(group: name));
+        moved++;
+      }
+    }
+    if (moved > 0 && ref.read(authUserProvider).value != null) {
+      try {
+        await _b.cloudTasks.renameGroupInvite(uid, from, name);
+      } catch (_) {
+        // The invite is rebuilt on the next share anyway.
+      }
+    }
+    if (ref.read(groupFilterProvider) == from) ref.read(groupFilterProvider.notifier).set(name);
+    return moved;
+  }
+
   /// Tasks in [group] that other people share with the caller.
   int othersTasksInGroup(String group) {
     final uid = ref.read(myUidProvider);

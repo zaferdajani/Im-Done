@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "退出“{group}”？你将不再看到其中的任务和提醒。",
  "leftGroup": "你已退出分组",
  "removeFromGroup": "将 {name} 从此分组移除？",
- "removedFromGroup": "{name} 不再看到此分组"
+ "removedFromGroup": "{name} 不再看到此分组",
+ "renameGroup": "重命名分组",
+ "newGroupName": "新名称",
+ "groupRenamed": "分组已重命名",
+ "categoryLabel": "类别",
+ "categoryNone": "无",
+ "categoryHealth": "健康",
+ "categoryWork": "工作",
+ "categoryHome": "家庭",
+ "categoryShopping": "购物",
+ "categoryFamily": "家人",
+ "categoryMoney": "财务",
+ "categoryStudy": "学习",
+ "categoryErrands": "外出办事",
+ "categoryFitness": "健身"
 }

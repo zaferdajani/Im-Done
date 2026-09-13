@@ -98,4 +98,11 @@ void main() {
     expect(t.copyWith(clearGroup: true).group, isNull);
     expect(Task.fromJson({'id': 'a', 'title': 'old', 'group': '  '}).group, isNull);
   });
+
+  test('a category from speech is kept only when it is one of ours', () {
+    final t = applyUnderstanding(draft(), Understanding.fromJson({'title': 'take the pills', 'transcript': 'take the pills', 'category': 'health'}));
+    expect(t.category, 'health');
+    expect(Task.decode(t.encode()).category, 'health');
+    expect(t.copyWith(clearCategory: true).category, isNull);
+  });
 }

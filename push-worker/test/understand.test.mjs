@@ -65,6 +65,12 @@ test('importance defaults to medium and only takes the three values', () => {
   assert.equal(parseUnderstanding('{"title":"x","importance":"low"}', 'x', 'en').importance, 'low');
 });
 
+test('a category is one of ours or nothing', () => {
+  assert.equal(parseUnderstanding('{"title":"x","category":"health"}', 'x', 'en').category, 'health');
+  assert.equal(parseUnderstanding('{"title":"x","category":"pets"}', 'x', 'en').category, null);
+  assert.equal(parseUnderstanding('{"title":"x"}', 'x', 'en').category, null);
+});
+
 test('a group is a short name or nothing', () => {
   assert.equal(parseUnderstanding('{"title":"x","group":" Work "}', 'x', 'en').group, 'Work');
   assert.equal(parseUnderstanding('{"title":"x","group":""}', 'x', 'en').group, null);

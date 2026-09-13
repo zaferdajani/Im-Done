@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/strings.dart';
+import '../models/categories.dart';
 import '../models/task.dart';
 import '../services/voice_parser.dart';
 import '../state/providers.dart';
@@ -300,6 +301,26 @@ class _TaskEditorSheetState extends ConsumerState<TaskEditorSheet> {
                   Text(l.nagTimes),
                 ],
               ),
+            const SizedBox(height: 14),
+            _Label(l.categoryLabel),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [
+                for (final c in taskCategories)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 8),
+                    child: ChoiceChip(
+                      avatar: Icon(c.icon, size: 18, color: _t.category == c.key ? Colors.white : c.color),
+                      label: Text(categoryName(l, c.key)),
+                      selected: _t.category == c.key,
+                      selectedColor: c.color,
+                      labelStyle: TextStyle(color: _t.category == c.key ? Colors.white : null),
+                      showCheckmark: false,
+                      onSelected: (on) => _set(on ? _t.copyWith(category: c.key) : _t.copyWith(clearCategory: true)),
+                    ),
+                  ),
+              ]),
+            ),
             const SizedBox(height: 14),
             _Label(l.groupLabel),
             TextField(

@@ -183,6 +183,20 @@ class L10n {
     required this.leftGroup,
     required this.removeFromGroup,
     required this.removedFromGroup,
+    required this.renameGroup,
+    required this.newGroupName,
+    required this.groupRenamed,
+    required this.categoryLabel,
+    required this.categoryNone,
+    required this.categoryHealth,
+    required this.categoryWork,
+    required this.categoryHome,
+    required this.categoryShopping,
+    required this.categoryFamily,
+    required this.categoryMoney,
+    required this.categoryStudy,
+    required this.categoryErrands,
+    required this.categoryFitness,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -385,6 +399,20 @@ class L10n {
   final String leftGroup;
   final String removeFromGroup;
   final String removedFromGroup;
+  final String renameGroup;
+  final String newGroupName;
+  final String groupRenamed;
+  final String categoryLabel;
+  final String categoryNone;
+  final String categoryHealth;
+  final String categoryWork;
+  final String categoryHome;
+  final String categoryShopping;
+  final String categoryFamily;
+  final String categoryMoney;
+  final String categoryStudy;
+  final String categoryErrands;
+  final String categoryFitness;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;

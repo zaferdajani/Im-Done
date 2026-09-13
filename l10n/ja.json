@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "「{group}」を退出しますか？このグループのタスクとリマインダーは表示されなくなります。",
  "leftGroup": "グループを退出しました",
  "removeFromGroup": "{name} さんをこのグループから外しますか？",
- "removedFromGroup": "{name} さんにはこのグループが表示されなくなりました"
+ "removedFromGroup": "{name} さんにはこのグループが表示されなくなりました",
+ "renameGroup": "グループ名を変更",
+ "newGroupName": "新しい名前",
+ "groupRenamed": "グループ名を変更しました",
+ "categoryLabel": "カテゴリ",
+ "categoryNone": "なし",
+ "categoryHealth": "健康",
+ "categoryWork": "仕事",
+ "categoryHome": "家",
+ "categoryShopping": "買い物",
+ "categoryFamily": "家族",
+ "categoryMoney": "お金",
+ "categoryStudy": "勉強",
+ "categoryErrands": "用事",
+ "categoryFitness": "運動"
 }

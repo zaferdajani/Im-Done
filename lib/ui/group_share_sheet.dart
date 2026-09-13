@@ -104,6 +104,37 @@ class _GroupShareSheetState extends ConsumerState<GroupShareSheet> {
     }
   }
 
+  Future<void> _rename() async {
+    final l = ref.read(l10nProvider);
+    final ctl = TextEditingController(text: widget.group);
+    final name = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.renameGroup),
+        content: TextField(controller: ctl, autofocus: true, textCapitalization: TextCapitalization.words, decoration: InputDecoration(hintText: l.newGroupName), onSubmitted: (v) => Navigator.pop(ctx, v)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.cancel)),
+          FilledButton(onPressed: () => Navigator.pop(ctx, ctl.text), child: Text(l.save)),
+        ],
+      ),
+    );
+    ctl.dispose();
+    final clean = name?.trim() ?? '';
+    if (clean.isEmpty || clean == widget.group || !mounted) return;
+    setState(() => _busy = true);
+    try {
+      await ref.read(taskActionsProvider).renameGroup(widget.group, clean);
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.groupRenamed)));
+    } catch (e) {
+      if (mounted) {
+        setState(() => _busy = false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.error}: $e')));
+      }
+    }
+  }
+
   Future<void> _leave() async {
     final l = ref.read(l10nProvider);
     if (_busy || !await _confirm(l.leaveGroupConfirm.fill({'group': widget.group}), l.leaveGroup)) return;
@@ -159,6 +190,7 @@ class _GroupShareSheetState extends ConsumerState<GroupShareSheet> {
             Icon(Icons.folder_shared_outlined, color: scheme.primary),
             const SizedBox(width: 10),
             Expanded(child: Text('${l.shareGroup} · ${widget.group}', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700))),
+            IconButton(tooltip: l.renameGroup, onPressed: _busy ? null : _rename, icon: const Icon(Icons.edit_outlined)),
           ]),
           const SizedBox(height: 16),
           Text(l.groupPeople, style: TextStyle(color: scheme.onSurfaceVariant, fontWeight: FontWeight.w600)),

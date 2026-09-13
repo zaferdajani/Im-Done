@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "Quitter « {group} » ? Vous ne verrez plus ses tâches ni leurs rappels.",
  "leftGroup": "Vous avez quitté le groupe",
  "removeFromGroup": "Retirer {name} de ce groupe ?",
- "removedFromGroup": "{name} ne voit plus ce groupe"
+ "removedFromGroup": "{name} ne voit plus ce groupe",
+ "renameGroup": "Renommer le groupe",
+ "newGroupName": "Nouveau nom",
+ "groupRenamed": "Groupe renommé",
+ "categoryLabel": "Catégorie",
+ "categoryNone": "Aucune",
+ "categoryHealth": "Santé",
+ "categoryWork": "Travail",
+ "categoryHome": "Maison",
+ "categoryShopping": "Courses",
+ "categoryFamily": "Famille",
+ "categoryMoney": "Argent",
+ "categoryStudy": "Études",
+ "categoryErrands": "Démarches",
+ "categoryFitness": "Sport"
 }

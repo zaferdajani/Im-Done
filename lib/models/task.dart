@@ -110,6 +110,7 @@ class Task {
     this.transcript,
     this.importance = Importance.medium,
     this.group,
+    this.category,
   });
 
   final String id;
@@ -159,6 +160,9 @@ class Task {
   /// A free name that gathers tasks ("Home", "Work", "Kids"). Null = none.
   final String? group;
 
+  /// One of the keys in models/categories.dart, or null.
+  final String? category;
+
   bool get isShared => kind == TaskKind.shared;
 
   Task copyWith({
@@ -188,6 +192,8 @@ class Task {
     Importance? importance,
     String? group,
     bool clearGroup = false,
+    String? category,
+    bool clearCategory = false,
   }) =>
       Task(
         id: id,
@@ -215,6 +221,7 @@ class Task {
         transcript: transcript ?? this.transcript,
         importance: importance ?? this.importance,
         group: clearGroup ? null : (group ?? this.group),
+        category: clearCategory ? null : (category ?? this.category),
       );
 
   Map<String, dynamic> toJson() => {
@@ -244,6 +251,7 @@ class Task {
         if (transcript != null) 'transcript': transcript,
         'importance': importance.name,
         if (group != null) 'group': group,
+        if (category != null) 'category': category,
       };
 
   static Task fromJson(Map<String, dynamic> j) => Task(
@@ -284,6 +292,7 @@ class Task {
         transcript: j['transcript'] as String?,
         importance: Importance.values.where((i) => i.name == j['importance']).firstOrNull ?? Importance.medium,
         group: (j['group'] as String?)?.trim().isEmpty ?? true ? null : (j['group'] as String).trim(),
+        category: j['category'] as String?,
       );
 
   String encode() => jsonEncode(toJson());

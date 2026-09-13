@@ -25,6 +25,7 @@ export const ARABIC_DIALECTS = [
 ];
 
 export const FREQUENCIES = ['once', 'daily', 'weekdays', 'weekly', 'everyNDays'];
+export const CATEGORIES = ['health', 'work', 'home', 'shopping', 'family', 'money', 'study', 'errands', 'fitness'];
 
 /** Whisper reports language NAMES in verbose_json ("arabic"); map to codes. */
 const NAME_TO_CODE = Object.fromEntries(Object.entries(LANGUAGES).map(([c, n]) => [n.toLowerCase(), c]));
@@ -64,6 +65,7 @@ export function buildSystemPrompt({ now, weekday, uiLanguage, preferred }) {
     '  "periodDays": integer number of days the task runs ("for two weeks" = 14), or null.',
     '  "note": anything spoken that is not the task or its schedule, else null.',
     '  "group": a group the speaker files the task under ("for work", "in my home list", "للشغل", "para la casa") — the group name only, in the spoken language, else null. Never invent one.',
+    `  "category": what kind of task it is, one of ${CATEGORIES.join(', ')} (medicine and doctors are health; bills and bank are money; groceries are shopping; the gym is fitness; driving somewhere to get something done is errands), or null when none fits clearly.`,
     '  "importance": "high" when the speaker says it is urgent, very important, a must, critical ("ضروري", "مهم جدًا", "urgente", "急ぎ"); "low" when they say it is not important, whenever, if there is time, low priority ("مش مهم", "لو فضيت"); otherwise "medium".',
     '',
     'Never invent a schedule the speaker did not say. When nothing is scheduled, frequency is "once" with hour and minute null.',
@@ -112,7 +114,8 @@ export function parseUnderstanding(raw, transcript, detectedLanguage) {
   const note = typeof j.note === 'string' && j.note.trim() ? j.note.trim().slice(0, 500) : null;
   const importance = ['high', 'medium', 'low'].includes(j.importance) ? j.importance : 'medium';
   const group = typeof j.group === 'string' && j.group.trim() ? j.group.trim().slice(0, 40) : null;
-  return { title, language, dialect, frequency, weekdays, everyNDays, hour, minute, date, periodDays, note, importance, group, transcript: String(transcript ?? '').trim() };
+  const category = CATEGORIES.includes(j.category) ? j.category : null;
+  return { title, language, dialect, frequency, weekdays, everyNDays, hour, minute, date, periodDays, note, importance, group, category, transcript: String(transcript ?? '').trim() };
 }
 
 /** Audio the endpoint accepts: bounded so one caller cannot eat the day's quota. */

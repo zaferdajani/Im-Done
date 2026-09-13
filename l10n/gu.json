@@ -206,5 +206,19 @@
  "leaveGroupConfirm": "“{group}” છોડવું છે? તમને તેનાં કામ અને રિમાઇન્ડર દેખાવાનું બંધ થશે.",
  "leftGroup": "તમે જૂથ છોડ્યું",
  "removeFromGroup": "{name} ને આ જૂથમાંથી કાઢવા છે?",
- "removedFromGroup": "{name} ને હવે આ જૂથ દેખાતું નથી"
+ "removedFromGroup": "{name} ને હવે આ જૂથ દેખાતું નથી",
+ "renameGroup": "જૂથનું નામ બદલો",
+ "newGroupName": "નવું નામ",
+ "groupRenamed": "જૂથનું નામ બદલાયું",
+ "categoryLabel": "શ્રેણી",
+ "categoryNone": "કોઈ નહીં",
+ "categoryHealth": "આરોગ્ય",
+ "categoryWork": "કામ",
+ "categoryHome": "ઘર",
+ "categoryShopping": "ખરીદી",
+ "categoryFamily": "પરિવાર",
+ "categoryMoney": "પૈસા",
+ "categoryStudy": "અભ્યાસ",
+ "categoryErrands": "બહારનાં કામ",
+ "categoryFitness": "કસરત"
 }
