@@ -178,6 +178,11 @@ class L10n {
     required this.groupJoined,
     required this.shareInviteLink,
     required this.groupNobodyYet,
+    required this.leaveGroup,
+    required this.leaveGroupConfirm,
+    required this.leftGroup,
+    required this.removeFromGroup,
+    required this.removedFromGroup,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -375,6 +380,11 @@ class L10n {
   final String groupJoined;
   final String shareInviteLink;
   final String groupNobodyYet;
+  final String leaveGroup;
+  final String leaveGroupConfirm;
+  final String leftGroup;
+  final String removeFromGroup;
+  final String removedFromGroup;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;

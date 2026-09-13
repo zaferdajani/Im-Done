@@ -201,5 +201,10 @@
  "groupOnlyOwn": "只能共享你创建的任务。",
  "groupJoined": "你已加入分组“{group}”",
  "shareInviteLink": "分享邀请链接",
- "groupNobodyYet": "还没有人。通过代码添加，或分享链接。"
+ "groupNobodyYet": "还没有人。通过代码添加，或分享链接。",
+ "leaveGroup": "退出分组",
+ "leaveGroupConfirm": "退出“{group}”？你将不再看到其中的任务和提醒。",
+ "leftGroup": "你已退出分组",
+ "removeFromGroup": "将 {name} 从此分组移除？",
+ "removedFromGroup": "{name} 不再看到此分组"
 }

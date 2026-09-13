@@ -306,6 +306,39 @@ class TaskActions {
     return '${Cloud.inviteBaseUrl}/$code';
   }
 
+  /// Leaves every task in [group] that someone else shared with the caller.
+  /// The caller's own tasks in the group are untouched — leaving is about
+  /// other people's tasks; one's own are deleted, not left.
+  Future<int> leaveGroup(String group) async {
+    final uid = ref.read(myUidProvider);
+    var left = 0;
+    for (final t in ref.read(allTasksProvider).where((t) => t.group == group && t.isShared && t.ownerUid != uid && !t.archived)) {
+      await _b.cloudTasks.leave(t, uid);
+      await _b.scheduler.cancelTask(t.id);
+      left++;
+    }
+    return left;
+  }
+
+  /// Takes a person off every task the caller created in [group]; from
+  /// then on new tasks in the group no longer follow to them either, since
+  /// the group's people are read from its tasks.
+  Future<int> removeFromGroup(String group, String personUid) async {
+    final uid = ref.read(myUidProvider);
+    var removed = 0;
+    for (final t in ref.read(allTasksProvider).where((t) => t.group == group && t.isShared && t.ownerUid == uid && !t.archived && t.members.any((m) => m.uid == personUid))) {
+      await _b.cloudTasks.removeMember(t, personUid);
+      removed++;
+    }
+    return removed;
+  }
+
+  /// Tasks in [group] that other people share with the caller.
+  int othersTasksInGroup(String group) {
+    final uid = ref.read(myUidProvider);
+    return ref.read(allTasksProvider).where((t) => t.group == group && t.isShared && t.ownerUid != uid && !t.archived).length;
+  }
+
   Future<String?> _refreshGroupInvite(String group) async {
     final uid = ref.read(myUidProvider);
     final codes = [

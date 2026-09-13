@@ -199,6 +199,11 @@ const l10nAr = L10n(
   groupJoined: 'انضممت إلى مجموعة «{group}»',
   shareInviteLink: 'مشاركة رابط الدعوة',
   groupNobodyYet: 'لا أحد بعد. أضف شخصًا بالرمز أو شارك الرابط.',
+  leaveGroup: 'مغادرة المجموعة',
+  leaveGroupConfirm: 'هل تغادر «{group}»؟ لن ترى مهامها ولا تذكيراتها بعد الآن.',
+  leftGroup: 'غادرت المجموعة',
+  removeFromGroup: 'هل تزيل {name} من هذه المجموعة؟',
+  removedFromGroup: 'لم يعد {name} يرى هذه المجموعة',
 );
 
 const l10nEn = L10n(
@@ -397,6 +402,11 @@ const l10nEn = L10n(
   groupJoined: 'You joined the group “{group}”',
   shareInviteLink: 'Share invite link',
   groupNobodyYet: 'Nobody yet. Add someone by code or share the link.',
+  leaveGroup: 'Leave group',
+  leaveGroupConfirm: 'Leave “{group}”? You will stop seeing its tasks and their reminders.',
+  leftGroup: 'You left the group',
+  removeFromGroup: 'Remove {name} from this group?',
+  removedFromGroup: '{name} no longer sees this group',
 );
 
 const l10nEs = L10n(
@@ -595,6 +605,11 @@ const l10nEs = L10n(
   groupJoined: 'Te uniste al grupo «{group}»',
   shareInviteLink: 'Compartir enlace de invitación',
   groupNobodyYet: 'Nadie todavía. Agrega a alguien con su código o comparte el enlace.',
+  leaveGroup: 'Salir del grupo',
+  leaveGroupConfirm: '¿Salir de «{group}»? Dejarás de ver sus tareas y sus recordatorios.',
+  leftGroup: 'Saliste del grupo',
+  removeFromGroup: '¿Quitar a {name} de este grupo?',
+  removedFromGroup: '{name} ya no ve este grupo',
 );
 
 const l10nFa = L10n(
@@ -793,6 +808,11 @@ const l10nFa = L10n(
   groupJoined: 'به گروه «{group}» پیوستید',
   shareInviteLink: 'اشتراک‌گذاری پیوند دعوت',
   groupNobodyYet: 'هنوز کسی نیست. با کد کسی را اضافه کنید یا پیوند را به اشتراک بگذارید.',
+  leaveGroup: 'ترک گروه',
+  leaveGroupConfirm: '«{group}» را ترک می‌کنید؟ دیگر کارها و یادآوری‌های آن را نمی‌بینید.',
+  leftGroup: 'گروه را ترک کردید',
+  removeFromGroup: '{name} از این گروه حذف شود؟',
+  removedFromGroup: '{name} دیگر این گروه را نمی‌بیند',
 );
 
 const l10nFr = L10n(
@@ -991,6 +1011,11 @@ const l10nFr = L10n(
   groupJoined: 'Vous avez rejoint le groupe « {group} »',
   shareInviteLink: 'Partager le lien d\'invitation',
   groupNobodyYet: 'Personne pour l\'instant. Ajoutez quelqu\'un par code ou partagez le lien.',
+  leaveGroup: 'Quitter le groupe',
+  leaveGroupConfirm: 'Quitter « {group} » ? Vous ne verrez plus ses tâches ni leurs rappels.',
+  leftGroup: 'Vous avez quitté le groupe',
+  removeFromGroup: 'Retirer {name} de ce groupe ?',
+  removedFromGroup: '{name} ne voit plus ce groupe',
 );
 
 const l10nGu = L10n(
@@ -1189,6 +1214,11 @@ const l10nGu = L10n(
   groupJoined: 'તમે જૂથ “{group}” માં જોડાયા',
   shareInviteLink: 'આમંત્રણ લિંક શેર કરો',
   groupNobodyYet: 'હજી કોઈ નહીં. કોડથી કોઈને ઉમેરો અથવા લિંક શેર કરો.',
+  leaveGroup: 'જૂથ છોડો',
+  leaveGroupConfirm: '“{group}” છોડવું છે? તમને તેનાં કામ અને રિમાઇન્ડર દેખાવાનું બંધ થશે.',
+  leftGroup: 'તમે જૂથ છોડ્યું',
+  removeFromGroup: '{name} ને આ જૂથમાંથી કાઢવા છે?',
+  removedFromGroup: '{name} ને હવે આ જૂથ દેખાતું નથી',
 );
 
 const l10nHi = L10n(
@@ -1387,6 +1417,11 @@ const l10nHi = L10n(
   groupJoined: 'आप समूह “{group}” में शामिल हो गए',
   shareInviteLink: 'आमंत्रण लिंक साझा करें',
   groupNobodyYet: 'अभी कोई नहीं। कोड से किसी को जोड़ें या लिंक साझा करें।',
+  leaveGroup: 'समूह छोड़ें',
+  leaveGroupConfirm: '“{group}” छोड़ें? आपको इसके काम और उनके रिमाइंडर दिखना बंद हो जाएँगे।',
+  leftGroup: 'आपने समूह छोड़ दिया',
+  removeFromGroup: '{name} को इस समूह से हटाएँ?',
+  removedFromGroup: '{name} को अब यह समूह नहीं दिखता',
 );
 
 const l10nIt = L10n(
@@ -1585,6 +1620,11 @@ const l10nIt = L10n(
   groupJoined: 'Ti sei unito al gruppo «{group}»',
   shareInviteLink: 'Condividi link di invito',
   groupNobodyYet: 'Ancora nessuno. Aggiungi qualcuno con il codice o condividi il link.',
+  leaveGroup: 'Esci dal gruppo',
+  leaveGroupConfirm: 'Uscire da «{group}»? Non vedrai più le sue attività né i promemoria.',
+  leftGroup: 'Sei uscito dal gruppo',
+  removeFromGroup: 'Rimuovere {name} da questo gruppo?',
+  removedFromGroup: '{name} non vede più questo gruppo',
 );
 
 const l10nJa = L10n(
@@ -1783,6 +1823,11 @@ const l10nJa = L10n(
   groupJoined: 'グループ「{group}」に参加しました',
   shareInviteLink: '招待リンクを共有',
   groupNobodyYet: 'まだ誰もいません。コードで追加するか、リンクを共有してください。',
+  leaveGroup: 'グループを退出',
+  leaveGroupConfirm: '「{group}」を退出しますか？このグループのタスクとリマインダーは表示されなくなります。',
+  leftGroup: 'グループを退出しました',
+  removeFromGroup: '{name} さんをこのグループから外しますか？',
+  removedFromGroup: '{name} さんにはこのグループが表示されなくなりました',
 );
 
 const l10nKo = L10n(
@@ -1981,6 +2026,11 @@ const l10nKo = L10n(
   groupJoined: '그룹 “{group}”에 참여했어요',
   shareInviteLink: '초대 링크 공유',
   groupNobodyYet: '아직 아무도 없어요. 코드로 추가하거나 링크를 공유하세요.',
+  leaveGroup: '그룹 나가기',
+  leaveGroupConfirm: '“{group}”에서 나갈까요? 이 그룹의 할 일과 알림이 더 이상 보이지 않아요.',
+  leftGroup: '그룹에서 나왔어요',
+  removeFromGroup: '{name} 님을 이 그룹에서 제외할까요?',
+  removedFromGroup: '{name} 님에게 이 그룹이 더 이상 보이지 않아요',
 );
 
 const l10nPt = L10n(
@@ -2179,6 +2229,11 @@ const l10nPt = L10n(
   groupJoined: 'Você entrou no grupo "{group}"',
   shareInviteLink: 'Compartilhar link de convite',
   groupNobodyYet: 'Ninguém ainda. Adicione alguém pelo código ou compartilhe o link.',
+  leaveGroup: 'Sair do grupo',
+  leaveGroupConfirm: 'Sair de "{group}"? Você deixará de ver as tarefas e os lembretes dele.',
+  leftGroup: 'Você saiu do grupo',
+  removeFromGroup: 'Remover {name} deste grupo?',
+  removedFromGroup: '{name} não vê mais este grupo',
 );
 
 const l10nRu = L10n(
@@ -2377,6 +2432,11 @@ const l10nRu = L10n(
   groupJoined: 'Вы присоединились к группе «{group}»',
   shareInviteLink: 'Поделиться ссылкой-приглашением',
   groupNobodyYet: 'Пока никого. Добавьте кого-нибудь по коду или поделитесь ссылкой.',
+  leaveGroup: 'Покинуть группу',
+  leaveGroupConfirm: 'Покинуть «{group}»? Вы перестанете видеть её задачи и напоминания.',
+  leftGroup: 'Вы покинули группу',
+  removeFromGroup: 'Удалить {name} из этой группы?',
+  removedFromGroup: '{name} больше не видит эту группу',
 );
 
 const l10nTr = L10n(
@@ -2575,6 +2635,11 @@ const l10nTr = L10n(
   groupJoined: '"{group}" grubuna katıldınız',
   shareInviteLink: 'Davet bağlantısını paylaş',
   groupNobodyYet: 'Henüz kimse yok. Kodla birini ekleyin veya bağlantıyı paylaşın.',
+  leaveGroup: 'Gruptan ayrıl',
+  leaveGroupConfirm: '"{group}" grubundan ayrılınsın mı? Görevlerini ve hatırlatmalarını artık görmezsiniz.',
+  leftGroup: 'Gruptan ayrıldınız',
+  removeFromGroup: '{name} bu gruptan çıkarılsın mı?',
+  removedFromGroup: '{name} artık bu grubu görmüyor',
 );
 
 const l10nUk = L10n(
@@ -2773,6 +2838,11 @@ const l10nUk = L10n(
   groupJoined: 'Ви приєдналися до групи «{group}»',
   shareInviteLink: 'Поділитися посиланням-запрошенням',
   groupNobodyYet: 'Поки нікого. Додайте когось за кодом або поділіться посиланням.',
+  leaveGroup: 'Вийти з групи',
+  leaveGroupConfirm: 'Вийти з «{group}»? Ви більше не бачитимете її завдань і нагадувань.',
+  leftGroup: 'Ви вийшли з групи',
+  removeFromGroup: 'Вилучити {name} з цієї групи?',
+  removedFromGroup: '{name} більше не бачить цю групу',
 );
 
 const l10nUr = L10n(
@@ -2971,6 +3041,11 @@ const l10nUr = L10n(
   groupJoined: 'آپ گروپ ”{group}“ میں شامل ہو گئے',
   shareInviteLink: 'دعوتی لنک شیئر کریں',
   groupNobodyYet: 'ابھی کوئی نہیں۔ کوڈ سے کسی کو شامل کریں یا لنک شیئر کریں۔',
+  leaveGroup: 'گروپ چھوڑیں',
+  leaveGroupConfirm: '”{group}“ چھوڑ دیں؟ آپ کو اس کے کام اور یاد دہانیاں نظر آنا بند ہو جائیں گی۔',
+  leftGroup: 'آپ نے گروپ چھوڑ دیا',
+  removeFromGroup: '{name} کو اس گروپ سے نکالیں؟',
+  removedFromGroup: '{name} کو اب یہ گروپ نظر نہیں آتا',
 );
 
 const l10nZh = L10n(
@@ -3169,6 +3244,11 @@ const l10nZh = L10n(
   groupJoined: '你已加入分组“{group}”',
   shareInviteLink: '分享邀请链接',
   groupNobodyYet: '还没有人。通过代码添加，或分享链接。',
+  leaveGroup: '退出分组',
+  leaveGroupConfirm: '退出“{group}”？你将不再看到其中的任务和提醒。',
+  leftGroup: '你已退出分组',
+  removeFromGroup: '将 {name} 从此分组移除？',
+  removedFromGroup: '{name} 不再看到此分组',
 );
 
 /// Every language the app can display, by ISO 639-1 code.

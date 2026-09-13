@@ -201,5 +201,10 @@
  "groupOnlyOwn": "내가 만든 할 일만 공유할 수 있어요.",
  "groupJoined": "그룹 “{group}”에 참여했어요",
  "shareInviteLink": "초대 링크 공유",
- "groupNobodyYet": "아직 아무도 없어요. 코드로 추가하거나 링크를 공유하세요."
+ "groupNobodyYet": "아직 아무도 없어요. 코드로 추가하거나 링크를 공유하세요.",
+ "leaveGroup": "그룹 나가기",
+ "leaveGroupConfirm": "“{group}”에서 나갈까요? 이 그룹의 할 일과 알림이 더 이상 보이지 않아요.",
+ "leftGroup": "그룹에서 나왔어요",
+ "removeFromGroup": "{name} 님을 이 그룹에서 제외할까요?",
+ "removedFromGroup": "{name} 님에게 이 그룹이 더 이상 보이지 않아요"
 }

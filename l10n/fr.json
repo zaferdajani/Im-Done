@@ -201,5 +201,10 @@
  "groupOnlyOwn": "Seules les tâches que vous avez créées peuvent être partagées.",
  "groupJoined": "Vous avez rejoint le groupe « {group} »",
  "shareInviteLink": "Partager le lien d'invitation",
- "groupNobodyYet": "Personne pour l'instant. Ajoutez quelqu'un par code ou partagez le lien."
+ "groupNobodyYet": "Personne pour l'instant. Ajoutez quelqu'un par code ou partagez le lien.",
+ "leaveGroup": "Quitter le groupe",
+ "leaveGroupConfirm": "Quitter « {group} » ? Vous ne verrez plus ses tâches ni leurs rappels.",
+ "leftGroup": "Vous avez quitté le groupe",
+ "removeFromGroup": "Retirer {name} de ce groupe ?",
+ "removedFromGroup": "{name} ne voit plus ce groupe"
 }

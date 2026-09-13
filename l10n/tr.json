@@ -201,5 +201,10 @@
  "groupOnlyOwn": "Yalnızca sizin oluşturduğunuz görevler paylaşılabilir.",
  "groupJoined": "\"{group}\" grubuna katıldınız",
  "shareInviteLink": "Davet bağlantısını paylaş",
- "groupNobodyYet": "Henüz kimse yok. Kodla birini ekleyin veya bağlantıyı paylaşın."
+ "groupNobodyYet": "Henüz kimse yok. Kodla birini ekleyin veya bağlantıyı paylaşın.",
+ "leaveGroup": "Gruptan ayrıl",
+ "leaveGroupConfirm": "\"{group}\" grubundan ayrılınsın mı? Görevlerini ve hatırlatmalarını artık görmezsiniz.",
+ "leftGroup": "Gruptan ayrıldınız",
+ "removeFromGroup": "{name} bu gruptan çıkarılsın mı?",
+ "removedFromGroup": "{name} artık bu grubu görmüyor"
 }

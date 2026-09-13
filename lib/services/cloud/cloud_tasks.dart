@@ -220,6 +220,10 @@ class CloudTasks {
     });
   }
 
+  /// The creator takes someone off a task (the rules let the owner change
+  /// the member lists; the person simply stops seeing it).
+  Future<void> removeMember(Task task, String uid) => leave(task, uid);
+
   Future<void> leave(Task task, String uid) async {
     await _col.doc(task.id).update({
       'memberUids': FieldValue.arrayRemove([uid]),

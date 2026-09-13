@@ -201,5 +201,10 @@
  "groupOnlyOwn": "Só as tarefas que você criou podem ser compartilhadas.",
  "groupJoined": "Você entrou no grupo \"{group}\"",
  "shareInviteLink": "Compartilhar link de convite",
- "groupNobodyYet": "Ninguém ainda. Adicione alguém pelo código ou compartilhe o link."
+ "groupNobodyYet": "Ninguém ainda. Adicione alguém pelo código ou compartilhe o link.",
+ "leaveGroup": "Sair do grupo",
+ "leaveGroupConfirm": "Sair de \"{group}\"? Você deixará de ver as tarefas e os lembretes dele.",
+ "leftGroup": "Você saiu do grupo",
+ "removeFromGroup": "Remover {name} deste grupo?",
+ "removedFromGroup": "{name} não vê mais este grupo"
 }

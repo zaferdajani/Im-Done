@@ -201,5 +201,10 @@
  "groupOnlyOwn": "ફક્ત તમે બનાવેલાં કામ જ શેર થઈ શકે.",
  "groupJoined": "તમે જૂથ “{group}” માં જોડાયા",
  "shareInviteLink": "આમંત્રણ લિંક શેર કરો",
- "groupNobodyYet": "હજી કોઈ નહીં. કોડથી કોઈને ઉમેરો અથવા લિંક શેર કરો."
+ "groupNobodyYet": "હજી કોઈ નહીં. કોડથી કોઈને ઉમેરો અથવા લિંક શેર કરો.",
+ "leaveGroup": "જૂથ છોડો",
+ "leaveGroupConfirm": "“{group}” છોડવું છે? તમને તેનાં કામ અને રિમાઇન્ડર દેખાવાનું બંધ થશે.",
+ "leftGroup": "તમે જૂથ છોડ્યું",
+ "removeFromGroup": "{name} ને આ જૂથમાંથી કાઢવા છે?",
+ "removedFromGroup": "{name} ને હવે આ જૂથ દેખાતું નથી"
 }

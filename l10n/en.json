@@ -201,5 +201,10 @@
  "groupOnlyOwn": "Only the tasks you created can be shared.",
  "groupJoined": "You joined the group “{group}”",
  "shareInviteLink": "Share invite link",
- "groupNobodyYet": "Nobody yet. Add someone by code or share the link."
+ "groupNobodyYet": "Nobody yet. Add someone by code or share the link.",
+ "leaveGroup": "Leave group",
+ "leaveGroupConfirm": "Leave “{group}”? You will stop seeing its tasks and their reminders.",
+ "leftGroup": "You left the group",
+ "removeFromGroup": "Remove {name} from this group?",
+ "removedFromGroup": "{name} no longer sees this group"
 }

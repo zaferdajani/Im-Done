@@ -201,5 +201,10 @@
  "groupOnlyOwn": "يمكن مشاركة المهام التي أنشأتها أنت فقط.",
  "groupJoined": "انضممت إلى مجموعة «{group}»",
  "shareInviteLink": "مشاركة رابط الدعوة",
- "groupNobodyYet": "لا أحد بعد. أضف شخصًا بالرمز أو شارك الرابط."
+ "groupNobodyYet": "لا أحد بعد. أضف شخصًا بالرمز أو شارك الرابط.",
+ "leaveGroup": "مغادرة المجموعة",
+ "leaveGroupConfirm": "هل تغادر «{group}»؟ لن ترى مهامها ولا تذكيراتها بعد الآن.",
+ "leftGroup": "غادرت المجموعة",
+ "removeFromGroup": "هل تزيل {name} من هذه المجموعة؟",
+ "removedFromGroup": "لم يعد {name} يرى هذه المجموعة"
 }

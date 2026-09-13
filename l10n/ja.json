@@ -201,5 +201,10 @@
  "groupOnlyOwn": "共有できるのは自分が作成したタスクだけです。",
  "groupJoined": "グループ「{group}」に参加しました",
  "shareInviteLink": "招待リンクを共有",
- "groupNobodyYet": "まだ誰もいません。コードで追加するか、リンクを共有してください。"
+ "groupNobodyYet": "まだ誰もいません。コードで追加するか、リンクを共有してください。",
+ "leaveGroup": "グループを退出",
+ "leaveGroupConfirm": "「{group}」を退出しますか？このグループのタスクとリマインダーは表示されなくなります。",
+ "leftGroup": "グループを退出しました",
+ "removeFromGroup": "{name} さんをこのグループから外しますか？",
+ "removedFromGroup": "{name} さんにはこのグループが表示されなくなりました"
 }
