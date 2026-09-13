@@ -197,6 +197,31 @@ class L10n {
     required this.categoryStudy,
     required this.categoryErrands,
     required this.categoryFitness,
+    required this.planSection,
+    required this.planFree,
+    required this.planTrial,
+    required this.planFamily,
+    required this.planTeam,
+    required this.planUntil,
+    required this.planFreeBody,
+    required this.planFamilyBody,
+    required this.planTeamBody,
+    required this.createFamily,
+    required this.createTeam,
+    required this.workspaceNameHint,
+    required this.workspacePeople,
+    required this.seatsUsed,
+    required this.startTrial,
+    required this.trialStarted,
+    required this.trialUsed,
+    required this.purchasesSoon,
+    required this.leaveWorkspace,
+    required this.leaveWorkspaceConfirm,
+    required this.workspaceJoined,
+    required this.workspaceRemove,
+    required this.voiceQuota,
+    required this.renameWorkspace,
+    required this.whileFree,
     required this.quickStartTitle,
     required this.quickStartHint,
     required this.yourName,
@@ -413,6 +438,31 @@ class L10n {
   final String categoryStudy;
   final String categoryErrands;
   final String categoryFitness;
+  final String planSection;
+  final String planFree;
+  final String planTrial;
+  final String planFamily;
+  final String planTeam;
+  final String planUntil;
+  final String planFreeBody;
+  final String planFamilyBody;
+  final String planTeamBody;
+  final String createFamily;
+  final String createTeam;
+  final String workspaceNameHint;
+  final String workspacePeople;
+  final String seatsUsed;
+  final String startTrial;
+  final String trialStarted;
+  final String trialUsed;
+  final String purchasesSoon;
+  final String leaveWorkspace;
+  final String leaveWorkspaceConfirm;
+  final String workspaceJoined;
+  final String workspaceRemove;
+  final String voiceQuota;
+  final String renameWorkspace;
+  final String whileFree;
   final String quickStartTitle;
   final String quickStartHint;
   final String yourName;

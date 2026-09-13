@@ -8,7 +8,9 @@ import '../l10n/strings.dart';
 import '../l10n/supported.dart';
 import '../services/cloud/cloud.dart';
 import '../services/settings_store.dart';
+import '../models/plan.dart';
 import '../state/providers.dart';
+import 'plan_screen.dart';
 import 'sign_in_sheet.dart';
 import 'widgets/my_code_card.dart';
 
@@ -131,6 +133,21 @@ class SettingsScreen extends ConsumerWidget {
             _Section(l.myCode),
             const MyCodeCard(),
           ],
+          _Section(l.planSection),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.workspace_premium_rounded),
+              title: Text(switch (ref.watch(planLevelProvider)) {
+                PlanLevel.free => l.planFree,
+                PlanLevel.trial => l.planTrial,
+                PlanLevel.family => l.planFamily,
+                PlanLevel.team => l.planTeam,
+              }),
+              subtitle: Text(ref.watch(workspaceProvider).value?.name ?? l.planFreeBody, maxLines: 2, overflow: TextOverflow.ellipsis),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PlanScreen())),
+            ),
+          ),
           _Section(l.account),
           Card(
             child: Column(children: [

@@ -16,6 +16,43 @@ service cloud.firestore {
     function newCompletions() { return request.resource.data.get('completions', {}); }
     function completionKeysChanged() { return newCompletions().diff(oldCompletions()).affectedKeys(); }
 
+    // ------------------------------------------------ plans
+    // A WORKSPACE is a payer's environment (a family or a team). What was
+    // PAID for it lives in entitlements/{workspaceId}, written only by the
+    // server. Nothing is gated until config/billing.enforced is true, so
+    // the product is fully usable while plans are not yet on sale.
+    function billingEnforced() {
+      return exists(/databases/$(database)/documents/config/billing)
+        && get(/databases/$(database)/documents/config/billing).data.get('enforced', false) == true;
+    }
+    function workspaceOf(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId))
+        ? get(/databases/$(database)/documents/users/$(userId)).data.get('workspaceId', null) : null;
+    }
+    function entitlementActive(wsId) {
+      return wsId is string
+        && exists(/databases/$(database)/documents/entitlements/$(wsId))
+        && get(/databases/$(database)/documents/entitlements/$(wsId)).data.validUntil > request.time;
+    }
+    function inWorkspace(userId, wsId) {
+      return wsId is string
+        && exists(/databases/$(database)/documents/workspaces/$(wsId))
+        && userId in get(/databases/$(database)/documents/workspaces/$(wsId)).data.memberUids;
+    }
+    // A person has a plan when their workspace (which they really belong
+    // to — the profile field alone proves nothing) holds a live entitlement.
+    function hasPlan(userId) {
+      return !billingEnforced()
+        || (inWorkspace(userId, workspaceOf(userId)) && entitlementActive(workspaceOf(userId)));
+    }
+    // How many people may be on one task, by its creator's plan.
+    function memberCap(userId) { return hasPlan(userId) ? 50 : 3; }
+    // How many people a workspace may hold: what was paid for, else one.
+    function seatCap(wsId) {
+      return !billingEnforced() ? 50
+        : (entitlementActive(wsId) ? get(/databases/$(database)/documents/entitlements/$(wsId)).data.seats : 1);
+    }
+
     // A member joining through an invite code: the code names this task,
     // and the ONLY change is this person appended to the member lists.
     function isJoin(taskId) {
@@ -27,7 +64,7 @@ service cloud.firestore {
         && request.resource.data.memberUids == resource.data.memberUids.concat([uid()])
         && request.resource.data.members.size() == resource.data.members.size() + 1
         && request.resource.data.members[resource.data.members.size()].uid == uid()
-        && request.resource.data.memberUids.size() <= 50;
+        && request.resource.data.memberUids.size() <= memberCap(resource.data.ownerUid);
     }
 
     // A member leaving: only themselves removed, nothing else touched.
@@ -79,7 +116,8 @@ service cloud.firestore {
       // The creator may change anything except who owns it and what it is.
       allow update: if (isOwner(resource)
           && request.resource.data.ownerUid == resource.data.ownerUid
-          && request.resource.data.kind == 'shared')
+          && request.resource.data.kind == 'shared'
+          && request.resource.data.memberUids.size() <= memberCap(uid()))
         || isJoin(taskId) || isLeave() || isClaim() || isUndo();
       allow delete: if false; // archived, never deleted
     }
@@ -111,6 +149,59 @@ service cloud.firestore {
     // Each user owns their own profile.
     match /users/{userId} {
       allow read, write: if signedIn() && uid() == userId;
+    }
+
+    // ------------------------------------------------ workspaces
+    function isWorkspaceJoin(wsId) {
+      return signedIn()
+        && !(uid() in resource.data.memberUids)
+        && changedKeys().hasOnly(['memberUids', 'members', 'updatedAt', 'joinCode'])
+        && request.resource.data.joinCode is string
+        && get(/databases/$(database)/documents/invites/$(request.resource.data.joinCode)).data.get('workspaceId', null) == wsId
+        && request.resource.data.memberUids == resource.data.memberUids.concat([uid()])
+        && request.resource.data.members.size() == resource.data.members.size() + 1
+        && request.resource.data.members[resource.data.members.size()].uid == uid()
+        && request.resource.data.memberUids.size() <= seatCap(wsId);
+    }
+    function isWorkspaceLeave() {
+      return signedIn() && uid() in resource.data.memberUids && uid() != resource.data.ownerUid
+        && changedKeys().hasOnly(['memberUids', 'members', 'updatedAt'])
+        && !(uid() in request.resource.data.memberUids)
+        && request.resource.data.memberUids.size() == resource.data.memberUids.size() - 1
+        && resource.data.memberUids.hasAll(request.resource.data.memberUids)
+        && request.resource.data.members.size() == resource.data.members.size() - 1;
+    }
+    match /workspaces/{wsId} {
+      allow read: if signedIn() && uid() in resource.data.memberUids;
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == uid()
+        && request.resource.data.memberUids == [uid()]
+        && request.resource.data.members.size() == 1
+        && request.resource.data.members[0].uid == uid()
+        && request.resource.data.kind in ['family', 'team']
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && !('plan' in request.resource.data); // what is paid lives elsewhere
+      allow update: if (signedIn() && uid() == resource.data.ownerUid
+          && request.resource.data.ownerUid == resource.data.ownerUid
+          && !('plan' in request.resource.data)
+          && request.resource.data.memberUids.size() <= seatCap(wsId))
+        || isWorkspaceJoin(wsId) || isWorkspaceLeave();
+      allow delete: if false;
+    }
+    // Paid access: readable by the workspace's members, written by nobody
+    // but the server (service account), which bypasses these rules.
+    match /entitlements/{wsId} {
+      allow read: if signedIn() && inWorkspace(uid(), wsId);
+      allow write: if false;
+    }
+    // Server-set switches (config/billing.enforced).
+    match /config/{name} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+    // Per-day voice usage, counted by the server.
+    match /usage/{document=**} {
+      allow read, write: if false;
     }
   }
 }

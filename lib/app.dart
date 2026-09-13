@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme.dart';
 import 'l10n/strings.dart';
+import 'models/plan.dart';
 import 'l10n/supported.dart';
 import 'services/reminder_scheduler.dart';
 import 'services/settings_store.dart';
@@ -121,6 +122,10 @@ class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserv
         });
       }
       if (user == null) _pushRegisteredFor = null;
+    });
+
+    ref.listen<AsyncValue<Workspace?>>(workspaceProvider, (prev, next) {
+      if (next.hasValue && prev?.value?.id != next.value?.id) ref.read(planActionsProvider).syncMembership(next.value);
     });
 
     final code = ref.watch(languageCodeProvider);

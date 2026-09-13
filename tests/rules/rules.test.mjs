@@ -37,6 +37,53 @@ await t('stranger cannot read', () => assertFails(getDoc(doc(db(stranger), 'task
 await t('invite readable by signed-in', () => assertSucceeds(getDoc(doc(db(stranger), 'invites/ABCD2345'))));
 await t('invite not readable anonymously', () => assertFails(getDoc(doc(anon, 'invites/ABCD2345'))));
 
+console.log('workspaces');
+const ws = () => ({ name: 'Dajani family', kind: 'family', ownerUid: owner, memberUids: [owner], members: [{ uid: owner, name: 'Alice', joinedAt: 'x' }] });
+await t('owner creates a workspace', () => assertSucceeds(setDoc(doc(db(owner), 'workspaces/w1'), ws())));
+await t('a workspace cannot declare its own plan', () => assertFails(setDoc(doc(db(owner), 'workspaces/w2'), { ...ws(), plan: 'team' })));
+await t('cannot create a workspace for someone else', () => assertFails(setDoc(doc(db(stranger), 'workspaces/w3'), ws())));
+await t('member of no workspace cannot read it', () => assertFails(getDoc(doc(db(member), 'workspaces/w1'))));
+await t('nobody writes an entitlement from the client', () => assertFails(setDoc(doc(db(owner), 'entitlements/w1'), { plan: 'team', seats: 99, validUntil: new Date(Date.now() + 864e5) })));
+await t('nobody flips the billing switch from the client', () => assertFails(setDoc(doc(db(owner), 'config/billing'), { enforced: false })));
+await env.withSecurityRulesDisabled(async (ctx) => {
+  await setDoc(doc(ctx.firestore(), 'invites/WSJOIN01'), { kind: 'workspace', workspaceId: 'w1', createdBy: owner });
+});
+const wsJoin = (code) => ({ memberUids: arrayUnion(member), members: arrayUnion(bobMember), joinCode: code, updatedAt: 'now' });
+await t('joins a workspace with its invite', () => assertSucceeds(updateDoc(doc(db(member), 'workspaces/w1'), wsJoin('WSJOIN01'))));
+await t('a task invite does not open a workspace', () => assertFails(updateDoc(doc(db(stranger), 'workspaces/w1'), { memberUids: arrayUnion(stranger), members: arrayUnion({ uid: stranger, name: 'C', joinedAt: 'z' }), joinCode: 'ABCD2345', updatedAt: 'now' })));
+await t('member reads the workspace', () => assertSucceeds(getDoc(doc(db(member), 'workspaces/w1'))));
+await t('member leaves the workspace', () => assertSucceeds(updateDoc(doc(db(member), 'workspaces/w1'), { memberUids: arrayRemove(member), members: [{ uid: owner, name: 'Alice', joinedAt: 'x' }], updatedAt: 'now' })));
+await t('owner adds a person to the workspace directly', () => assertSucceeds(updateDoc(doc(db(owner), 'workspaces/w1'), { memberUids: arrayUnion(member), members: arrayUnion(bobMember), updatedAt: 'now' })));
+
+console.log('billing enforced');
+await env.withSecurityRulesDisabled(async (ctx) => {
+  const d = ctx.firestore();
+  await setDoc(doc(d, 'config/billing'), { enforced: true });
+  await setDoc(doc(d, 'users/alice'), { workspaceId: 'w1' });
+  await setDoc(doc(d, 'users/zed'), { workspaceId: 'w1' }); // claims a workspace it is not in
+  await setDoc(doc(d, 'tasks/free1'), { ...base(), ownerUid: 'zed', memberUids: ['zed', 'a', 'b'], members: [{ uid: 'zed', name: 'Z', joinedAt: 'x' }, { uid: 'a', name: 'A', joinedAt: 'x' }, { uid: 'b', name: 'B', joinedAt: 'x' }], inviteCode: 'ZEDINV01' });
+  await setDoc(doc(d, 'invites/ZEDINV01'), { taskId: 'free1', createdBy: 'zed' });
+  await setDoc(doc(d, 'tasks/paid1'), { ...base(), ownerUid: owner, memberUids: [owner, 'a', 'b'], members: [{ uid: owner, name: 'Alice', joinedAt: 'x' }, { uid: 'a', name: 'A', joinedAt: 'x' }, { uid: 'b', name: 'B', joinedAt: 'x' }], inviteCode: 'ALIINV01' });
+  await setDoc(doc(d, 'invites/ALIINV01'), { taskId: 'paid1', createdBy: owner });
+});
+const joinAs = (who, code) => ({ memberUids: arrayUnion(who), members: arrayUnion({ uid: who, name: who, joinedAt: 'y' }), joinCode: code, updatedAt: 'now' });
+await t('a fourth person cannot join a free creator\'s task', () => assertFails(updateDoc(doc(db('carol'), 'tasks/free1'), joinAs('carol', 'ZEDINV01'))));
+await t('a fourth person cannot join without a live entitlement either', () => assertFails(updateDoc(doc(db('carol'), 'tasks/paid1'), joinAs('carol', 'ALIINV01'))));
+await env.withSecurityRulesDisabled(async (ctx) => {
+  await setDoc(doc(ctx.firestore(), 'entitlements/w1'), { plan: 'family', seats: 6, validUntil: new Date(Date.now() + 864e5), source: 'trial' });
+});
+await t('with a live entitlement the fourth person joins', () => assertSucceeds(updateDoc(doc(db('carol'), 'tasks/paid1'), joinAs('carol', 'ALIINV01'))));
+await t('claiming a workspace you are not in earns nothing', () => assertFails(updateDoc(doc(db('carol'), 'tasks/free1'), joinAs('carol', 'ZEDINV01'))));
+await t('the workspace fills to its seats and no further', async () => {
+  for (const who of ['s3', 's4', 's5', 's6']) await assertSucceeds(updateDoc(doc(db(who), 'workspaces/w1'), { memberUids: arrayUnion(who), members: arrayUnion({ uid: who, name: who, joinedAt: 'y' }), joinCode: 'WSJOIN01', updatedAt: 'now' }));
+  await assertFails(updateDoc(doc(db('s7'), 'workspaces/w1'), { memberUids: arrayUnion('s7'), members: arrayUnion({ uid: 's7', name: 's7', joinedAt: 'y' }), joinCode: 'WSJOIN01', updatedAt: 'now' }));
+});
+await t('a member of the paid workspace reads its entitlement, a stranger cannot', async () => {
+  await assertSucceeds(getDoc(doc(db(member), 'entitlements/w1')));
+  await assertFails(getDoc(doc(db('carol'), 'entitlements/w1')));
+});
+await env.withSecurityRulesDisabled(async (ctx) => { await setDoc(doc(ctx.firestore(), 'config/billing'), { enforced: false }); });
+
 console.log('group invites');
 await t('creator makes a group invite', () => assertSucceeds(setDoc(doc(db(owner), 'invites/GRP00001'), { kind: 'group', group: 'Home', createdBy: owner, taskCodes: ['ABCD2345'] })));
 await t('creator grows it', () => assertSucceeds(updateDoc(doc(db(owner), 'invites/GRP00001'), { taskCodes: ['ABCD2345', 'ZZZZ9999'] })));

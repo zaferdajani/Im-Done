@@ -175,6 +175,10 @@ class CloudTasks {
     final invite = await _db.collection('invites').doc(code).get();
     final d = invite.data();
     if (d == null) return null;
+    if (d['kind'] == 'workspace') {
+      final wsId = d['workspaceId'] as String?;
+      return wsId == null ? null : ResolvedInvite.workspace(wsId);
+    }
     if (d['kind'] == 'group') {
       return ResolvedInvite.group(
         (d['group'] as String?) ?? '',
@@ -269,10 +273,13 @@ class CloudTasks {
 }
 
 class ResolvedInvite {
-  const ResolvedInvite.task(this.taskId) : group = null, taskCodes = const [];
-  const ResolvedInvite.group(this.group, this.taskCodes) : taskId = null;
+  const ResolvedInvite.task(this.taskId) : group = null, taskCodes = const [], workspaceId = null;
+  const ResolvedInvite.group(this.group, this.taskCodes) : taskId = null, workspaceId = null;
+  const ResolvedInvite.workspace(this.workspaceId) : taskId = null, group = null, taskCodes = const [];
   final String? taskId;
   final String? group;
   final List<String> taskCodes;
+  final String? workspaceId;
   bool get isGroup => group != null;
+  bool get isWorkspace => workspaceId != null;
 }

@@ -153,6 +153,7 @@ class UnderstandingService {
     }
     if (res.statusCode == 503) throw UnderstandingException('unconfigured');
     if (res.statusCode == 422) throw UnderstandingException('nothing_heard');
+    if (res.statusCode == 429) throw UnderstandingException('quota');
     if (res.statusCode != 200) throw UnderstandingException('failed', 'HTTP ${res.statusCode} ${res.body}');
     final j = Map<String, dynamic>.from(jsonDecode(utf8.decode(res.bodyBytes)) as Map);
     final u = Understanding.fromJson(j);

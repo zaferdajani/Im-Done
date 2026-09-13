@@ -153,6 +153,7 @@ class _HoldToTalkButtonState extends ConsumerState<HoldToTalkButton> with Single
         'offline' => l.voiceOffline,
         'nothing_heard' => l.voiceNothingHeard,
         'unconfigured' => l.voiceUnconfigured,
+        'quota' => l.voiceQuota,
         _ => l.voiceFailed,
       };
       if (e.code == 'unconfigured') _cloudDown = true;

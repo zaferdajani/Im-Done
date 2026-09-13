@@ -14,6 +14,7 @@
 //                     processed in memory and never stored.
 import { KINDS, message, recipients } from './logic.mjs';
 import { audioAcceptable, buildSystemPrompt, buildUserPrompt, languageCode, parseUnderstanding } from './understand.mjs';
+import { DEFAULT_PRODUCTS, dayKey, entitlementFromEvent, isActive, trialEntitlement, voiceAllowance } from './plans.mjs';
 
 const GOOGLE_CERTS = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com';
 
@@ -25,7 +26,10 @@ export default {
     if (request.method === 'GET' && url.pathname === '/health') {
       return json({ ok: true, transcribe: Boolean(env.GROQ_API_KEY || env.GEMINI_API_KEY) }, 200, cors);
     }
-    if (request.method !== 'POST' || !['/notify', '/transcribe'].includes(url.pathname)) {
+    // Store webhooks carry their own secret, not a person's token.
+    if (request.method === 'POST' && url.pathname === '/billing/revenuecat') return revenueCatWebhook(request, env, cors);
+    const routes = ['/notify', '/transcribe', '/workspace/trial', '/me/plan'];
+    if (!routes.includes(url.pathname) || (request.method !== 'POST' && url.pathname !== '/me/plan')) {
       return json({ error: 'not found' }, 404, cors);
     }
     try {
@@ -38,7 +42,9 @@ export default {
       } catch {
         return json({ error: 'unauthenticated' }, 401, cors);
       }
-      if (url.pathname === '/transcribe') return transcribe(request, env, cors);
+      if (url.pathname === '/transcribe') return transcribe(request, env, cors, senderUid);
+      if (url.pathname === '/workspace/trial') return startTrial(request, env, cors, senderUid);
+      if (url.pathname === '/me/plan') return myPlan(env, cors, senderUid);
 
       const body = await request.json().catch(() => ({}));
       const kind = String(body.kind ?? '');
@@ -84,8 +90,12 @@ const WHISPER_MODEL = 'whisper-large-v3-turbo';
 const CHAT_MODELS = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.6-27b'];
 const GEMINI_MODEL = 'gemini-2.5-flash';
 
-async function transcribe(request, env, cors) {
+async function transcribe(request, env, cors, uid) {
   if (!env.GROQ_API_KEY && !env.GEMINI_API_KEY) return json({ error: 'transcription not configured' }, 503, cors);
+  // Free callers get a daily allowance once plans are on sale; plan
+  // holders never run out. Nothing is counted while billing is off.
+  const quota = await voiceQuota(env, uid);
+  if (!quota.allowed) return json({ error: 'quota', remaining: 0 }, 429, cors);
   const contentType = request.headers.get('Content-Type') ?? 'audio/wav';
   const audio = new Uint8Array(await request.arrayBuffer());
   const check = audioAcceptable(audio.byteLength, contentType);
@@ -153,6 +163,92 @@ async function transcribe(request, env, cors) {
   // With no structuring model the transcript itself becomes the task title.
   const parsed = parseUnderstanding(raw ?? '{}', transcript, detected);
   return json({ ...parsed, engine, ...(warnings.length ? { warnings } : {}) }, 200, cors);
+}
+
+// ---------------------------------------------------------------- plans
+async function billingEnforced(env, token) {
+  const cfg = await getDoc(env.FIREBASE_PROJECT_ID, token, 'config/billing');
+  return cfg?.enforced === true;
+}
+/** The caller's live entitlement, through a workspace they really belong to. */
+async function planOf(env, token, uid) {
+  const user = await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`);
+  const wsId = typeof user?.workspaceId === 'string' ? user.workspaceId : null;
+  if (!wsId) return { workspaceId: null, entitlement: null, active: false };
+  const ws = await getDoc(env.FIREBASE_PROJECT_ID, token, `workspaces/${wsId}`);
+  if (!Array.isArray(ws?.memberUids) || !ws.memberUids.includes(uid)) return { workspaceId: null, entitlement: null, active: false };
+  const ent = await getDoc(env.FIREBASE_PROJECT_ID, token, `entitlements/${wsId}`);
+  return { workspaceId: wsId, entitlement: ent, active: isActive(ent) };
+}
+async function voiceQuota(env, uid) {
+  try {
+    const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+    const token = await serviceAccountToken(sa, ['https://www.googleapis.com/auth/datastore']);
+    if (!(await billingEnforced(env, token))) return { allowed: true, remaining: null };
+    const plan = await planOf(env, token, uid);
+    const path = `usage/${uid}/days/${dayKey()}`;
+    const used = Number((await getDoc(env.FIREBASE_PROJECT_ID, token, path))?.voice ?? 0);
+    const allowance = voiceAllowance(used, plan.active);
+    if (allowance.allowed) await setDoc(env.FIREBASE_PROJECT_ID, token, path, { voice: used + 1, updatedAt: new Date() });
+    return allowance;
+  } catch {
+    // A counting failure must never silence the microphone.
+    return { allowed: true, remaining: null };
+  }
+}
+async function myPlan(env, cors, uid) {
+  const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+  const token = await serviceAccountToken(sa, ['https://www.googleapis.com/auth/datastore']);
+  const enforced = await billingEnforced(env, token);
+  const plan = await planOf(env, token, uid);
+  const user = await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`);
+  return json({ enforced, workspaceId: plan.workspaceId, entitlement: plan.entitlement, active: plan.active, trialUsed: Boolean(user?.trialStartedAt) }, 200, cors);
+}
+/** One thirty-day family trial per person, on a workspace they own. */
+async function startTrial(request, env, cors, uid) {
+  const body = await request.json().catch(() => ({}));
+  const wsId = String(body.workspaceId ?? '');
+  if (!/^[A-Za-z0-9-]{8,64}$/.test(wsId)) return json({ error: 'bad request' }, 400, cors);
+  const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+  const token = await serviceAccountToken(sa, ['https://www.googleapis.com/auth/datastore']);
+  const ws = await getDoc(env.FIREBASE_PROJECT_ID, token, `workspaces/${wsId}`);
+  if (!ws || ws.ownerUid !== uid) return json({ error: 'not your workspace' }, 403, cors);
+  const user = (await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`)) ?? {};
+  if (user.trialStartedAt) return json({ error: 'trial already used' }, 409, cors);
+  const existing = await getDoc(env.FIREBASE_PROJECT_ID, token, `entitlements/${wsId}`);
+  if (existing && isActive(existing)) return json({ ok: true, entitlement: existing, note: 'already active' }, 200, cors);
+  const ent = trialEntitlement();
+  await setDoc(env.FIREBASE_PROJECT_ID, token, `entitlements/${wsId}`, { ...ent, validUntil: new Date(ent.validUntil), grantedAt: new Date(ent.grantedAt), workspaceId: wsId, ownerUid: uid });
+  await patchDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`, { trialStartedAt: new Date(), workspaceId: wsId });
+  return json({ ok: true, entitlement: ent }, 200, cors);
+}
+/** RevenueCat → entitlement. The webhook secret is the only credential. */
+async function revenueCatWebhook(request, env, cors) {
+  if (!env.REVENUECAT_WEBHOOK_SECRET) return json({ error: 'billing not configured' }, 503, cors);
+  if ((request.headers.get('Authorization') ?? '') !== env.REVENUECAT_WEBHOOK_SECRET) return json({ error: 'unauthenticated' }, 401, cors);
+  const body = await request.json().catch(() => ({}));
+  const event = body.event ?? {};
+  const uid = String(event.app_user_id ?? '');
+  if (!uid) return json({ error: 'no user' }, 400, cors);
+  const products = env.PRODUCTS ? JSON.parse(env.PRODUCTS) : DEFAULT_PRODUCTS;
+  const ent = entitlementFromEvent(event, products);
+  const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+  const token = await serviceAccountToken(sa, ['https://www.googleapis.com/auth/datastore']);
+  const user = (await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`)) ?? {};
+  const wsId = typeof user.workspaceId === 'string' ? user.workspaceId : null;
+  if (!wsId) {
+    // Paid before making a workspace: remembered on the profile, applied
+    // by the app when the workspace is created (it calls /workspace/trial's
+    // sibling flow); nothing is lost.
+    await patchDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`, { pendingEntitlement: ent ? { ...ent, validUntil: new Date(ent.validUntil) } : null });
+    return json({ ok: true, parked: true }, 200, cors);
+  }
+  if (!ent) {
+    await patchDoc(env.FIREBASE_PROJECT_ID, token, `entitlements/${wsId}`, { validUntil: new Date(0), endedBy: String(event.type ?? 'event') });
+    return json({ ok: true, ended: true }, 200, cors);
+  }
+  await setDoc(env.FIREBASE_PROJECT_ID, token, `entitlements/${wsId}`, { ...ent, validUntil: new Date(ent.validUntil), grantedAt: new Date(ent.grantedAt), workspaceId: wsId, ownerUid: uid });
+  return json({ ok: true }, 200, cors);
 }
 
 /** Language pairs Whisper mixes up when the speaker's own language is known. */
@@ -319,6 +415,39 @@ async function getDoc(projectId, token, path) {
   if (!res.ok) throw new Error('firestore read failed: ' + res.status);
   return fromFirestore((await res.json()).fields ?? {});
 }
+async function setDoc(projectId, token, path, data) {
+  const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: toFirestore(data) }),
+  });
+  if (!res.ok) throw new Error('firestore write failed: ' + res.status + ' ' + (await res.text()).slice(0, 200));
+}
+/** Merge only the given fields (a PATCH with an update mask). */
+async function patchDoc(projectId, token, path, data) {
+  const mask = Object.keys(data).map((k) => `updateMask.fieldPaths=${encodeURIComponent(k)}`).join('&');
+  const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}?${mask}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: toFirestore(data) }),
+  });
+  if (!res.ok) throw new Error('firestore patch failed: ' + res.status + ' ' + (await res.text()).slice(0, 200));
+}
+function toFirestore(obj) {
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) out[k] = toValue(v);
+  return out;
+}
+function toValue(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (v instanceof Date) return { timestampValue: v.toISOString() };
+  if (typeof v === 'string') return { stringValue: v };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(toValue) } };
+  if (typeof v === 'object') return { mapValue: { fields: toFirestore(v) } };
+  return { stringValue: String(v) };
+}
 function fromFirestore(fields) {
   const out = {};
   for (const [k, v] of Object.entries(fields)) out[k] = fromValue(v);
@@ -330,7 +459,7 @@ function fromValue(v) {
   if ('integerValue' in v) return Number(v.integerValue);
   if ('doubleValue' in v) return v.doubleValue;
   if ('nullValue' in v) return null;
-  if ('timestampValue' in v) return v.timestampValue;
+  if ('timestampValue' in v) return v.timestampValue; // ISO string; isActive() parses it
   if ('arrayValue' in v) return (v.arrayValue.values ?? []).map(fromValue);
   if ('mapValue' in v) return fromFirestore(v.mapValue.fields ?? {});
   return null;

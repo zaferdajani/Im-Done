@@ -6,6 +6,8 @@ compatibility_date = "2026-09-01"
 #   FIREBASE_SERVICE_ACCOUNT  the JSON key of the Firebase service account
 #   GROQ_API_KEY              free key from console.groq.com (voice → text, all languages)
 #   GEMINI_API_KEY            optional fallback, free key from aistudio.google.com
+#   REVENUECAT_WEBHOOK_SECRET set when store purchases go live (RevenueCat → /billing/revenuecat)
+# Optional var PRODUCTS: JSON {productId: {plan, seats}} overriding plans.mjs defaults
 # Vars:
 [vars]
 FIREBASE_PROJECT_ID = "im-done-17215"

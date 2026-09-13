@@ -38,6 +38,11 @@ class _InviteLandingScreenState extends ConsumerState<InviteLandingScreen> {
     try {
       final result = await ref.read(taskActionsProvider).join(widget.code);
       if (!mounted) return;
+      if (result.workspaceId != null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.workspaceJoined)));
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        return;
+      }
       if (result.group case final g?) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.groupJoined.fill({'group': g}))));
         Navigator.of(context).popUntil((r) => r.isFirst);

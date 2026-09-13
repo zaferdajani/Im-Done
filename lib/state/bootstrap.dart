@@ -12,6 +12,7 @@ import '../services/settings_store.dart';
 import '../services/speech_service.dart';
 import '../services/voice/recorder_service.dart';
 import '../services/voice/understanding_service.dart';
+import '../services/cloud/workspace_service.dart';
 
 /// Everything that must exist before the first frame, built once in main().
 class AppBootstrap {
@@ -28,6 +29,7 @@ class AppBootstrap {
     required this.cloudTasks,
     required this.push,
     required this.deepLinks,
+    required this.workspaces,
   });
 
   final AppSettings settings;
@@ -42,6 +44,7 @@ class AppBootstrap {
   final CloudTasks cloudTasks;
   final PushService push;
   final DeepLinks deepLinks;
+  final WorkspaceService workspaces;
 
   bool get cloudAvailable => Cloud.available;
 
@@ -65,6 +68,7 @@ class AppBootstrap {
       cloudTasks: CloudTasks(),
       push: PushService(),
       deepLinks: DeepLinks(),
+      workspaces: WorkspaceService(),
     );
   }
 }

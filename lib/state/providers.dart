@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../l10n/strings.dart';
 import '../l10n/supported.dart';
 import '../models/task.dart';
+import '../models/plan.dart';
 import '../models/task_logic.dart';
 import '../services/cloud/cloud.dart';
 import '../services/settings_store.dart';
@@ -127,6 +128,29 @@ class GroupFilterNotifier extends Notifier<String?> {
 }
 
 final groupFilterProvider = NotifierProvider<GroupFilterNotifier, String?>(GroupFilterNotifier.new);
+
+/// The family / team this person belongs to, and what it is entitled to.
+final workspaceProvider = StreamProvider<Workspace?>((ref) {
+  final b = ref.watch(bootstrapProvider);
+  final user = ref.watch(authUserProvider).value;
+  if (!b.cloudAvailable || user == null) return Stream.value(null);
+  return b.workspaces.watchMine(user.uid);
+});
+
+final entitlementProvider = StreamProvider<Entitlement?>((ref) {
+  final b = ref.watch(bootstrapProvider);
+  final ws = ref.watch(workspaceProvider).value;
+  if (!b.cloudAvailable || ws == null) return Stream.value(null);
+  return b.workspaces.watchEntitlement(ws.id);
+});
+
+final billingEnforcedProvider = StreamProvider<bool>((ref) {
+  final b = ref.watch(bootstrapProvider);
+  if (!b.cloudAvailable || ref.watch(authUserProvider).value == null) return Stream.value(false);
+  return b.workspaces.watchBillingEnforced();
+});
+
+final planLevelProvider = Provider<PlanLevel>((ref) => planLevel(ref.watch(workspaceProvider).value, ref.watch(entitlementProvider).value));
 
 final pendingConfirmationsProvider = Provider<List<Task>>((ref) {
   final uid = ref.watch(myUidProvider);
@@ -251,6 +275,11 @@ class TaskActions {
     if (invite == null) throw StateError('invite not found');
     final uid = ref.read(myUidProvider);
     final name = ref.read(myNameProvider);
+    if (invite.isWorkspace) {
+      final me = TaskMember(uid: uid, name: name, joinedAt: DateTime.now());
+      await _b.workspaces.join(invite.workspaceId!, code, me);
+      return JoinResult(workspaceId: invite.workspaceId);
+    }
     if (!invite.isGroup) {
       final taskId = await _b.cloudTasks.joinByCode(code, uid, name);
       _b.push.notify('joined', taskId);
@@ -446,8 +475,57 @@ final incomingInviteProvider = StreamProvider<String>((ref) {
 });
 
 class JoinResult {
-  const JoinResult({this.taskId, this.group, this.joined = 1});
+  const JoinResult({this.taskId, this.group, this.workspaceId, this.joined = 1});
   final String? taskId;
   final String? group;
+  final String? workspaceId;
   final int joined;
 }
+
+/// Workspace actions: the payer's environment and who has access through it.
+class PlanActions {
+  PlanActions(this.ref);
+  final Ref ref;
+  AppBootstrap get _b => ref.read(bootstrapProvider);
+
+  TaskMember _me() {
+    final user = ref.read(authUserProvider).value;
+    if (user == null) throw StateError('sign-in required');
+    return TaskMember(uid: user.uid, name: ref.read(myNameProvider), joinedAt: DateTime.now());
+  }
+
+  Future<Workspace> create(String name, WorkspaceKind kind) => _b.workspaces.create(name.trim(), kind, _me());
+
+  Future<String> inviteLink(Workspace ws) async => '${Cloud.inviteBaseUrl}/${ws.inviteCode}';
+
+  Future<TaskMember> addByCode(Workspace ws, String code) async {
+    final clean = code.trim().toUpperCase();
+    final person = await _b.cloudTasks.lookupPersonalCode(clean);
+    if (person == null) throw StateError('no such code');
+    await _b.workspaces.addMember(ws, person);
+    return person;
+  }
+
+  Future<void> remove(Workspace ws, String uid) => _b.workspaces.removeMember(ws, uid);
+  Future<void> leave(Workspace ws) => _b.workspaces.leave(ws, _me().uid);
+  Future<void> rename(Workspace ws, String name) => _b.workspaces.rename(ws, name.trim());
+
+  Future<Entitlement> startTrial(Workspace ws) async {
+    final token = await _b.auth.idToken();
+    if (token == null) throw StateError('sign-in required');
+    return _b.workspaces.startTrial(ws.id, token);
+  }
+
+  /// Keeps the profile's workspace field in step with real membership, so
+  /// a person added by the owner (who cannot write their profile) still
+  /// counts as covered by the plan.
+  Future<void> syncMembership(Workspace? ws) async {
+    final user = ref.read(authUserProvider).value;
+    if (user == null) return;
+    try {
+      await _b.workspaces.claimMembership(user.uid, ws?.id);
+    } catch (_) {}
+  }
+}
+
+final planActionsProvider = Provider<PlanActions>((ref) => PlanActions(ref));
