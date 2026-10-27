@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, box]
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -33,7 +33,7 @@ jobs:
       - run: flutter test
 
   android-apk:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, box]
     needs: test
     steps:
       - uses: actions/checkout@v4
@@ -69,7 +69,7 @@ jobs:
       - run: flutter build ios --simulator --no-codesign
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, box]
     needs: test
     steps:
       - uses: actions/checkout@v4
