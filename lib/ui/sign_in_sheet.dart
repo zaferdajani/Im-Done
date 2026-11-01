@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
 import '../l10n/supported.dart';
 import '../services/cloud/auth_service.dart';
+import '../services/cloud/cloud.dart';
 import '../state/providers.dart';
 
 /// Returns the signed-in user, or null if the person backed out.
@@ -135,6 +137,10 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                 icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
                 label: Text(l.signInGoogle),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.privacyPolicyUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.privacyPolicy)),
+                TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.termsUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.terms)),
+              ]),
               const SizedBox(height: 10),
               if (!_emailMode)
                 TextButton.icon(

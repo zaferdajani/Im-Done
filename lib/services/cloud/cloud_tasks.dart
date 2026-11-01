@@ -244,6 +244,18 @@ class CloudTasks {
     });
   }
 
+  /// UGC moderation: a report goes to `reports/`, reviewed by the owner in
+  /// the Firebase console (create-only for clients, see firestore.rules).
+  Future<void> reportUser({required String reporterUid, required String reportedUid, required String taskId, required String reason}) =>
+      _db.collection('reports').add({
+        'reporterUid': reporterUid,
+        'reportedUid': reportedUid,
+        'taskId': taskId,
+        'reason': reason,
+        'status': 'open',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
   /// Account deletion, client side: leave every task, archive the ones I
   /// own, drop my profile. The Auth user itself is deleted by AuthService.
   Future<void> eraseEverythingOf(String uid) async {

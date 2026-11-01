@@ -29,7 +29,7 @@ class SettingsScreen extends ConsumerWidget {
 
     Future<void> open(String url) async {
       final u = Uri.parse(url);
-      if (!await launchUrl(u, mode: LaunchMode.externalApplication) && context.mounted) {
+      if (!await launchUrl(u, mode: LaunchMode.inAppBrowserView) && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.error)));
       }
     }
@@ -247,6 +247,10 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(leading: const Icon(Icons.privacy_tip_outlined), title: Text(l.privacyPolicy), onTap: () => open(Cloud.privacyPolicyUrl)),
               const Divider(height: 1),
               ListTile(leading: const Icon(Icons.description_outlined), title: Text(l.terms), onTap: () => open(Cloud.termsUrl)),
+              const Divider(height: 1),
+              ListTile(leading: const Icon(Icons.support_agent_rounded), title: Text(l.support), onTap: () => open(Cloud.supportUrl)),
+              const Divider(height: 1),
+              ListTile(leading: const Icon(Icons.manage_accounts_outlined), title: Text(l.deleteAccountHelp), onTap: () => open(Cloud.deleteAccountWebUrl)),
             ]),
           ),
           const SizedBox(height: 20),

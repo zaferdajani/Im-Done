@@ -9,6 +9,7 @@ class AppSettings {
     this.voiceEngine = VoiceEngine.cloud,
     this.setupDone = false,
     this.themeMode = AppTheme.system,
+    this.blockedUids = const [],
   });
 
   final String? languageCode;
@@ -25,7 +26,10 @@ class AppSettings {
   /// Light, dark, or whatever the phone is set to.
   final AppTheme themeMode;
 
-  AppSettings copyWith({String? languageCode, bool clearLanguage = false, bool? onboarded, String? displayName, VoiceEngine? voiceEngine, bool? setupDone, AppTheme? themeMode}) =>
+  /// People I blocked; their shared tasks are hidden from me (UGC safety).
+  final List<String> blockedUids;
+
+  AppSettings copyWith({String? languageCode, bool clearLanguage = false, bool? onboarded, String? displayName, VoiceEngine? voiceEngine, bool? setupDone, AppTheme? themeMode, List<String>? blockedUids}) =>
       AppSettings(
         languageCode: clearLanguage ? null : (languageCode ?? this.languageCode),
         onboarded: onboarded ?? this.onboarded,
@@ -33,6 +37,7 @@ class AppSettings {
         voiceEngine: voiceEngine ?? this.voiceEngine,
         setupDone: setupDone ?? this.setupDone,
         themeMode: themeMode ?? this.themeMode,
+        blockedUids: blockedUids ?? this.blockedUids,
       );
 
   static const empty = AppSettings(languageCode: null, onboarded: false, displayName: '');
@@ -49,6 +54,7 @@ class SettingsStore {
   static const _kVoice = 'voiceEngine';
   static const _kSetup = 'setupDone';
   static const _kTheme = 'themeMode';
+  static const _kBlocked = 'blockedUids';
 
   Future<AppSettings> read() async {
     final p = await SharedPreferences.getInstance();
@@ -61,6 +67,7 @@ class SettingsStore {
       // already made their choice (or is happy with the device language).
       setupDone: p.getBool(_kSetup) ?? (p.getBool(_kOnboarded) ?? false),
       themeMode: AppTheme.values.where((t) => t.name == p.getString(_kTheme)).firstOrNull ?? AppTheme.system,
+      blockedUids: p.getStringList(_kBlocked) ?? const [],
     );
   }
 
@@ -76,5 +83,6 @@ class SettingsStore {
     await p.setString(_kVoice, s.voiceEngine.name);
     await p.setBool(_kSetup, s.setupDone);
     await p.setString(_kTheme, s.themeMode.name);
+    await p.setStringList(_kBlocked, s.blockedUids);
   }
 }

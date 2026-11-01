@@ -10,6 +10,7 @@ import '../l10n/supported.dart';
 import '../models/task.dart';
 import '../models/plan.dart';
 import '../models/task_logic.dart';
+import '../services/billing/purchase_service.dart';
 import '../services/cloud/cloud.dart';
 import '../services/settings_store.dart';
 import 'bootstrap.dart';
@@ -102,7 +103,11 @@ final cloudTasksProvider = StreamProvider<List<Task>>((ref) {
 /// Personal + shared, one list, what every screen reads.
 final allTasksProvider = Provider<List<Task>>((ref) {
   final local = ref.watch(localTasksProvider);
-  final cloud = ref.watch(cloudTasksProvider).value ?? const <Task>[];
+  final blocked = ref.watch(settingsProvider.select((s) => s.blockedUids));
+  final cloud = [
+    for (final t in ref.watch(cloudTasksProvider).value ?? const <Task>[])
+      if (!blocked.contains(t.ownerUid)) t,
+  ];
   return [...local, ...cloud];
 });
 
@@ -407,6 +412,17 @@ class TaskActions {
     return _b.cloudTasks.ensureGroupInvite(uid, group, codes);
   }
 
+  /// Sends a report about a person on a shared task to the moderation queue.
+  Future<void> reportUser(Task t, String reportedUid, String reason) =>
+      _b.cloudTasks.reportUser(reporterUid: ref.read(myUidProvider), reportedUid: reportedUid, taskId: t.id, reason: reason);
+
+  /// Hides everything shared by [uid] from this device.
+  Future<void> blockUser(String uid) async {
+    final s = ref.read(settingsProvider);
+    if (s.blockedUids.contains(uid)) return;
+    await ref.read(settingsProvider.notifier).update(s.copyWith(blockedUids: [...s.blockedUids, uid]));
+  }
+
   Future<void> deleteAccount() => _b.auth.deleteAccount(_b.cloudTasks.eraseEverythingOf);
 
   Future<void> addMemberByCode(Task t, String code) async {
@@ -529,3 +545,5 @@ class PlanActions {
 }
 
 final planActionsProvider = Provider<PlanActions>((ref) => PlanActions(ref));
+
+final purchaseServiceProvider = Provider<PurchaseService>((_) => const NoopPurchaseService());

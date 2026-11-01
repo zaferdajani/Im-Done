@@ -243,6 +243,17 @@ const l10nAr = L10n(
   voiceQuota: 'استُنفدت تسجيلات الصوت المجانية لهذا اليوم. مع الخطة، الصوت بلا حدود.',
   renameWorkspace: 'إعادة تسمية',
   whileFree: 'الخطط غير مفعّلة بعد: كل شيء متاح أثناء اختبار التطبيق.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nEn = L10n(
@@ -485,6 +496,17 @@ const l10nEn = L10n(
   voiceQuota: 'Today\'s free voice recordings are used up. With a plan, voice is unlimited.',
   renameWorkspace: 'Rename',
   whileFree: 'Plans are not enforced yet: everything is open while the app is being tested.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nEs = L10n(
@@ -727,6 +749,17 @@ const l10nEs = L10n(
   voiceQuota: 'Se agotaron las grabaciones de voz gratis de hoy. Con un plan, la voz es ilimitada.',
   renameWorkspace: 'Cambiar nombre',
   whileFree: 'Los planes aún no se aplican: todo está abierto mientras se prueba la app.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nFa = L10n(
@@ -969,6 +1002,17 @@ const l10nFa = L10n(
   voiceQuota: 'ضبط‌های صوتی رایگان امروز تمام شد. با طرح، صدا نامحدود است.',
   renameWorkspace: 'تغییر نام',
   whileFree: 'طرح‌ها هنوز اعمال نمی‌شوند: در زمان آزمایش برنامه همه‌چیز باز است.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nFr = L10n(
@@ -1211,6 +1255,17 @@ const l10nFr = L10n(
   voiceQuota: 'Les enregistrements vocaux gratuits du jour sont épuisés. Avec une formule, la voix est illimitée.',
   renameWorkspace: 'Renommer',
   whileFree: 'Les formules ne sont pas encore appliquées : tout est ouvert pendant les tests.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nGu = L10n(
@@ -1453,6 +1508,17 @@ const l10nGu = L10n(
   voiceQuota: 'આજની મફત અવાજ રેકોર્ડિંગ પૂરી થઈ ગઈ. પ્લાન સાથે અવાજ અમર્યાદિત છે.',
   renameWorkspace: 'નામ બદલો',
   whileFree: 'પ્લાન હજી લાગુ નથી: ઍપની ચકાસણી દરમિયાન બધું ખુલ્લું છે.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nHi = L10n(
@@ -1695,6 +1761,17 @@ const l10nHi = L10n(
   voiceQuota: 'आज की मुफ़्त आवाज़ रिकॉर्डिंग खत्म हो गईं। प्लान के साथ आवाज़ असीमित है।',
   renameWorkspace: 'नाम बदलें',
   whileFree: 'प्लान अभी लागू नहीं हैं: ऐप के परीक्षण के दौरान सब कुछ खुला है।',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nIt = L10n(
@@ -1937,6 +2014,17 @@ const l10nIt = L10n(
   voiceQuota: 'Le registrazioni vocali gratuite di oggi sono finite. Con un piano la voce è illimitata.',
   renameWorkspace: 'Rinomina',
   whileFree: 'I piani non sono ancora attivi: tutto è aperto durante i test.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nJa = L10n(
@@ -2179,6 +2267,17 @@ const l10nJa = L10n(
   voiceQuota: '本日の無料音声入力を使い切りました。プランなら音声入力は無制限です。',
   renameWorkspace: '名前を変更',
   whileFree: 'プランはまだ適用されていません。テスト中はすべて利用できます。',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nKo = L10n(
@@ -2421,6 +2520,17 @@ const l10nKo = L10n(
   voiceQuota: '오늘의 무료 음성 녹음을 모두 사용했어요. 플랜이 있으면 음성 입력이 무제한이에요.',
   renameWorkspace: '이름 변경',
   whileFree: '플랜은 아직 적용되지 않았어요. 앱을 테스트하는 동안 모두 열려 있어요.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nPt = L10n(
@@ -2663,6 +2773,17 @@ const l10nPt = L10n(
   voiceQuota: 'As gravações de voz grátis de hoje acabaram. Com um plano, a voz é ilimitada.',
   renameWorkspace: 'Renomear',
   whileFree: 'Os planos ainda não são aplicados: tudo está liberado enquanto o app é testado.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nRu = L10n(
@@ -2905,6 +3026,17 @@ const l10nRu = L10n(
   voiceQuota: 'Бесплатные голосовые записи на сегодня закончились. С тарифом голос без ограничений.',
   renameWorkspace: 'Переименовать',
   whileFree: 'Тарифы пока не действуют: во время тестирования всё открыто.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nTr = L10n(
@@ -3147,6 +3279,17 @@ const l10nTr = L10n(
   voiceQuota: 'Bugünün ücretsiz ses kayıtları bitti. Planla ses sınırsızdır.',
   renameWorkspace: 'Yeniden adlandır',
   whileFree: 'Planlar henüz uygulanmıyor: uygulama test edilirken her şey açık.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nUk = L10n(
@@ -3389,6 +3532,17 @@ const l10nUk = L10n(
   voiceQuota: 'Безкоштовні голосові записи на сьогодні вичерпано. З тарифом голос без обмежень.',
   renameWorkspace: 'Перейменувати',
   whileFree: 'Тарифи ще не діють: під час тестування все відкрито.',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nUr = L10n(
@@ -3631,6 +3785,17 @@ const l10nUr = L10n(
   voiceQuota: 'آج کی مفت آواز کی ریکارڈنگز ختم ہو گئیں۔ پلان کے ساتھ آواز لامحدود ہے۔',
   renameWorkspace: 'نام بدلیں',
   whileFree: 'پلان ابھی نافذ نہیں: ایپ کی جانچ کے دوران سب کچھ کھلا ہے۔',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 const l10nZh = L10n(
@@ -3873,6 +4038,17 @@ const l10nZh = L10n(
   voiceQuota: '今天的免费语音次数已用完。订阅方案后语音不限量。',
   renameWorkspace: '重命名',
   whileFree: '方案尚未生效：应用测试期间一切开放。',
+  paidBadge: 'Paid',
+  restorePurchases: 'Restore purchases',
+  restoreNothing: 'No purchases to restore.',
+  offlineBanner: 'You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.',
+  support: 'Support',
+  deleteAccountHelp: 'How to delete your account',
+  reportUser: 'Report',
+  blockUser: 'Block',
+  blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
+  reportSent: 'Thanks. Your report was sent for review.',
+  userBlocked: '{name} is blocked.',
 );
 
 /// Every language the app can display, by ISO 639-1 code.

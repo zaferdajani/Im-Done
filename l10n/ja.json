@@ -245,5 +245,16 @@
  "workspaceRemove": "{name} さんを外しますか？プランの利用権を失います。",
  "voiceQuota": "本日の無料音声入力を使い切りました。プランなら音声入力は無制限です。",
  "renameWorkspace": "名前を変更",
- "whileFree": "プランはまだ適用されていません。テスト中はすべて利用できます。"
+ "whileFree": "プランはまだ適用されていません。テスト中はすべて利用できます。",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }

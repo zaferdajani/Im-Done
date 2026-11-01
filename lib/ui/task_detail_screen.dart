@@ -192,6 +192,15 @@ class TaskDetailScreen extends ConsumerWidget {
                       leading: CircleAvatar(child: Text(m.name.isEmpty ? '?' : m.name.characters.first.toUpperCase())),
                       title: Text(m.uid == uid ? '${m.name} (${l.you})' : m.name),
                       subtitle: m.uid == task.ownerUid ? Text(l.creator) : null,
+                      trailing: m.uid == uid
+                          ? null
+                          : PopupMenuButton<String>(
+                              onSelected: (v) => _moderate(context, ref, task, m, v),
+                              itemBuilder: (_) => [
+                                PopupMenuItem(value: 'report', child: Text(l.reportUser)),
+                                if (m.uid == task.ownerUid) PopupMenuItem(value: 'block', child: Text(l.blockUser)),
+                              ],
+                            ),
                     ),
                   if (isCreator) ...[
                     const Divider(height: 1),
@@ -334,5 +343,36 @@ class _Pill extends StatelessWidget {
         Text(text, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
       ]),
     );
+  }
+}
+
+/// Report (and, for the task's creator, block) a person on a shared task.
+Future<void> _moderate(BuildContext context, WidgetRef ref, Task task, TaskMember m, String action) async {
+  final l = ref.read(l10nProvider);
+  final actions = ref.read(taskActionsProvider);
+  final messenger = ScaffoldMessenger.of(context);
+  try {
+    if (action == 'report') {
+      await actions.reportUser(task, m.uid, 'reported from task members list');
+      messenger.showSnackBar(SnackBar(content: Text(l.reportSent)));
+    } else {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          content: Text(l.blockUserConfirm.fill({'name': m.name})),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.cancel)),
+            FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(l.blockUser)),
+          ],
+        ),
+      );
+      if (ok != true) return;
+      await actions.reportUser(task, m.uid, 'blocked');
+      await actions.blockUser(m.uid);
+      messenger.showSnackBar(SnackBar(content: Text(l.userBlocked.fill({'name': m.name}))));
+      if (context.mounted) Navigator.of(context).maybePop();
+    }
+  } catch (e) {
+    messenger.showSnackBar(SnackBar(content: Text('${l.error}: $e')));
   }
 }

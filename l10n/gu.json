@@ -245,5 +245,16 @@
  "workspaceRemove": "{name} ને કાઢવા છે? તેઓ પ્લાનની ઍક્સેસ ગુમાવશે.",
  "voiceQuota": "આજની મફત અવાજ રેકોર્ડિંગ પૂરી થઈ ગઈ. પ્લાન સાથે અવાજ અમર્યાદિત છે.",
  "renameWorkspace": "નામ બદલો",
- "whileFree": "પ્લાન હજી લાગુ નથી: ઍપની ચકાસણી દરમિયાન બધું ખુલ્લું છે."
+ "whileFree": "પ્લાન હજી લાગુ નથી: ઍપની ચકાસણી દરમિયાન બધું ખુલ્લું છે.",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }
