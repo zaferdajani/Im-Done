@@ -12,6 +12,7 @@
 //                     and, for Arabic, to name the dialect (understand.mjs).
 //                     Falls back to Gemini when a key for it is set. Audio is
 //                     processed in memory and never stored.
+import { fetchWithTimeout } from './http.mjs';
 import { KINDS, message, recipients } from './logic.mjs';
 import { audioAcceptable, buildSystemPrompt, buildUserPrompt, languageCode, parseUnderstanding } from './understand.mjs';
 import { DEFAULT_PRODUCTS, dayKey, entitlementFromEvent, isActive, trialEntitlement, voiceAllowance } from './plans.mjs';
@@ -171,8 +172,8 @@ async function billingEnforced(env, token) {
   return cfg?.enforced === true;
 }
 /** The caller's live entitlement, through a workspace they really belong to. */
-async function planOf(env, token, uid) {
-  const user = await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`);
+async function planOf(env, token, uid, user) {
+  user ??= await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`);
   const wsId = typeof user?.workspaceId === 'string' ? user.workspaceId : null;
   if (!wsId) return { workspaceId: null, entitlement: null, active: false };
   const ws = await getDoc(env.FIREBASE_PROJECT_ID, token, `workspaces/${wsId}`);
@@ -199,9 +200,11 @@ async function voiceQuota(env, uid) {
 async function myPlan(env, cors, uid) {
   const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
   const token = await serviceAccountToken(sa, ['https://www.googleapis.com/auth/datastore']);
-  const enforced = await billingEnforced(env, token);
-  const plan = await planOf(env, token, uid);
-  const user = await getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`);
+  const [enforced, user] = await Promise.all([
+    billingEnforced(env, token),
+    getDoc(env.FIREBASE_PROJECT_ID, token, `users/${uid}`),
+  ]);
+  const plan = await planOf(env, token, uid, user ?? {});
   return json({ enforced, workspaceId: plan.workspaceId, entitlement: plan.entitlement, active: plan.active, trialUsed: Boolean(user?.trialStartedAt) }, 200, cors);
 }
 /** One thirty-day family trial per person, on a workspace they own. */
@@ -280,14 +283,14 @@ async function groqWhisper(key, audio, contentType, language) {
   form.append('temperature', '0');
   // No `language` = automatic detection; set only for the preferred re-run.
   if (language) form.append('language', language);
-  const res = await fetch(`${GROQ}/audio/transcriptions`, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form });
+  const res = await fetchWithTimeout(`${GROQ}/audio/transcriptions`, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form }, 30_000);
   if (!res.ok) throw new Error(`whisper ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();
   return { text: String(j.text ?? ''), language: languageCode(j.language) };
 }
 
 async function groqChat(key, model, system, user) {
-  const res = await fetch(`${GROQ}/chat/completions`, {
+  const res = await fetchWithTimeout(`${GROQ}/chat/completions`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -303,7 +306,7 @@ async function groqChat(key, model, system, user) {
       // object is extracted from the reply instead (parseUnderstanding).
       messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
     }),
-  });
+  }, 30_000);
   if (!res.ok) throw new Error(`chat ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();
   return j.choices?.[0]?.message?.content ?? '{}';
@@ -320,11 +323,11 @@ async function geminiText(key, system, user) {
   return geminiGenerate(key, [{ text: `${system}\n\n${user}` }]);
 }
 async function geminiGenerate(key, parts) {
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`, {
+  const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { temperature: 0, responseMimeType: 'application/json' } }),
-  });
+  }, 30_000);
   if (!res.ok) throw new Error(`gemini ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();
   return j.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '{}';
@@ -347,7 +350,7 @@ async function verifyFirebaseIdToken(token, projectId) {
   if (!h || !p || !s) throw new Error('malformed token');
   const header = JSON.parse(new TextDecoder().decode(b64url(h)));
   const payload = JSON.parse(new TextDecoder().decode(b64url(p)));
-  const certs = await (await fetch(GOOGLE_CERTS, { cf: { cacheTtl: 3600 } })).json();
+  const certs = await (await fetchWithTimeout(GOOGLE_CERTS, { cf: { cacheTtl: 3600 } })).json();
   const pem = certs[header.kid];
   if (!pem) throw new Error('unknown key');
   const key = await importX509(pem);
@@ -397,7 +400,7 @@ async function serviceAccountToken(sa, scopes) {
   const key = await crypto.subtle.importKey('pkcs8', pkcs8, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
   const sig = await crypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, key, new TextEncoder().encode(`${header}.${claim}`));
   const assertion = `${header}.${claim}.${b64urlEncode(sig)}`;
-  const res = await fetch(sa.token_uri, {
+  const res = await fetchWithTimeout(sa.token_uri, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `grant_type=${encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')}&assertion=${assertion}`,
@@ -408,7 +411,7 @@ async function serviceAccountToken(sa, scopes) {
 
 // ---------------------------------------------------------------- Firestore REST
 async function getDoc(projectId, token, path) {
-  const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`, {
+  const res = await fetchWithTimeout(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 404) return null;
@@ -416,7 +419,7 @@ async function getDoc(projectId, token, path) {
   return fromFirestore((await res.json()).fields ?? {});
 }
 async function setDoc(projectId, token, path, data) {
-  const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`, {
+  const res = await fetchWithTimeout(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}`, {
     method: 'PATCH',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ fields: toFirestore(data) }),
@@ -426,7 +429,7 @@ async function setDoc(projectId, token, path, data) {
 /** Merge only the given fields (a PATCH with an update mask). */
 async function patchDoc(projectId, token, path, data) {
   const mask = Object.keys(data).map((k) => `updateMask.fieldPaths=${encodeURIComponent(k)}`).join('&');
-  const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}?${mask}`, {
+  const res = await fetchWithTimeout(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${path}?${mask}`, {
     method: 'PATCH',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ fields: toFirestore(data) }),
@@ -467,7 +470,7 @@ function fromValue(v) {
 
 // ---------------------------------------------------------------- FCM HTTP v1
 async function sendFcm(projectId, token, deviceToken, msg, data) {
-  const res = await fetch(`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`, {
+  const res = await fetchWithTimeout(`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
