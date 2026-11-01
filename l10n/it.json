@@ -245,5 +245,16 @@
  "workspaceRemove": "Rimuovere {name}? Perderà l'accesso del piano.",
  "voiceQuota": "Le registrazioni vocali gratuite di oggi sono finite. Con un piano la voce è illimitata.",
  "renameWorkspace": "Rinomina",
- "whileFree": "I piani non sono ancora attivi: tutto è aperto durante i test."
+ "whileFree": "I piani non sono ancora attivi: tutto è aperto durante i test.",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }

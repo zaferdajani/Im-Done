@@ -35,6 +35,7 @@ class Cloud {
 
   static const String privacyPolicyUrl = 'https://imdone.me/privacy';
   static const String termsUrl = 'https://imdone.me/terms';
+  static const String supportUrl = 'https://imdone.me/support';
   static const String deleteAccountWebUrl = 'https://imdone.me/delete-account';
 
   /// Store links for the invite landing page. Placeholders until the app is

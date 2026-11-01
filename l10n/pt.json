@@ -245,5 +245,16 @@
  "workspaceRemove": "Remover {name}? A pessoa perde o acesso do plano.",
  "voiceQuota": "As gravações de voz grátis de hoje acabaram. Com um plano, a voz é ilimitada.",
  "renameWorkspace": "Renomear",
- "whileFree": "Os planos ainda não são aplicados: tudo está liberado enquanto o app é testado."
+ "whileFree": "Os planos ainda não são aplicados: tudo está liberado enquanto o app é testado.",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }

@@ -245,5 +245,16 @@
  "workspaceRemove": "{name} کو نکالیں؟ ان کی پلان کی رسائی ختم ہو جائے گی۔",
  "voiceQuota": "آج کی مفت آواز کی ریکارڈنگز ختم ہو گئیں۔ پلان کے ساتھ آواز لامحدود ہے۔",
  "renameWorkspace": "نام بدلیں",
- "whileFree": "پلان ابھی نافذ نہیں: ایپ کی جانچ کے دوران سب کچھ کھلا ہے۔"
+ "whileFree": "پلان ابھی نافذ نہیں: ایپ کی جانچ کے دوران سب کچھ کھلا ہے۔",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }

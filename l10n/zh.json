@@ -245,5 +245,16 @@
  "workspaceRemove": "移除 {name}？对方将失去该方案的权限。",
  "voiceQuota": "今天的免费语音次数已用完。订阅方案后语音不限量。",
  "renameWorkspace": "重命名",
- "whileFree": "方案尚未生效：应用测试期间一切开放。"
+ "whileFree": "方案尚未生效：应用测试期间一切开放。",
+ "paidBadge": "Paid",
+ "restorePurchases": "Restore purchases",
+ "restoreNothing": "No purchases to restore.",
+ "offlineBanner": "You are offline. Personal tasks and reminders still work; sharing resumes when you reconnect.",
+ "support": "Support",
+ "deleteAccountHelp": "How to delete your account",
+ "reportUser": "Report",
+ "blockUser": "Block",
+ "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
+ "reportSent": "Thanks. Your report was sent for review.",
+ "userBlocked": "{name} is blocked."
 }
