@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy - I'm Done</title><link rel="stylesheet" href="policy.css"></head>
+<body>
+<h1>Privacy Policy</h1>
+<p class="note">DRAFT for owner and legal review — replace the [BRACKETED] items before publishing. Version 2026-11-03. Controller: [OWNER LEGAL NAME], [ADDRESS], Amman, Jordan. Privacy requests: privacy@[YOUR-DOMAIN].</p>
+<h2>1. What I'm Done does</h2>
+<p>I'm Done turns what you say into tasks, reminds you until they are done, and lets you share a task with people you invite. This policy applies to the app (iOS, Android, web) and the services behind it.</p>
+<h2>2. What we collect, why, and on what legal basis</h2>
+<table>
+<tr><th>Data</th><th>Purpose</th><th>Legal basis (GDPR / PDPL)</th><th>Kept</th></tr>
+<tr><td>Personal tasks, reminders, settings</td><td>Run the app</td><td>Contract / necessity. <b>Stored only on your device</b>, never sent to us</td><td>Until you delete them or uninstall</td></tr>
+<tr><td>Voice recording (when you hold the microphone, default engine)</td><td>Turn speech into task text</td><td><b>Your consent</b> (you start each recording; you can switch to on-device speech in Settings → Voice)</td><td><b>Not stored.</b> Processed in memory, discarded at once</td></tr>
+<tr><td>Transcript text, detected language, today's date/weekday, UI language</td><td>Read the task and schedule out of your words</td><td>Consent / contract</td><td>Sent with the request only; not kept by us. Task fields you save are kept with the task</td></tr>
+<tr><td>Account: user ID, display name, email (Google/Apple/email sign-in), sign-in method</td><td>Sharing, sync, notifications</td><td>Contract</td><td>Until you delete your account</td></tr>
+<tr><td>Shared tasks: text, schedule, completion records, names of members</td><td>Let invited people see and complete a task</td><td>Contract</td><td>Until the owner archives/you delete your account (archived content is emptied on deletion)</td></tr>
+<tr><td>Device push token, language</td><td>Send push notifications about shared tasks</td><td>Contract / consent (you allow notifications in the OS)</td><td>Until sign-out or account deletion</td></tr>
+<tr><td>Consent log (policy version, time, age confirmation, marketing yes/no)</td><td>Prove consent</td><td>Legal obligation / legitimate interest</td><td>Until account deletion</td></tr>
+<tr><td>Reports about other users (reporter, reported user, task, reason)</td><td>Moderation (required by app stores)</td><td>Legitimate interest</td><td>12 months, then deleted automatically</td></tr>
+<tr><td>Per-day voice usage counter</td><td>Apply plan limits</td><td>Contract</td><td>35 days (deleted automatically)</td></tr>
+<tr><td>Subscription status (when plans go on sale)</td><td>Provide paid features</td><td>Contract</td><td>While the plan is active + legal retention for invoices</td></tr>
+<tr><td>Optional product news/offers</td><td>Marketing, <b>only if you tick the separate box</b></td><td>Consent (withdraw any time)</td><td>Until you withdraw</td></tr>
+</table>
+<p>We do <b>not</b> use advertising or analytics SDKs, we do not track you across apps or sites, and we never sell your data.</p>
+<h2>3. Who receives data (service providers)</h2>
+<p>Full, current list: <b><a href="subprocessors.html">subprocessors</a></b>.</p>
+<ul>
+<li><b>Google Firebase</b> (Authentication, Cloud Firestore, Cloud Messaging) — accounts, shared tasks, notifications. Data location: <b>London (europe-west2)</b>.</li>
+<li><b>Cloudflare, Inc.</b> (Workers) — our small server that relays notifications and voice requests. It does not store audio or tasks.</li>
+<li><b>Groq, Inc.</b> (US) — speech-to-text (Whisper) and the language model that reads the task out of your words. Receives the audio and transcript for that request.</li>
+<li><b>Google (Gemini API)</b> — fallback speech/understanding provider, used only if the primary provider fails. Receives the audio/transcript for that request.</li>
+<li><b>OpenAI</b> — some Groq-hosted models (e.g. <code>gpt-oss</code>) are OpenAI open-weight models running on Groq's servers; no data is sent to OpenAI itself. If we ever call OpenAI directly this section and /subprocessors will be updated first.</li>
+<li><b>Apple / Google</b> — sign-in providers; and, only if you choose the on-device speech option, your phone's speech service (Apple Speech / Google speech recognition), under their policies.</li>
+<li><b>GitHub Pages</b> (GitHub, Inc.) — hosts the web app and invitation links; sees ordinary web request data (IP address).</li>
+<li><b>RevenueCat / Apple App Store / Google Play</b> — only once paid plans are enabled.</li>
+</ul>
+<p>Other people on a shared task can see your display name and your actions on that task.</p>
+<h2>4. International transfers</h2>
+<p>Firebase data is held in London. Voice requests are processed by providers in the <b>United States</b> (Groq, Google, Cloudflare's network). Transfers rely on your explicit consent (starting a voice recording, with an on-device alternative always available) and on the providers' Standard Contractual Clauses / data-processing terms (GDPR Art. 46 / 49(1)(a); Saudi PDPL Art. 29 and Transfer Regulations; Jordanian PDPL). You may avoid all voice transfers by choosing Settings → Voice → on-device.</p>
+<h2>5. How long we keep data</h2>
+<p>Personal tasks: on your device only. Account data: until you delete the account. Reports: 12 months. Voice audio: not kept. Inactive accounts: deleted after 24 months without sign-in [OWNER: schedule the purge in docs/RETENTION.md before publishing, or delete this sentence]. Backups at Google age out on Google's own deletion schedule. We may keep minimal records where the law requires.</p>
+<h2>6. Your rights</h2>
+<p>Under the Saudi Personal Data Protection Law (PDPL), the EU/UK GDPR and the Jordanian PDPL (No. 24 of 2023) you may: be informed; <b>access</b> your data (Settings → Account → *Download my data*); <b>correct</b> it; <b>erase</b> it (Settings → Account → *Delete my account*, or /delete-account); <b>restrict or object</b> to processing; <b>port</b> your data; <b>withdraw consent</b> at any time (sign out/delete, change Settings → Voice, or email us to stop marketing); and <b>complain</b> to the regulator — in Saudi Arabia the Saudi Data &amp; AI Authority (SDAIA); in the EU your national supervisory authority; in the UK the ICO.</p>
+<p>Email <b>privacy@[YOUR-DOMAIN]</b>. We reply within <b>30 days</b> (and tell you if we need longer for a complex request). We may ask you to prove it is your account.</p>
+<h2>7. Children</h2>
+<p>You must be <b>16 or older</b> to create an account; sign-up asks you to confirm this and does not proceed otherwise. If we learn that someone under 16 has an account we delete it. The app without an account (personal tasks on the device) collects nothing.</p>
+<h2>8. Security</h2>
+<p>Encrypted connections; access rules that let you read only tasks you belong to; no audio storage; push credentials held only on our server. No system is perfectly secure. If a breach puts your rights at risk we notify the authorities within 72 hours and tell you without undue delay (see our incident response plan).</p>
+<h2>9. Changes</h2>
+<p>We post changes here with the date and, for material changes, ask you to agree again.</p>
+<h2>10. Contact</h2>
+<p>[OWNER LEGAL NAME] · privacy@[YOUR-DOMAIN] · [POSTAL ADDRESS]</p>
+<p lang="ar" dir="rtl">ملخص بالعربية: انظر docs/PRIVACY_POLICY.md — يلزم اعتماد ترجمة قانونية كاملة قبل النشر.</p>
+<p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="support.html">Support</a> · <a href="subprocessors.html">Service providers</a> · <a href="delete-account.html">Delete account</a></p>
+</body></html>

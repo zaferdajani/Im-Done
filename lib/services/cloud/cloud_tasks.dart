@@ -244,6 +244,59 @@ class CloudTasks {
     });
   }
 
+  /// UGC moderation: a report goes to `reports/`, reviewed by the owner in
+  /// the Firebase console (create-only for clients, see firestore.rules).
+  Future<void> reportUser({required String reporterUid, required String reportedUid, required String taskId, required String reason}) =>
+      _db.collection('reports').add({
+        'reporterUid': reporterUid,
+        'reportedUid': reportedUid,
+        'taskId': taskId,
+        'reason': reason,
+        'status': 'open',
+        'createdAt': FieldValue.serverTimestamp(),
+        // Firestore TTL policy on `expireAt` deletes the report after a year.
+        'expireAt': Timestamp.fromDate(DateTime.now().add(const Duration(days: 365))),
+      });
+
+  /// Consent log: one immutable record per policy version a person agreed to
+  /// (who, when, which version, and whether they ticked the optional
+  /// marketing box). Never blocks sign-in: a failure here is swallowed.
+  Future<void> recordConsent(String uid, {required String policyVersion, required bool marketing}) async {
+    try {
+      final ref = _db.collection('users').doc(uid).collection('consents').doc(policyVersion);
+      if ((await ref.get()).exists) return;
+      await ref.set({
+        'policyVersion': policyVersion,
+        'marketing': marketing,
+        'ageConfirmed': true,
+        'acceptedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (_) {}
+  }
+
+  /// "Download my data" (GDPR Art. 15/20, PDPL access right): everything the
+  /// cloud holds about [uid], as plain JSON-encodable maps.
+  Future<Map<String, dynamic>> exportMine(String uid) async {
+    Object? plain(Object? v) {
+      if (v is Timestamp) return v.toDate().toUtc().toIso8601String();
+      if (v is Map) return {for (final e in v.entries) '${e.key}': plain(e.value)};
+      if (v is Iterable) return [for (final x in v) plain(x)];
+      return v;
+    }
+
+    final me = await _db.collection('users').doc(uid).get();
+    final profile = Map<String, dynamic>.from(me.data() ?? {})..remove('tokens');
+    final consents = await _db.collection('users').doc(uid).collection('consents').get();
+    final tasks = await _col.where('memberUids', arrayContains: uid).get();
+    return {
+      'exportedAt': DateTime.now().toUtc().toIso8601String(),
+      'uid': uid,
+      'profile': plain(profile),
+      'consents': [for (final d in consents.docs) plain(d.data())],
+      'sharedTasks': [for (final d in tasks.docs) plain({...d.data(), 'id': d.id})],
+    };
+  }
+
   /// Account deletion, client side: leave every task, archive the ones I
   /// own, drop my profile. The Auth user itself is deleted by AuthService.
   Future<void> eraseEverythingOf(String uid) async {
@@ -268,6 +321,10 @@ class CloudTasks {
     final me = await _db.collection('users').doc(uid).get();
     final code = me.data()?['code'] as String?;
     if (code != null) await _db.collection('codes').doc(code).delete();
+    final consents = await _db.collection('users').doc(uid).collection('consents').get();
+    for (final d in consents.docs) {
+      await d.reference.delete();
+    }
     await _db.collection('users').doc(uid).delete();
   }
 }

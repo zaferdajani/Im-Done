@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
 import '../l10n/supported.dart';
 import '../services/cloud/auth_service.dart';
+import '../services/cloud/cloud.dart';
 import '../state/providers.dart';
 
 /// Returns the signed-in user, or null if the person backed out.
@@ -30,6 +32,10 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
   late final TextEditingController _password = TextEditingController();
   bool _busy = false;
   bool _emailMode = false;
+  bool _agree = false;
+  bool _old = false;
+  bool _marketing = false;
+  bool get _consented => _agree && _old;
   String? _error;
 
   @override
@@ -47,6 +53,9 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
     });
     try {
       final user = await f();
+      if (user != null) {
+        await ref.read(bootstrapProvider).cloudTasks.recordConsent(user.uid, policyVersion: Cloud.policyVersion, marketing: _marketing);
+      }
       if (!mounted) return;
       final name = _name.text.trim();
       if (name.isNotEmpty) {
@@ -112,9 +121,37 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                 decoration: InputDecoration(hintText: l.yourName, prefixIcon: const Icon(Icons.person_outline_rounded)),
                 onChanged: (_) => setState(() {}),
               ),
+              const SizedBox(height: 8),
+              // Required consent + age gate; the optional marketing box is
+              // deliberately unticked and gates nothing.
+              CheckboxListTile(
+                value: _agree,
+                onChanged: _busy ? null : (v) => setState(() => _agree = v ?? false),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: Text(l.consentAgree),
+              ),
+              CheckboxListTile(
+                value: _old,
+                onChanged: _busy ? null : (v) => setState(() => _old = v ?? false),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: Text(l.consentAge),
+              ),
+              CheckboxListTile(
+                value: _marketing,
+                onChanged: _busy ? null : (v) => setState(() => _marketing = v ?? false),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: Text(l.consentMarketing),
+              ),
+              if (!_consented) Text(l.consentRequired, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12)),
               const SizedBox(height: 12),
               FilledButton.icon(
-                onPressed: _busy || _name.text.trim().isEmpty ? null : () => _run(() => b.auth.signInQuick(_name.text)),
+                onPressed: _busy || !_consented || _name.text.trim().isEmpty ? null : () => _run(() => b.auth.signInQuick(_name.text)),
                 icon: const Icon(Icons.bolt_rounded),
                 label: Text(l.startNow),
               ),
@@ -123,7 +160,7 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
               const SizedBox(height: 10),
               if (AuthService.appleAvailable) ...[
                 FilledButton.icon(
-                  onPressed: _busy ? null : () => _run(b.auth.signInWithApple),
+                  onPressed: _busy || !_consented ? null : () => _run(b.auth.signInWithApple),
                   icon: const Icon(Icons.apple),
                   label: Text(l.signInApple),
                   style: FilledButton.styleFrom(backgroundColor: Colors.black, foregroundColor: Colors.white),
@@ -131,10 +168,15 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                 const SizedBox(height: 10),
               ],
               OutlinedButton.icon(
-                onPressed: _busy ? null : () => _run(b.auth.signInWithGoogle),
+                onPressed: _busy || !_consented ? null : () => _run(b.auth.signInWithGoogle),
                 icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
                 label: Text(l.signInGoogle),
               ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.privacyPolicyUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.privacyPolicy)),
+                TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.termsUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.terms)),
+                TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.subprocessorsUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.subprocessors)),
+              ]),
               const SizedBox(height: 10),
               if (!_emailMode)
                 TextButton.icon(
@@ -161,7 +203,7 @@ class _SignInSheetState extends ConsumerState<_SignInSheet> {
                 Text(l.emailHint, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12)),
                 const SizedBox(height: 8),
                 FilledButton.tonalIcon(
-                  onPressed: _busy || !_email.text.contains('@') || _password.text.length < 6
+                  onPressed: _busy || !_consented || !_email.text.contains('@') || _password.text.length < 6
                       ? null
                       : () => _run(() => b.auth.signInWithEmail(_email.text, _password.text, displayName: _name.text)),
                   icon: const Icon(Icons.mail_rounded),

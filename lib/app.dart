@@ -17,6 +17,7 @@ import 'ui/welcome_screen.dart';
 import 'ui/add_person_screen.dart';
 import 'ui/invite_landing_screen.dart';
 import 'ui/task_detail_screen.dart';
+import 'ui/widgets/offline_banner.dart';
 
 /// Notification taps arrive here from the plugin callback registered in main().
 class ReminderTaps {
@@ -147,6 +148,7 @@ class _ImDoneAppState extends ConsumerState<ImDoneApp> with WidgetsBindingObserv
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) => OfflineBanner(child: child),
       home: ref.watch(settingsProvider).setupDone ? const HomeScreen() : const WelcomeScreen(),
     );
   }

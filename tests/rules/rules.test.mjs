@@ -1,5 +1,5 @@
 import { initializeTestEnvironment, assertSucceeds, assertFails } from '@firebase/rules-unit-testing';
-import { doc, setDoc, getDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, deleteField } from 'firebase/firestore';
+import { serverTimestamp, doc, setDoc, getDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, deleteField } from 'firebase/firestore';
 import { readFileSync } from 'node:fs';
 
 const env = await initializeTestEnvironment({
@@ -127,6 +127,16 @@ await t('cannot register a code for someone else', () => assertFails(setDoc(doc(
 await t('registers own code', () => assertSucceeds(setDoc(doc(db(stranger), 'codes/CAROL999'), { uid: stranger, name: 'Carol' })));
 await t('cannot delete another person\'s code', () => assertFails(deleteDoc(doc(db(stranger), 'codes/BOBB1234'))));
 await t('users doc private', () => assertFails(getDoc(doc(db(stranger), 'users/bob'))));
+
+console.log('consent log');
+const consent = (v = '2026-11-03', extra = {}) => ({ policyVersion: v, marketing: false, ageConfirmed: true, acceptedAt: serverTimestamp(), ...extra });
+await t('records own consent', () => assertSucceeds(setDoc(doc(db(stranger), 'users/carol/consents/2026-11-03'), consent())));
+await t('cannot record consent for someone else', () => assertFails(setDoc(doc(db(stranger), 'users/bob/consents/2026-11-03'), consent())));
+await t('consent must confirm age', () => assertFails(setDoc(doc(db(stranger), 'users/carol/consents/v2'), consent('v2', { ageConfirmed: false }))));
+await t('consent version must match the id', () => assertFails(setDoc(doc(db(stranger), 'users/carol/consents/v3'), consent('other'))));
+await t('consent log cannot be edited', () => assertFails(updateDoc(doc(db(stranger), 'users/carol/consents/2026-11-03'), { marketing: true })));
+await t('consent log deleted with the account', () => assertSucceeds(deleteDoc(doc(db(stranger), 'users/carol/consents/2026-11-03'))));
+await t('others cannot read the consent log', () => assertFails(getDoc(doc(db(member), 'users/carol/consents/2026-11-03'))));
 
 await env.cleanup();
 console.log(`\n${pass} passed, ${fail} failed`);

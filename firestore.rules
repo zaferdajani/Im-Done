@@ -149,6 +149,18 @@ service cloud.firestore {
     // Each user owns their own profile.
     match /users/{userId} {
       allow read, write: if signedIn() && uid() == userId;
+      // Consent log: append-only for the person (no update); deleted with
+      // the account.
+      match /consents/{version} {
+        allow read, delete: if signedIn() && uid() == userId;
+        allow create: if signedIn() && uid() == userId
+          && request.resource.data.keys().hasOnly(['policyVersion', 'marketing', 'ageConfirmed', 'acceptedAt'])
+          && request.resource.data.policyVersion == version
+          && request.resource.data.marketing is bool
+          && request.resource.data.ageConfirmed == true
+          && request.resource.data.acceptedAt == request.time;
+        allow update: if false;
+      }
     }
 
     // ------------------------------------------------ workspaces
@@ -198,6 +210,18 @@ service cloud.firestore {
     match /config/{name} {
       allow read: if signedIn();
       allow write: if false;
+    }
+    // Moderation reports: clients may file one, only the owner (console /
+    // service account) reads them.
+    match /reports/{id} {
+      allow create: if signedIn()
+        && request.resource.data.reporterUid == uid()
+        && request.resource.data.status == 'open'
+        && request.resource.data.reason is string && request.resource.data.reason.size() <= 500
+        && request.resource.data.reportedUid is string
+        && request.resource.data.keys().hasOnly(['reporterUid', 'reportedUid', 'taskId', 'reason', 'status', 'createdAt', 'expireAt'])
+        && request.resource.data.taskId is string;
+      allow read, update, delete: if false;
     }
     // Per-day voice usage, counted by the server.
     match /usage/{document=**} {

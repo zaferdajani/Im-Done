@@ -1,83 +1,107 @@
-# I'm Done — Privacy Policy (draft for hosting at /privacy)
+# I'm Done — Privacy Policy
 
-*Draft prepared 2026-09-12. Have licensed local counsel review before publishing; this is not a
-substitute for legal advice. Controller: [Owner legal name], Amman, Jordan — [contact email].*
+> **DRAFT for owner and counsel review — not legal advice.** Replace every `[BRACKET]` before
+> publishing. The same text, in HTML, is `web/privacy.html`; keep the two in step and bump
+> `Cloud.policyVersion` (`lib/services/cloud/cloud.dart`) when the substance changes.
 
-## English
+Version: 2026-11-03 · Controller: [OWNER LEGAL NAME], [ADDRESS], Amman, Jordan ·
+Privacy requests: **privacy@[YOUR-DOMAIN]** · EU/UK representative (if required): [NAME / N/A]
 
-**What I'm Done does.** I'm Done turns what you say into tasks, reminds you until they are done, and
-lets you share a task with people you invite.
+## 1. What I'm Done does
+I'm Done turns what you say into tasks, reminds you until they are done, and lets you share a task
+with people you invite. This policy applies to the app (iOS, Android, web) and the services behind it.
 
-**Personal tasks stay on your phone.** Tasks you create for yourself, their reminders and your
-settings are stored only on your device. They are not sent to us. No account is needed.
+## 2. What we collect, why, and on what legal basis
 
-**Voice.** When you hold the microphone button, I'm Done records your voice and, by default,
-sends that recording over an encrypted connection to I'm Done's own processing service, which
-uses a speech-recognition model to turn it into text in whatever language you spoke and to read
-the task and its schedule out of the words. The recording is processed in memory and discarded
-immediately; it is never stored, and only the text, the detected language and the task fields are
-kept with your task. If you prefer, Settings → Voice switches to your phone's own speech service
-(Apple Speech on iPhone, Google speech recognition on Android), in which case no audio leaves the
-phone and only English and Arabic are recognised.
+| Data | Purpose | Legal basis (GDPR / PDPL) | Kept |
+|---|---|---|---|
+| Personal tasks, reminders, settings | Run the app | Contract / necessity. **Stored only on your device**, never sent to us | Until you delete them or uninstall |
+| Voice recording (when you hold the microphone, default engine) | Turn speech into task text | **Your consent** (you start each recording; you can switch to on-device speech in Settings → Voice) | **Not stored.** Processed in memory, discarded at once |
+| Transcript text, detected language, today's date/weekday, UI language | Read the task and schedule out of your words | Consent / contract | Sent with the request only; not kept by us. Task fields you save are kept with the task |
+| Account: user ID, display name, email (Google/Apple/email sign-in), sign-in method | Sharing, sync, notifications | Contract | Until you delete your account |
+| Shared tasks: text, schedule, completion records, names of members | Let invited people see and complete a task | Contract | Until the owner archives/you delete your account (archived content is emptied on deletion) |
+| Device push token, language | Send push notifications about shared tasks | Contract / consent (you allow notifications in the OS) | Until sign-out or account deletion |
+| Consent log (policy version, time, age confirmation, marketing yes/no) | Prove consent | Legal obligation / legitimate interest | Until account deletion |
+| Reports about other users (reporter, reported user, task, reason) | Moderation (required by app stores) | Legitimate interest | 12 months, then deleted automatically |
+| Per-day voice usage counter | Apply plan limits | Contract | 35 days (deleted automatically) |
+| Subscription status (when plans go on sale) | Provide paid features | Contract | While the plan is active + legal retention for invoices |
+| Optional product news/offers | Marketing, **only if you tick the separate box** | Consent (withdraw any time) | Until you withdraw |
 
-**Shared tasks need an account.** If you share a task or accept an invitation, you sign in with
-Google or Apple. We then store: your name and email (from the sign-in provider), a user ID, the
-shared task's text, schedule and completion records, the names of the people in it, and a device
-token so the other people can be notified. This data is stored with Google Firebase in London
-(European Union/UK region) and is visible only to the members of that task.
+We do **not** use advertising or analytics SDKs, we do not track you across apps or sites, and we
+never sell your data.
 
-**Notifications.** Reminders for your tasks are scheduled on your phone. For shared tasks we send
-push notifications about the task (new task, marked done, confirmed). We never send marketing
-notifications.
+## 3. Who receives data (service providers)
+Full, current list: **/subprocessors**.
 
-**No advertising, no tracking, no sale of data.** I'm Done contains no advertising and does not
-sell, rent or share your data with anyone for advertising. We do not track you across other apps
-or websites.
+- **Google Firebase** (Authentication, Cloud Firestore, Cloud Messaging) — accounts, shared tasks,
+  notifications. Data location: **London (europe-west2)**.
+- **Cloudflare, Inc.** (Workers) — our small server that relays notifications and voice requests.
+  It does not store audio or tasks.
+- **Groq, Inc.** (US) — speech-to-text (Whisper) and the language model that reads the task out of
+  your words. Receives the audio and transcript for that request.
+- **Google (Gemini API)** — fallback speech/understanding provider, used only if the primary
+  provider fails. Receives the audio/transcript for that request.
+- **OpenAI** — some Groq-hosted models (e.g. `gpt-oss`) are OpenAI open-weight models running on
+  Groq's servers; no data is sent to OpenAI itself. If we ever call OpenAI directly this section
+  and /subprocessors will be updated first.
+- **Apple / Google** — sign-in providers; and, only if you choose the on-device speech option,
+  your phone's speech service (Apple Speech / Google speech recognition), under their policies.
+- **GitHub Pages** (GitHub, Inc.) — hosts the web app and invitation links; sees ordinary web
+  request data (IP address).
+- **RevenueCat / Apple App Store / Google Play** — only once paid plans are enabled.
 
-**Deletion.** In Settings you can delete your account at any time; this removes your account,
-the shared tasks you created, your memberships and your device tokens. You can also request
-deletion at [https://imdone.me/delete-account]. Personal tasks are deleted by uninstalling the
-app.
+Other people on a shared task can see your display name and your actions on that task.
 
-**Your rights.** Under the Jordanian Personal Data Protection Law No. 24 of 2023 and, where
-applicable, the GDPR, you may access, correct or erase your data and withdraw consent. Contact
-[contact email].
+## 4. International transfers
+Firebase data is held in London. Voice requests are processed by providers in the **United States**
+(Groq, Google, Cloudflare's network). Transfers rely on your explicit consent (starting a voice
+recording, with an on-device alternative always available) and on the providers' Standard
+Contractual Clauses / data-processing terms (GDPR Art. 46 / 49(1)(a); Saudi PDPL Art. 29 and
+Transfer Regulations; Jordanian PDPL). You may avoid all voice transfers by choosing
+Settings → Voice → on-device.
 
-**Children.** I'm Done is not directed at children under 13 and we do not knowingly collect data
-from them.
+## 5. How long we keep data
+Personal tasks: on your device only. Account data: until you delete the account. Reports: 12 months.
+Voice audio: not kept. Inactive accounts: deleted after 24 months without sign-in [OWNER: schedule the purge in docs/RETENTION.md before publishing, or delete this sentence]. Backups at
+Google age out on Google's own deletion schedule. We may keep minimal records where the law requires.
 
-**Changes.** We will post changes here with the date.
+## 6. Your rights
+Under the Saudi Personal Data Protection Law (PDPL), the EU/UK GDPR and the Jordanian PDPL (No. 24 of
+2023) you may: be informed; **access** your data (Settings → Account → *Download my data*);
+**correct** it; **erase** it (Settings → Account → *Delete my account*, or /delete-account);
+**restrict or object** to processing; **port** your data; **withdraw consent** at any time
+(sign out/delete, change Settings → Voice, or email us to stop marketing); and **complain** to
+the regulator — in Saudi Arabia the Saudi Data & AI Authority (SDAIA); in the EU your national
+supervisory authority; in the UK the ICO.
 
-## العربية
+Email **privacy@[YOUR-DOMAIN]**. We reply within **30 days** (and tell you if we need longer for a
+complex request). We may ask you to prove it is your account.
 
-**ما يفعله خلّصت.** يحوّل خلّصت ما تقوله إلى مهام، ويذكّرك بها حتى تُنجزها، ويتيح لك مشاركة
-مهمة مع أشخاص تدعوهم.
+## 7. Children
+You must be **16 or older** to create an account; sign-up asks you to confirm this and does not
+proceed otherwise. If we learn that someone under 16 has an account we delete it. The app without
+an account (personal tasks on the device) collects nothing.
 
-**المهام الشخصية تبقى على هاتفك.** المهام التي تنشئها لنفسك وتذكيراتها وإعداداتك تُخزَّن على جهازك
-فقط ولا تُرسل إلينا، ولا تحتاج إلى حساب.
+## 8. Security
+Encrypted connections; access rules that let you read only tasks you belong to; no audio storage; push
+credentials held only on our server. No system is perfectly secure. If a breach puts your rights at risk
+we notify the authorities within 72 hours and tell you without undue delay (see our incident response plan).
 
-**الصوت.** عندما تضغط زر الميكروفون مطوّلًا، تحوّل خدمة التعرف على الكلام في هاتفك (خدمة Apple على
-iPhone وخدمة Google على أندرويد) صوتك إلى نص. يحتفظ خلّصت بالنص فقط، ولا يسجّل الصوت ولا يخزّنه
-ولا يرسله. قد تعالج Apple أو Google الصوت على خوادمها وفق سياساتها.
+## 9. Changes
+We post changes here with the date and, for material changes, ask you to agree again.
 
-**المهام المشتركة تحتاج إلى حساب.** عند مشاركة مهمة أو قبول دعوة، تسجّل الدخول عبر Google أو Apple.
-نخزّن عندها: اسمك وبريدك الإلكتروني (من مزوّد تسجيل الدخول)، ومعرّف مستخدم، ونص المهمة المشتركة
-وجدولها وسجلات إنجازها، وأسماء الأشخاص فيها، ورمز جهاز لإرسال الإشعارات. تُخزَّن هذه البيانات لدى
-Google Firebase في لندن ولا يراها إلا أعضاء تلك المهمة.
+## 10. Contact
+[OWNER LEGAL NAME] · privacy@[YOUR-DOMAIN] · [POSTAL ADDRESS]
 
-**الإشعارات.** تُجدول تذكيرات مهامك على هاتفك. في المهام المشتركة نرسل إشعارات عن المهمة (مهمة
-جديدة، عُلّمت كمُنجزة، أُكّدت). لا نرسل إشعارات تسويقية أبدًا.
+---
 
-**لا إعلانات ولا تتبّع ولا بيع للبيانات.** لا يحتوي خلّصت على إعلانات، ولا يبيع بياناتك أو يشاركها
-مع أي جهة لأغراض إعلانية، ولا يتتبّعك عبر التطبيقات أو المواقع الأخرى.
-
-**الحذف.** يمكنك حذف حسابك في أي وقت من الإعدادات؛ يزيل ذلك حسابك والمهام المشتركة التي أنشأتها
-وعضوياتك ورموز أجهزتك. ويمكنك أيضًا طلب الحذف عبر [https://imdone.me/delete-account]. تُحذف المهام
-الشخصية بإزالة التطبيق.
-
-**حقوقك.** بموجب قانون حماية البيانات الشخصية الأردني رقم 24 لسنة 2023، واللائحة الأوروبية GDPR حيث
-تنطبق، يحق لك الوصول إلى بياناتك وتصحيحها ومحوها وسحب موافقتك. تواصل معنا على [البريد الإلكتروني].
-
-**الأطفال.** لا يستهدف خلّصت الأطفال دون 13 عامًا ولا نجمع بياناتهم عن علم.
-
-**التغييرات.** ننشر أي تغيير هنا مع تاريخه.
+## العربية (ملخص — يلزم اعتماد ترجمة قانونية كاملة)
+**المسؤول:** [الاسم القانوني]، عمّان، الأردن — **privacy@[YOUR-DOMAIN]**.
+المهام الشخصية تبقى على جهازك فقط. عند استخدام الميكروفون بالمحرك الافتراضي يُرسل الصوت (ولا يُخزَّن)
+إلى مزوّدين في الولايات المتحدة (Groq، وGoogle Gemini احتياطيًا، عبر Cloudflare) لتحويله إلى مهمة، وذلك
+بموافقتك الصريحة؛ ويمكنك اختيار التعرّف على الكلام داخل الجهاز من الإعدادات. تُخزَّن بيانات الحساب
+والمهام المشتركة لدى Google Firebase في لندن. لا إعلانات ولا تتبّع ولا بيع للبيانات.
+**حقوقك** بموجب نظام حماية البيانات الشخصية السعودي (PDPL) واللائحة الأوروبية (GDPR) والقانون الأردني:
+الاطلاع، والتصحيح، والحذف، والاعتراض، ونقل البيانات، وسحب الموافقة، والشكوى إلى الهيئة السعودية للبيانات
+والذكاء الاصطناعي (سدايا). نردّ خلال 30 يومًا. الحد الأدنى للعمر 16 عامًا. مدة الاحتفاظ: الحساب حتى الحذف،
+والبلاغات 12 شهرًا، والصوت لا يُحفظ.

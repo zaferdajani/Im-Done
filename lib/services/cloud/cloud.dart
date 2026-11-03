@@ -35,7 +35,17 @@ class Cloud {
 
   static const String privacyPolicyUrl = 'https://imdone.me/privacy';
   static const String termsUrl = 'https://imdone.me/terms';
+  static const String supportUrl = 'https://imdone.me/support';
   static const String deleteAccountWebUrl = 'https://imdone.me/delete-account';
+  static const String subprocessorsUrl = 'https://imdone.me/subprocessors';
+
+  /// Bump whenever the privacy policy changes in substance; every sign-up is
+  /// logged against the version the person agreed to (users/{uid}/consents).
+  static const String policyVersion = '2026-11-03';
+
+  /// Youngest age we accept without a parent. Below this the sign-up is
+  /// blocked (GDPR Art. 8 allows 13-16 by member state; 16 is the safe line).
+  static const int minAge = 16;
 
   /// Store links for the invite landing page. Placeholders until the app is
   /// listed; until then Android testers get the CI build from GitHub.

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../core/flags.dart';
+import '../services/cloud/cloud.dart';
 
 import '../l10n/strings.dart';
 import '../models/plan.dart';
@@ -283,10 +287,26 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
           const SizedBox(height: 24),
           // ------------------------------------------------ the plans
           _PlanCard(title: l.planFree, body: l.planFreeBody, icon: Icons.person_outline_rounded, current: level == PlanLevel.free),
-          _PlanCard(title: l.planFamily, body: l.planFamilyBody, icon: Icons.family_restroom_rounded, current: level == PlanLevel.family || level == PlanLevel.trial),
-          _PlanCard(title: l.planTeam, body: l.planTeamBody, icon: Icons.groups_rounded, current: level == PlanLevel.team),
+          _PlanCard(title: l.planFamily, body: l.planFamilyBody, icon: Icons.family_restroom_rounded, current: level == PlanLevel.family || level == PlanLevel.trial, paid: true, paidLabel: l.paidBadge),
+          _PlanCard(title: l.planTeam, body: l.planTeamBody, icon: Icons.groups_rounded, current: level == PlanLevel.team, paid: true, paidLabel: l.paidBadge),
           const SizedBox(height: 8),
-          Text(l.purchasesSoon, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13, height: 1.4)),
+          if (Flags.showComingSoon) Text(l.purchasesSoon, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13, height: 1.4)),
+          const SizedBox(height: 8),
+          // Restore Purchases: required wherever paid plans exist (Apple 3.1.1).
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                final n = await ref.read(purchaseServiceProvider).restore();
+                if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(n > 0 ? l.done : l.restoreNothing)));
+              },
+              child: Text(l.restorePurchases),
+            ),
+          ),
+          // Apple 3.1.2: plan screens link Privacy Policy and Terms.
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.privacyPolicyUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.privacyPolicy)),
+            TextButton(onPressed: () => launchUrl(Uri.parse(Cloud.termsUrl), mode: LaunchMode.inAppBrowserView), child: Text(l.terms)),
+          ]),
         ],
       ),
     );
@@ -294,7 +314,9 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
 }
 
 class _PlanCard extends StatelessWidget {
-  const _PlanCard({required this.title, required this.body, required this.icon, required this.current});
+  const _PlanCard({required this.title, required this.body, required this.icon, required this.current, this.paid = false, this.paidLabel = ''});
+  final bool paid;
+  final String paidLabel;
   final String title;
   final String body;
   final IconData icon;
@@ -307,7 +329,13 @@ class _PlanCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: current ? BorderSide(color: scheme.primary, width: 2) : BorderSide.none),
       child: ListTile(
         leading: Icon(icon, color: scheme.primary),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
+        title: Row(children: [
+          Flexible(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w700))),
+          if (paid) ...[
+            const SizedBox(width: 8),
+            Chip(label: Text(paidLabel, style: const TextStyle(fontSize: 11)), visualDensity: VisualDensity.compact, padding: EdgeInsets.zero),
+          ],
+        ]),
         subtitle: Text(body),
         trailing: current ? Icon(Icons.check_circle_rounded, color: scheme.primary) : null,
       ),
