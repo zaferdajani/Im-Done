@@ -221,6 +221,13 @@ class L10n {
     required this.offlineBanner,
     required this.support,
     required this.deleteAccountHelp,
+    required this.consentAgree,
+    required this.consentAge,
+    required this.consentMarketing,
+    required this.consentRequired,
+    required this.subprocessors,
+    required this.downloadMyData,
+    required this.downloadMyDataHint,
     required this.reportUser,
     required this.blockUser,
     required this.blockUserConfirm,
@@ -473,6 +480,13 @@ class L10n {
   final String offlineBanner;
   final String support;
   final String deleteAccountHelp;
+  final String consentAgree;
+  final String consentAge;
+  final String consentMarketing;
+  final String consentRequired;
+  final String subprocessors;
+  final String downloadMyData;
+  final String downloadMyDataHint;
   final String reportUser;
   final String blockUser;
   final String blockUserConfirm;

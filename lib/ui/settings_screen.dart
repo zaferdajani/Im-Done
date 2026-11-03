@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import '../core/platform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/strings.dart';
@@ -203,6 +206,24 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const Divider(height: 1),
                 ListTile(
+                  leading: const Icon(Icons.download_rounded),
+                  title: Text(l.downloadMyData),
+                  subtitle: Text(l.downloadMyDataHint),
+                  onTap: () async {
+                    try {
+                      final data = await b.cloudTasks.exportMine(user.uid);
+                      data['personalTasks'] = [for (final t in ref.read(localTasksProvider)) t.toJson()];
+                      await SharePlus.instance.share(ShareParams(
+                        text: const JsonEncoder.withIndent('  ').convert(data),
+                        subject: 'imdone-my-data.json',
+                      ));
+                    } catch (e) {
+                      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.error}: $e')));
+                    }
+                  },
+                ),
+                const Divider(height: 1),
+                ListTile(
                   leading: Icon(Icons.delete_forever_rounded, color: scheme.error),
                   title: Text(l.deleteAccount, style: TextStyle(color: scheme.error)),
                   onTap: () async {
@@ -249,6 +270,8 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(leading: const Icon(Icons.description_outlined), title: Text(l.terms), onTap: () => open(Cloud.termsUrl)),
               const Divider(height: 1),
               ListTile(leading: const Icon(Icons.support_agent_rounded), title: Text(l.support), onTap: () => open(Cloud.supportUrl)),
+              const Divider(height: 1),
+              ListTile(leading: const Icon(Icons.business_outlined), title: Text(l.subprocessors), onTap: () => open(Cloud.subprocessorsUrl)),
               const Divider(height: 1),
               ListTile(leading: const Icon(Icons.manage_accounts_outlined), title: Text(l.deleteAccountHelp), onTap: () => open(Cloud.deleteAccountWebUrl)),
             ]),

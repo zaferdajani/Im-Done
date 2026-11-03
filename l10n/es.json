@@ -256,5 +256,12 @@
  "blockUser": "Block",
  "blockUserConfirm": "Block {name}? Their shared tasks will be hidden from you.",
  "reportSent": "Thanks. Your report was sent for review.",
- "userBlocked": "{name} is blocked."
+ "userBlocked": "{name} is blocked.",
+ "consentAgree": "I agree to the Privacy Policy and Terms of Use",
+ "consentAge": "I am 16 years old or older",
+ "consentMarketing": "Send me product news and offers (optional)",
+ "consentRequired": "Please tick the two required boxes to continue.",
+ "subprocessors": "Service providers we use",
+ "downloadMyData": "Download my data",
+ "downloadMyDataHint": "A JSON file with your profile, tasks and consent records"
 }

@@ -254,6 +254,13 @@ const l10nAr = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nEn = L10n(
@@ -507,6 +514,13 @@ const l10nEn = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nEs = L10n(
@@ -760,6 +774,13 @@ const l10nEs = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nFa = L10n(
@@ -1013,6 +1034,13 @@ const l10nFa = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nFr = L10n(
@@ -1266,6 +1294,13 @@ const l10nFr = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nGu = L10n(
@@ -1519,6 +1554,13 @@ const l10nGu = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nHi = L10n(
@@ -1772,6 +1814,13 @@ const l10nHi = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nIt = L10n(
@@ -2025,6 +2074,13 @@ const l10nIt = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nJa = L10n(
@@ -2278,6 +2334,13 @@ const l10nJa = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nKo = L10n(
@@ -2531,6 +2594,13 @@ const l10nKo = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nPt = L10n(
@@ -2784,6 +2854,13 @@ const l10nPt = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nRu = L10n(
@@ -3037,6 +3114,13 @@ const l10nRu = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nTr = L10n(
@@ -3290,6 +3374,13 @@ const l10nTr = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nUk = L10n(
@@ -3543,6 +3634,13 @@ const l10nUk = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nUr = L10n(
@@ -3796,6 +3894,13 @@ const l10nUr = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 const l10nZh = L10n(
@@ -4049,6 +4154,13 @@ const l10nZh = L10n(
   blockUserConfirm: 'Block {name}? Their shared tasks will be hidden from you.',
   reportSent: 'Thanks. Your report was sent for review.',
   userBlocked: '{name} is blocked.',
+  consentAgree: 'I agree to the Privacy Policy and Terms of Use',
+  consentAge: 'I am 16 years old or older',
+  consentMarketing: 'Send me product news and offers (optional)',
+  consentRequired: 'Please tick the two required boxes to continue.',
+  subprocessors: 'Service providers we use',
+  downloadMyData: 'Download my data',
+  downloadMyDataHint: 'A JSON file with your profile, tasks and consent records',
 );
 
 /// Every language the app can display, by ISO 639-1 code.
