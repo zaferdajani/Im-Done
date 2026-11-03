@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service providers - I'm Done</title><link rel="stylesheet" href="policy.css"></head>
+<body>
+<h1>Service providers (subprocessors)</h1>
+<p class="note">Updated 2026-11-03. We update this page before adding a provider. Questions: privacy@[YOUR-DOMAIN].</p>
+<table>
+<tr><th>Provider</th><th>What for</th><th>Data</th><th>Location</th></tr>
+<tr><td>Google Firebase (Auth, Firestore, Cloud Messaging)</td><td>Accounts, shared tasks, push notifications</td><td>Name, email, user ID, shared-task content, push token</td><td>London (europe-west2); Google global infrastructure for sign-in and messaging</td></tr>
+<tr><td>Cloudflare, Inc. (Workers)</td><td>Server that relays notifications and voice requests</td><td>Voice audio/transcript in transit (not stored), task IDs</td><td>Global edge network</td></tr>
+<tr><td>Groq, Inc.</td><td>Speech-to-text (Whisper) and the language model that reads the task from your words</td><td>Voice audio and transcript, per request</td><td>United States</td></tr>
+<tr><td>Google (Gemini API)</td><td>Fallback if the primary voice provider fails</td><td>Voice audio and transcript, per request</td><td>United States / Google global</td></tr>
+<tr><td>Apple, Google (sign-in)</td><td>Sign in with Apple / Google</td><td>Name, email, provider ID</td><td>Per provider</td></tr>
+<tr><td>GitHub, Inc. (Pages)</td><td>Hosts the web app and invitation links</td><td>Web request data (IP address)</td><td>United States / global CDN</td></tr>
+<tr><td>RevenueCat, Apple, Google Play</td><td>Paid plans (only once enabled)</td><td>Purchase and entitlement status</td><td>United States / global</td></tr>
+</table>
+<p>OpenAI: some models served by Groq are OpenAI open-weight models; no data is sent to OpenAI itself.</p>
+<p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="support.html">Support</a> · <a href="subprocessors.html">Service providers</a> · <a href="delete-account.html">Delete account</a></p>
+</body></html>

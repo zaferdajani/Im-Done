@@ -189,7 +189,7 @@ async function voiceQuota(env, uid) {
     const path = `usage/${uid}/days/${dayKey()}`;
     const used = Number((await getDoc(env.FIREBASE_PROJECT_ID, token, path))?.voice ?? 0);
     const allowance = voiceAllowance(used, plan.active);
-    if (allowance.allowed) await setDoc(env.FIREBASE_PROJECT_ID, token, path, { voice: used + 1, updatedAt: new Date() });
+    if (allowance.allowed) await setDoc(env.FIREBASE_PROJECT_ID, token, path, { voice: used + 1, updatedAt: new Date(), expireAt: new Date(Date.now() + 35 * 86400000) /* Firestore TTL field, see docs/RETENTION.md */ });
     return allowance;
   } catch {
     // A counting failure must never silence the microphone.
